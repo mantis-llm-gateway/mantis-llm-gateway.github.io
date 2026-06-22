@@ -90,7 +90,7 @@ Given the configuration example above in #3 , a request with header `task-type` 
 
 The first matched rule will append the sampled target followed by the remaining targets to the ordered list. This ensures the sampled target is attempted first. Next, the fallback model is appended to the list, and the list containing the model endpoints is returned to the *Orchestrator*, which then attempts a cache check and LLM call execution loop for each target in the ordered list.
 
-### **3. Cache checks**
+### 3. Cache checks
 
 To reduce latency and the cost of redundant LLM calls, we implement cache checks using *Amazon ElastiCache Valkey* to return LLM responses that match given prompts.
 
@@ -156,7 +156,7 @@ Once the prompt has passed the gateway's cache layer, the *Orchestrator* layer c
 
 Once an LLM response is received, Mantis writes it to the response cache (both exact and semantic).
 
-#### **Guardrails with Bedrock**
+#### Guardrails with Bedrock
 
 ![](/assets/mantis-case-study/bedrock_guardrails.png)
 
@@ -186,19 +186,7 @@ In addition, if LLM requests or responses can be categorised as the following, M
 
 - financial advice
 
-### **6. Response is sent to the user**
-
-(BELOW DIAGRAM NOT FINAL → will be edited to include “Streaming Success” verdict type)
-
-![*This is the non-stream flow. The stream flow touches less of the system and can be found at the end of this section.*](/assets/mantis-case-study/non-stream-response-flow.svg)
-
-_*This is the non-stream flow. The stream flow touches less of the system and can be found at the end of this section.*_
-
-![](/assets/mantis-case-study/image.png)
-
-![](/assets/mantis-case-study/image_1.png)
-
-![](/assets/mantis-case-study/response_sent_to_user.png)
+### 6. Response is sent to the user
 
 **Non-Stream Responses**
 

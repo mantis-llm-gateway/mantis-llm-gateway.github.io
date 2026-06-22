@@ -9,8 +9,10 @@ export default defineConfig({
       description:
         'Documentation for Mantis, an open-source self-hosted LLM gateway for routing, caching, guardrails, and observability.',
       logo: {
-        src: './src/assets/mantis_logo_32.svg',
+        dark: './src/assets/mantis_lockup_dark.svg',
+        light: './src/assets/mantis_lockup_32.svg',
         alt: 'Mantis',
+        replacesTitle: true,
       },
       social: [
         {
@@ -20,10 +22,6 @@ export default defineConfig({
         },
       ],
       customCss: ['./src/styles/custom.css'],
-      editLink: {
-        baseUrl:
-          'https://github.com/mantis-llm-gateway/mantis-llm-gateway.github.io/edit/main/',
-      },
       sidebar: [
         {
           label: 'Start Here',
@@ -53,7 +51,6 @@ export default defineConfig({
           label: 'Guides',
           items: [
             { slug: 'guides/routing-config', label: 'Routing Config' },
-            { slug: 'guides/docs-site', label: 'Docs Site Workflow' },
           ],
         },
         {

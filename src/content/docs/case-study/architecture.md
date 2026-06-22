@@ -196,7 +196,7 @@ _*This is the non-stream flow. The stream flow touches less of the system and ca
 
 ![](/assets/mantis-case-study/image.png)
 
-![](/assets/mantis-case-study/image 1.png)
+![](/assets/mantis-case-study/image_1.png)
 
 ![](/assets/mantis-case-study/response_sent_to_user.png)
 

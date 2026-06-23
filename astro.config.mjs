@@ -21,12 +21,16 @@ export default defineConfig({
           href: 'https://github.com/mantis-llm-gateway',
         },
       ],
+      components: {
+        SocialIcons: './src/components/SocialIcons.astro',
+      },
       customCss: ['./src/styles/custom.css'],
       sidebar: [
         {
           label: 'Start Here',
           items: [
             { slug: 'index', label: 'Overview' },
+            { slug: 'team', label: 'Team' },
             { slug: 'guides/quick-start', label: 'Quick Start' },
             { slug: 'guides/deployment', label: 'Deploy to AWS' },
           ],

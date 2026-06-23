@@ -1,0 +1,61 @@
+---
+title: Team
+description: The team behind Mantis.
+---
+
+import { Image } from 'astro:assets';
+import TeamSocialLink from '../../components/TeamSocialLink.astro';
+import hubertHeadshot from '../../assets/hubert-headshot.jpeg';
+import reyHeadshot from '../../assets/rey-headshot.png';
+import rizHeadshot from '../../assets/riz-headshot.jpg';
+import samHeadshot from '../../assets/sam-headshot-cropped.jpg';
+
+<div class="team-grid">
+  <figure class="team-member">
+    <Image src={hubertHeadshot} alt="Hubert de Parseval headshot" />
+    <figcaption>
+      <strong class="team-member-name">Hubert de Parseval</strong>
+      <div class="team-socials">
+        <TeamSocialLink icon="linkedin" href="https://www.linkedin.com/in/hubertdeparseval/" label="Hubert de Parseval on LinkedIn" />
+        <TeamSocialLink icon="github" href="http://github.com/hubertdepsv" label="Hubert de Parseval on GitHub" />
+        <TeamSocialLink icon="email" href="mailto:hubert.deparseval@protonmail.com" label="Email Hubert de Parseval" />
+      </div>
+    </figcaption>
+  </figure>
+  <figure class="team-member">
+    <Image src={reyHeadshot} alt="Rey van den Berg headshot" />
+    <figcaption>
+      <strong class="team-member-name">Rey van den Berg</strong>
+      <span class="team-location">Jeji Island, South Korea</span>
+      <div class="team-socials">
+        <TeamSocialLink icon="linkedin" href="https://www.linkedin.com/in/rey810/" label="Rey van den Berg on LinkedIn" />
+        <TeamSocialLink icon="github" href="https://github.com/Rey810" label="Rey van den Berg on GitHub" />
+        <TeamSocialLink icon="email" href="mailto:reyvdb@gmail.com" label="Email Rey van den Berg" />
+      </div>
+    </figcaption>
+  </figure>
+  <figure class="team-member">
+    <Image src={rizHeadshot} alt="Riz Syed headshot" />
+    <figcaption>
+      <strong class="team-member-name">Riz Syed</strong>
+      <span class="team-location">London, UK</span>
+      <div class="team-socials">
+        <TeamSocialLink icon="linkedin" href="https://www.linkedin.com/in/riz-syed-010b60366/" label="Riz Syed on LinkedIn" />
+        <TeamSocialLink icon="github" href="https://github.com/rizsyed1" label="Riz Syed on GitHub" />
+        <TeamSocialLink icon="email" href="mailto:rizwansyed876@gmail.com" label="Email Riz Syed" />
+      </div>
+    </figcaption>
+  </figure>
+  <figure class="team-member">
+    <Image src={samHeadshot} alt="Samuel Meka headshot" />
+    <figcaption>
+      <strong class="team-member-name">Samuel Meka</strong>
+      <span class="team-location">Taipei, Taiwan</span>
+      <div class="team-socials">
+        <TeamSocialLink icon="linkedin" href="https://www.linkedin.com/in/samuel-meka/" label="Samuel Meka on LinkedIn" />
+        <TeamSocialLink icon="github" href="https://github.com/Sam816317" label="Samuel Meka on GitHub" />
+        <TeamSocialLink icon="email" href="mailto:samuel.meka211@gmail.com" label="Email Samuel Meka" />
+      </div>
+    </figcaption>
+  </figure>
+</div>

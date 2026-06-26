@@ -22,7 +22,7 @@ Here are a few examples to demonstrate what was much more complicated, or imposs
 
 3. A writing assistant that infers the text’s intended audience and then appropriately adjusts the context and tone of the suggestions.
 
-## **The Downsides of LLM Integration**
+## The Downsides of LLM Integration
 
 Benefiting from LLMs is not a one-sided trade though.
 
@@ -62,7 +62,7 @@ Non-LLM API providers typically guarantee measured uptime with Service Level Agr
 
 In contrast, LLM API providers have a measured uptime that is drastically lower… At the time of writing, OpenAI’s uptime was [99.98%](https://status.openai.com/) while Claude’s was [99.2%](https://status.claude.com/) for the last three months. The latter of which translates to around 70 hours of downtime a year!
 
-## **Going Beyond a Single LLM**
+## Going Beyond a Single LLM
 
 Somewhat paradoxically, one way to address many of these challenges is for developers to integrate not one but multiple models and providers into their applications. Given disparities in cost, capabilities, and reliability both amongst and within LLM providers, this pattern has become increasingly common.
 

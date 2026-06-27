@@ -10,7 +10,7 @@ There are a number of LLM gateways available, each with its own strengths and we
 
 Here is a summary of how Mantis compares to Bifrost and LiteLLM.
 
-![](/assets/mantis-case-study/gateway_comparison.png)
+![](../../../assets/mantis-case-study/gateway_comparison.webp)
 
 Given that LiteLLM & Mantis are built in Python and subject to the Global Interpreter Lock, they are best suited to lower-traffic applications. Bifrost is built with the Go programming language and is known for handling high traffic levels.
 

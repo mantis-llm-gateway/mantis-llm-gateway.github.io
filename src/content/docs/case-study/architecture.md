@@ -36,7 +36,7 @@ The *Orchestrator* then:
 
 3. Depending on the verdict, the *Orchestrator* decides whether to stop there, fail over to the next endpoint, or surface an error to the user.
 
-![](/assets/mantis-case-study/gateway_orchestration.png)
+![](../../../assets/mantis-case-study/gateway_orchestration.webp)
 
 #### Gateway Routing
 
@@ -187,7 +187,7 @@ This functionality requires several steps:
 
 Given its list of targets, a request prompt is checked against the response cache, starting with the first target:
 
-![](/assets/mantis-case-study/cache_checks.png)
+![](../../../assets/mantis-case-study/cache_checks.webp)
 
 1. **Exact hit -> return cached response:** If the request prompt is found to match a prior prompt in the exact cache, then the cached LLM response is served to the user.
 
@@ -203,7 +203,7 @@ If a request can't be served from the cache and needs to be sent to an LLM, we f
 
 ### 5. Request Is Made to LLM Model and Provider
 
-![](/assets/mantis-case-study/sending_request_to_bedrock.png)
+![](../../../assets/mantis-case-study/sending_request_to_bedrock.webp)
 
 AWS Bedrock is an AWS service that exposes a large collection of LLM models, along with ancillary services that complement LLM use (such as guardrails).
 
@@ -213,7 +213,7 @@ Once an LLM response is received, Mantis writes it to the response cache (both e
 
 #### Guardrails with Bedrock
 
-![](/assets/mantis-case-study/bedrock_guardrails.png)
+![](../../../assets/mantis-case-study/bedrock_guardrails.webp)
 
 When Mantis sends an LLM request to AWS Bedrock, Bedrock’s Guardrails kick in. If the LLM request or response contains sensitive Personally Identifiable Information (PII), that information is “masked” in the request/response. This applies to the following PII types:
 
@@ -257,13 +257,13 @@ If a response fails mid-stream, Mantis simply streams an error response to the c
 
 #### Stream vs Non-Stream
 
-![](/assets/mantis-case-study/request_response__comparison.png)
+![](../../../assets/mantis-case-study/request_response__comparison.webp)
 
 Within the Mantis architecture, non-stream LLM responses make contact with every part of the architecture. This includes the cache. Whereas streamed responses do not make contact with the cache. There are no cache lookups before the request is sent to the LLM, and streamed responses are not cached as they pass through Mantis.
 
 ## B. Observability
 
-![](/assets/mantis-case-study/observability.png)
+![](../../../assets/mantis-case-study/observability.webp)
 
 AWS CloudWatch is used to capture the Mantis application's log output. CloudWatch is a logging and monitoring service and provides real-time insight into your application.
 
@@ -287,4 +287,4 @@ Mantis exposes more metrics than are listed here. Aggregated metrics (e.g., tota
 
 ## C. Request-Response Overview
 
-![](/assets/mantis-case-study/request_response_overview.png)
+![](../../../assets/mantis-case-study/request_response_overview.webp)

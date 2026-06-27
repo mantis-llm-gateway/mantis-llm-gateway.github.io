@@ -8,7 +8,7 @@ sidebar:
 
 ## A. Streaming Implementation
 
-![](/assets/mantis-case-study/streaming_chat_completions_flow.png)
+![](../../../assets/mantis-case-study/streaming_chat_completions_flow.webp)
 
 Latency is a challenge when working with LLMs. Requests to LLMs can often take seconds, far longer than most standard API response times. To reduce the "perceived latency" of these responses, most (if not all) LLM providers can stream responses to their clients rather than waiting for the entire response to complete. Mantis was built with this in mind.
 
@@ -74,7 +74,7 @@ Bedrock Guardrails provides a centralised safety layer that can be applied consi
 
 ## C. Compute
 
-![](/assets/mantis-case-study/compute_table.png)
+![](../../../assets/mantis-case-study/compute_table.webp)
 
 Mantis needs to run on a server that can efficiently handle multiple concurrent streaming and non-streaming connections, requires minimal maintenance and is cost-efficient. This leaves us with a few options on AWS: Elastic Compute Cloud (EC2), Elastic Container Service (ECS) on EC2, ECS on Fargate and Lambda. ECS is the orchestration layer that runs containerised applications on the chosen compute resources, e.g., EC2 instances or Fargate tasks.
 

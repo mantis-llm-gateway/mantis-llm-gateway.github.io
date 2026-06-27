@@ -48,19 +48,30 @@ The routing layer needs to enable the client to connect seamlessly with a collec
 
 **Fallback Mechanisms:** Since LLM services experience more downtime than typical services, Mantis has fallback mechanisms with retries and fallback chains. For each request, the model target array for a routing rule serves as a fallback chain. The routing system moves across the fallback chain if requests exhaust the configurable retry count `target_retries` for a model or for error codes that trigger failovers.
 
-![](/assets/mantis-case-study/retry_json.png)
+```json
+// Defines per-target retry count
+"target_retries": 2
+```
 
 For streamed responses, failovers aren’t implemented if something goes wrong mid-stream. Instead, error chunks are sent to the client, and the connection is then closed.
 
 **Cooldown:** If a model returns a rate limit error code, the model is immediately placed into a cooldown period as defined in the Mantis configuration.
 
-![](/assets/mantis-case-study/cooldown_json.png)
+```json
+// Defines cooldown period in seconds
+"cooldown_ttl": 60
+```
 
 The routing system removes the model from a target selection rotation for the duration of the cooldown period.
 
 **Load Balancing**: Mantis load balances requests for a specific rule across a group of LLM models. The configuration JSON snippet below demonstrates client requests that the client categorises as “Code generation”, load-balanced across two LLM models by their alias names.
 
-![](/assets/mantis-case-study/targets_json.png)
+```json
+"targets": [
+        { "alias": "Claude Sonnet 4-5 Bedrock", "weight": 6 },
+        { "alias": "Nova Pro Bedrock", "weight": 4 }
+]
+```
 
 They are load-balanced by weight. According to this config, 60% of requests should be routed to the *Claude Sonnet 4-5 Bedrock* model, and the rest to the *Nova Pro Bedrock* model.
 
@@ -68,23 +79,67 @@ Routing happens as a result of the ordered list of targets built by the routing 
 
 **1. Model aliases that refer to models in the gateway.**
 
-![](/assets/mantis-case-study/aliases_json.png)
+```json
+"aliases": {
+  "Claude Sonnet 4-5 Bedrock": {
+    "provider": "bedrock",
+    "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0"
+  },    
+  "Nova Premier Bedrock": {
+    "provider": "bedrock",
+    "model": "us.amazon.nova-premier-v1:0"
+  },
+  "Nova Lite Bedrock": {
+    "provider": "bedrock",
+    "model": "us.amazon.nova-lite-v1:0"
+  }
+}
+```
 
 **2. A default model.**
 
-![](/assets/mantis-case-study/default_model_json.png)
+```json
+"default_model": "Claude Sonnet 4-5 Bedrock"
+```
 
 **3. Routing rules:** the core of a rule is a key-value pair that the routing engine will check against the incoming request headers. It then specifies a list of models to use in the event of a match.
 
-![](/assets/mantis-case-study/routing_rules_json.png)
+```json
+"routing_rules": [
+    {
+      "id": "1",
+      "name": "Code generation",
+      "match": { "name": "task-type", "value": "code_generation" },
+      "targets": [
+        { "alias": "Claude Sonnet 4-5 Bedrock", "weight": 6 },
+        { "alias": "Nova Pro Bedrock", "weight": 4 }
+      ]
+    },
+    // ...additional rules
+]
+```
 
 **4. Settings for cache**, including Time To Live (TTL), and dials for LLM output temperature and semantic similarity search.
 
-![](/assets/mantis-case-study/prompt_cache_json.png)
+```json
+prompt_cache": {
+    "ttl_seconds": 3600,
+    "temperature_threshold": 0.3,
+    "semantic": {
+      "similarity_threshold": 0.8,
+      "top_k": 3,
+      "conversation_size_threshold": 3
+    }
+  }
+```
 
 **5. Number of retries per model as well as streaming- and gateway-timeouts.**
 
-![](/assets/mantis-case-study/retries_timeouts_json.png)
+```json
+"target_retries": 2,
+"initial_response_timeout": 30,
+"stream_idle_timeout": 5,
+```
 
 Given the configuration example above in #3 , a request with header `task-type` set to `code_generation` triggers a match with rule `1`. The routing module then samples a model from the distribution implied by the `weight`s of all models in this rule. This forms a “target” that is appended to the ordered list the *Orchestrator* requested.
 

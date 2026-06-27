@@ -90,7 +90,7 @@ Given the configuration example above in #3 , a request with header `task-type` 
 
 The first matched rule will append the sampled target followed by the remaining targets to the ordered list. This ensures the sampled target is attempted first. Next, the fallback model is appended to the list, and the list containing the model endpoints is returned to the *Orchestrator*, which then attempts a cache check and LLM call execution loop for each target in the ordered list.
 
-### 3. Cache checks
+### 3. Cache Checks
 
 To reduce latency and the cost of redundant LLM calls, we implement cache checks using *Amazon ElastiCache Valkey* to return LLM responses that match given prompts.
 
@@ -128,7 +128,7 @@ This functionality requires several steps:
 
 4. **Return top hit above threshold:** Of the top results found (`top_k`), we take the most similar one, check if it passes a configurable similarity threshold, and then serve its LLM response value to the user. Otherwise, it’s treated as a semantic-cache miss.
 
-#### **Response Cache Check Flow**
+#### Response Cache Check Flow
 
 Given its list of targets, a request prompt is checked against the response cache, starting with the first target:
 
@@ -146,7 +146,7 @@ If a request can't be served from the cache and needs to be sent to an LLM, we f
 
 2. **Cooldown miss -> continue to LLM call:** If a target is not in cooldown (i.e. healthy), the request proceeds to an LLM call for the current target
 
-### **5. Request is made to LLM model and provider**
+### 5. Request Is Made to LLM Model and Provider
 
 ![](/assets/mantis-case-study/sending_request_to_bedrock.png)
 
@@ -186,7 +186,7 @@ In addition, if LLM requests or responses can be categorised as the following, M
 
 - financial advice
 
-### 6. Response is sent to the user
+### 6. Response Is Sent to the User
 
 **Non-Stream Responses**
 

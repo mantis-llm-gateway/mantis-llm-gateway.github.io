@@ -25,6 +25,11 @@ export default defineConfig({
         SocialIcons: './src/components/SocialIcons.astro',
       },
       customCss: ['./src/styles/custom.css'],
+      expressiveCode: {
+        styleOverrides: {
+          codeFontFamily: 'var(--sl-font-mono)',
+        },
+      },
       sidebar: [
         {
           label: 'Start Here',

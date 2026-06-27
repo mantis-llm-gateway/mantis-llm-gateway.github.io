@@ -1,11 +1,13 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightImageZoom from 'starlight-image-zoom';
 
 export default defineConfig({
   site: 'https://mantis-llm-gateway.github.io',
   integrations: [
     starlight({
       title: 'Mantis',
+      plugins: [starlightImageZoom()],
       description:
         'Documentation for Mantis, an open-source self-hosted LLM gateway for routing, caching, guardrails, and observability.',
       logo: {

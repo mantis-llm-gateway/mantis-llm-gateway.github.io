@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@astrojs/starlight": "latest",
-    "astro": "latest"
+    "astro": "latest",
+    "starlight-image-zoom": "^0.14.2"
   }
 }

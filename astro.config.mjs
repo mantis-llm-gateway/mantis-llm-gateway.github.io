@@ -7,6 +7,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Mantis',
+      favicon: '/images/mantis_logo_32.svg',
       plugins: [starlightImageZoom()],
       description:
         'Documentation for Mantis, an open-source self-hosted LLM gateway for routing, caching, guardrails, and observability.',

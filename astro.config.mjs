@@ -1,11 +1,14 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightImageZoom from 'starlight-image-zoom';
 
 export default defineConfig({
   site: 'https://mantis-llm-gateway.github.io',
   integrations: [
     starlight({
       title: 'Mantis',
+      favicon: '/images/mantis_logo_32.svg',
+      plugins: [starlightImageZoom()],
       description:
         'Documentation for Mantis, an open-source self-hosted LLM gateway for routing, caching, guardrails, and observability.',
       logo: {
@@ -25,6 +28,11 @@ export default defineConfig({
         SocialIcons: './src/components/SocialIcons.astro',
       },
       customCss: ['./src/styles/custom.css'],
+      expressiveCode: {
+        styleOverrides: {
+          codeFontFamily: 'var(--sl-font-mono)',
+        },
+      },
       sidebar: [
         {
           label: 'Start Here',

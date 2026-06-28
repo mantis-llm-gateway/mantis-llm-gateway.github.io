@@ -6,7 +6,7 @@ hero:
   title: Mantis
   tagline: A self-hosted LLM gateway for routing, caching, guardrails, and observability across model providers.
   image:
-    html: '<img src="/assets/mantis-case-study/mantis_logo_32.svg" alt="Mantis logo" width="96" height="96" />'
+    html: '<img src="/images/mantis_logo_32.svg" alt="Mantis logo" width="96" height="96" />'
   actions:
     - text: Get Started
       link: /guides/quick-start/

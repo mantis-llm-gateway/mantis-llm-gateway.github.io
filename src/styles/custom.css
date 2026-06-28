@@ -1,34 +1,110 @@
+/* JetBrains Mono — self-hosted (latin subset, OFL). Same-origin to avoid the
+   extra DNS/connection a CDN @import would cost; only the weights in use are
+   shipped. */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/JetBrainsMono-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/JetBrainsMono-SemiBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Poppins-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Poppins-Italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Poppins-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/Poppins-SemiBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Poppins-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Poppins-BoldItalic.woff2') format('woff2');
+}
+
 :root,
 :root[data-theme='dark'] {
-  --sl-color-accent-low: #08352b;
-  --sl-color-accent: #2ccf9a;
-  --sl-color-accent-high: #b9f4df;
-  --sl-color-white: #f8fbfa;
-  --sl-color-gray-1: #e9efed;
-  --sl-color-gray-2: #bdcac7;
-  --sl-color-gray-3: #81928e;
-  --sl-color-gray-4: #53635f;
-  --sl-color-gray-5: #2e3937;
-  --sl-color-gray-6: #1d2624;
-  --sl-color-gray-7: #151d1b;
-  --sl-color-black: #0f1514;
-  --sl-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  --sl-color-accent-low: #0a3a34;
+  --sl-color-accent: #00a898;
+  --sl-color-accent-high: #7fe3d5;
+  --sl-color-white: #e8f0f0;
+  --sl-color-gray-1: #d2e0e0;
+  --sl-color-gray-2: #8fa3a3;
+  --sl-color-gray-3: #5e7272;
+  --sl-color-gray-4: #33484e;
+  --sl-color-gray-5: #25393f;
+  --sl-color-gray-6: #1d3036;
+  --sl-color-gray-7: #16282e;
+  --sl-color-black: #0c1a1f;
+  --sl-font: Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
+  --sl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --sl-content-width: 48rem;
 }
 
 :root[data-theme='light'] {
-  --sl-color-accent-low: #d9f7ed;
-  --sl-color-accent: #0f8f68;
-  --sl-color-accent-high: #063d31;
-  --sl-color-white: #111719;
-  --sl-color-gray-1: #27333a;
-  --sl-color-gray-2: #53636c;
-  --sl-color-gray-3: #6f8188;
-  --sl-color-gray-4: #8b9aa3;
-  --sl-color-gray-5: #c7d1d6;
-  --sl-color-gray-6: #e7ecef;
-  --sl-color-gray-7: #f5f7f8;
+  --sl-color-accent-low: #d9f0ed;
+  --sl-color-accent: #00897c;
+  --sl-color-accent-high: #063d38;
+  --sl-color-white: #102028;
+  --sl-color-gray-1: #1e3138;
+  --sl-color-gray-2: #5a6e6e;
+  --sl-color-gray-3: #8a9c9c;
+  --sl-color-gray-4: #bacbcb;
+  --sl-color-gray-5: #d2e0e0;
+  --sl-color-gray-6: #e2ecec;
+  --sl-color-gray-7: #f4f8f8;
   --sl-color-black: #ffffff;
 }
 

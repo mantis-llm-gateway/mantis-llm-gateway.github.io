@@ -130,7 +130,7 @@ prompt_cache": {
       "top_k": 3,
       "conversation_size_threshold": 3
     }
-  }
+}
 ```
 
 **5. Number of retries per model as well as streaming- and gateway-timeouts.**

@@ -8,7 +8,7 @@ sidebar:
 
 ## A. Request-Response
 
-A non-streaming request sent by a user to the gateway goes through several stages.
+A non-streaming request sent by a user to the Mantis gateway goes through several stages.
 
 ### 1. Ingress
 
@@ -31,7 +31,7 @@ The *Orchestrator* then:
 2. For each target, it runs:
     - exact and semantic cache checks: if the exact same request was already sent and answered, we serve the cached answer; otherwise, we check for a semantically equivalent answer
     - a cooldown check: if an endpoint is rate-limiting the gateway, the gateway waits before sending another request to it
-    - an attempt to send the prompt to an LLM and receive an answer, handled by the engine module
+    - an attempt to send the prompt to an LLM and receive an answer, handled by the *Executor* module
     - guardrail checks against both the user prompt and the LLM response
 
 3. Depending on the verdict, the *Orchestrator* decides whether to stop there, fail over to the next endpoint, or surface an error to the user.
@@ -251,7 +251,7 @@ If that error is a `429 ThrottlingException`, then the target’s model and prov
 
 **Stream Responses**
 
-If the LLM provider streams a response after Mantis receives a stream request, Mantis will send HTTP headers that indicate the request was successful (including the 200 OK code). Chunks are then streamed to the client
+If the LLM provider streams a response after Mantis receives a stream request, Mantis will send HTTP headers that indicate the request was successful (including the 200 OK code). Chunks are then streamed to the client.
 
 If a response fails mid-stream, Mantis simply streams an error response to the client and ends the stream.
 
@@ -265,7 +265,7 @@ Within the Mantis architecture, non-stream LLM responses make contact with every
 
 ![](../../../assets/mantis-case-study/observability.webp)
 
-AWS CloudWatch is used to capture the Mantis application's log output. CloudWatch is a logging and monitoring service and provides real-time insight into your application.
+AWS CloudWatch is used to capture the Mantis application's log output. CloudWatch is a logging and monitoring service that provides real-time insight into one's application.
 
 Because CloudWatch is tightly integrated with other AWS services and is easy to set up alongside AWS infrastructure, it is the natural choice for exposing Mantis’s observability output.
 

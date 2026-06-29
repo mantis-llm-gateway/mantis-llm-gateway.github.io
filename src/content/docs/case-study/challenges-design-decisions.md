@@ -20,7 +20,7 @@ To handle multiple concurrent streaming requests, Mantis must implement concurre
 
 #### Python
 
-Python has a much wider ecosystem of AI libraries than other languages and is the standard for AI development. Although its Global Interpreter Lock (GIL) limits Python to a single thread, Python offers excellent asynchronous support via its ‘asyncio’ library, which enables concurrent execution and is well-suited to streaming. This is because when the event loop is waiting for a streamed “chunk” from the LLM provider, it can execute another asynchronous process (such as processing another “chunk” from another stream) and then return once the chunk has been received. This means that Python can execute multiple asynchronous operations (such as streams) concurrently.
+Python has a much wider ecosystem of AI libraries than other languages and is the standard for AI development. Although its Global Interpreter Lock (GIL) limits Python to a single thread, Python offers excellent asynchronous support via its `asyncio` library, which enables concurrent execution and is well-suited to streaming. This is because when the event loop is waiting for a streamed “chunk” from the LLM provider, it can execute another asynchronous process (such as processing another “chunk” from another stream) and then return once the chunk has been received. This means that Python can execute multiple asynchronous operations (such as streams) concurrently.
 
 #### FastAPI
 
@@ -34,7 +34,7 @@ Although FastAPI works as a backend library, it still needs a server interface t
 
 #### Mid-Stream Failure
 
-Provider failures that occur mid-stream need to be handled gracefully by the gateway so that gateway connections don’t “hang” and waste socket capacity. This is achieved by implementing two timeouts - a global request-level timeout that is triggered if the request doesn’t complete in time, and a per-chunk timeout that is triggered if a chunk hasn’t arrived from the provider in time. The global request-level timeout is implemented in the ASGI middleware. This removes the timeout from the gateway logic. The per-chunk timeout is implemented at the `Adaptor` level, whilst the `Orchestrator` converts the timeout error into an error message that is streamed to the client. If either timeout is triggered midstream, the stream ends after the error message is sent to the client.
+Provider failures that occur mid-stream need to be handled gracefully by the gateway so that gateway connections don’t “hang” and waste socket capacity. This is achieved by implementing two timeouts - a global request-level timeout that is triggered if the request doesn’t complete in time, and a per-chunk timeout that is triggered if a chunk hasn’t arrived from the provider in time. The global request-level timeout is implemented in the ASGI middleware. This removes the timeout from the gateway logic. The per-chunk timeout is implemented at the *Adaptor* level, whilst the *Orchestrator* converts the timeout error into an error message that is streamed to the client. If either timeout is triggered midstream, the stream ends after the error message is sent to the client.
 
 #### Backpressure
 
@@ -50,13 +50,13 @@ Mantis streams chunks over an HTTP connection, without using Server-Sent Events 
 
 #### Challenge and Options
 
-Each LLM provider API uses its own request/response format. In addition, streaming behaviour, error handling and model parameters also vary across time and providers and developers need to manage credentials and/or subscriptions for all models manually. Options include integrating directly with LLM providers, which gives more control and faster access to provider-specific features, or using a unified compatibility layer, which reduces logic overhead at the cost of vendor lock-in and the loss of provider-specific features.
+Each LLM provider API uses its own request/response format. In addition, streaming behaviour, error handling and model parameters also vary across time and providers, and developers need to manage credentials and/or subscriptions for all models manually. Options include integrating directly with LLM providers, which gives more control and faster access to provider-specific features, or using a unified compatibility layer, which reduces logic overhead at the cost of vendor lock-in and the loss of provider-specific features.
 
 #### Our Implementation
 
 Amazon Bedrock Converse provides a single, unified compatibility layer for many LLM providers in exchange for relying on AWS. It unlocks compatibility with many LLM providers while taking care of maintenance and API format and behaviour updates. It also suits the AWS-native nature of Mantis: we reuse the same cloud infrastructure that was deployed for permissions, logging and monitoring. Bedrock also does not require individual subscriptions or credentials for each LLM provider. This ease of integration comes at the cost of direct interaction with LLM provider APIs, so some vendor-specific parameters can be unavailable when using Mantis.
 
-We also found that dependencies that route queries directly to LLM providers (such as `TokenJS` or `any-llm`) often appear to have few, if any, recent commits, or are badly documented. AWS’s APIs are well-maintained, widely used, and accompanied by thorough documentation. Relying on Bedrock’s LLM provision and AWS’s APIs simplifies development and ensures the reliability of Mantis’s LLM routing.
+We also found that dependencies that route queries directly to LLM providers (such as `TokenJS` or `any-llm`) often appear to have few, if any, recent commits, or are poorly documented. AWS’s APIs are well-maintained, widely used, and accompanied by thorough documentation. Relying on Bedrock’s LLM provision and AWS’s APIs simplifies development and ensures the reliability of Mantis’s LLM routing.
 
 ### Bedrock as Guardrails Provider
 
@@ -64,9 +64,9 @@ We also found that dependencies that route queries directly to LLM providers (su
 
 To prevent unsafe use of the gateway, Mantis needs a safety layer. Each model already handles that, but the policies are specific to each provider and, in some cases, model. Streaming introduces additional complexity, since each chunk sent to the user should be verified even if the entire response has not yet been generated.
 
-Guardrails are the standard solution to add a safety layer: they are rules that are checked both on the inbound prompt and on the LLM-generated response. They include rules such as anonymising Personally Identifiable Information (PII, e.g., credit card numbers) and preventing a prompt from being processed if it requests forbidden actions (e.g., building a bomb or faking official documents). Guardrail services offer a range of such rules, and the level of customisation varies. LLM providers have built-in guardrails, which are by design not fully public: the developer cannot be certain that a potential edge case their app would need handled will be handled by the LLM provider’
+Guardrails are the standard solution to add a safety layer: they are rules that are checked both on the inbound prompt and on the LLM-generated response. They include rules such as anonymising Personally Identifiable Information (PII, e.g., credit card numbers) and preventing a prompt from being processed if it requests forbidden actions (e.g., building a bomb or faking official documents). Guardrail services offer a range of such rules with varying levels of customisation. LLM providers have built-in guardrails, which are by design not fully public, meaning that the developer cannot be certain that a potential edge case their app would need handled will be handled by the LLM provider.
 
-The solution space goes from implementing a custom guardrail layer, which offers more control at the cost of complexity and engineering work, to guardrail services like AWS Bedrock Guardrails. This includes relying on each model’s built-in guardrails, which provide more design simplicity with varying levels of uniformity, depending on each provider.
+The solution space ranges from implementing a custom guardrail layer, which offers more control at the cost of complexity and engineering work, to guardrail services like AWS Bedrock Guardrails. This includes relying on each model’s built-in guardrails, which offer greater design simplicity with varying levels of uniformity, depending on each provider.
 
 #### Our Implementation
 
@@ -110,7 +110,7 @@ Caching LLM responses is one way of alleviating those two issues. Instead of wai
 
 ### Implementation
 
-Using *ElastiCache* gives us the speed of in-memory key-value access for our exact-match cache while also addressing our semantic caching requirements through its `valkey-search` module. The main alternative was *Amazon RDS* (with pgvector), but its disk-based storage would have undermined the latency benefits of caching.
+Using ElastiCache gives us the speed of in-memory key-value access for our exact-match cache while also addressing our semantic caching requirements through its `valkey-search` module. The main alternative was Amazon RDS (with pgvector), but its disk-based storage would have undermined the latency benefits of caching.
 
 In general, we key on model and provider so that a cached response’s quality and style match a user’s expectations. When the cache is full, entries are evicted according to the Least Frequently Used (LFU) policy, since some prompts are hit many times while most are likely to be used only once.
 

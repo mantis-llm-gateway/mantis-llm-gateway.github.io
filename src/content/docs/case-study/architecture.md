@@ -257,7 +257,7 @@ If a response fails mid-stream, Mantis simply streams an error response to the c
 
 #### Stream vs Non-Stream
 
-![](../../../assets/mantis-case-study/request_response__comparison.webp)
+![](../../../assets/mantis-case-study/request_response_comparison.webp)
 
 Within the Mantis architecture, non-stream LLM responses make contact with every part of the architecture. This includes the cache. Whereas streamed responses do not make contact with the cache. There are no cache lookups before the request is sent to the LLM, and streamed responses are not cached as they pass through Mantis.
 

@@ -229,7 +229,7 @@
   justify-content: space-between;
 }
 
-.team-member figcaption > div {
+.team-member figcaption::first-child {
   display: block;
 }
 

@@ -1,6 +1,3 @@
-/* JetBrains Mono — self-hosted (latin subset, OFL). Same-origin to avoid the
-   extra DNS/connection a CDN @import would cost; only the weights in use are
-   shipped. */
 @font-face {
   font-family: 'JetBrains Mono';
   font-style: normal;
@@ -184,7 +181,7 @@
 .team-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-  column-gap: clamp(2rem, 6vw, 4rem);
+  column-gap: clamp(2rem, 6vw, 2rem);
   row-gap: 2.5rem;
   margin-block: 2.5rem 3rem;
 }
@@ -192,6 +189,9 @@
 .team-member {
   margin: 0;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 .team-member img {
@@ -199,55 +199,79 @@
   width: min(9.5rem, 100%);
   aspect-ratio: 1;
   margin-inline: auto;
-  border: 3px solid var(--sl-color-accent);
   border-radius: 50%;
   object-fit: cover;
 }
 
+.team-member::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(9.5rem, 100%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--sl-color-accent);
+  opacity: 0.1;
+  pointer-events: none;
+}
+
 .team-member figcaption {
-  display: grid;
-  justify-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 0.2rem;
   margin-block-start: 1rem;
   color: var(--sl-color-white);
   text-align: center;
+  flex: 1;
 }
 
 .team-member-name {
   color: var(--sl-color-white);
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
   line-height: 1.25;
+  min-height: 1lh;
 }
 
 .team-location {
-  color: var(--sl-color-gray-3);
-  font-size: 0.86rem;
-  line-height: 1.2;
+  font-family: var(--sl-font-mono);
+  font-size: 0.85rem;
+  color: var(--sl-color-accent);
+  line-height: 1.3;
 }
 
 .team-socials {
   display: flex;
-  gap: 0.65rem;
+  gap: 0.8rem;
   justify-content: center;
   align-items: center;
-  margin-block-start: 0.1rem;
+  margin-block-start: auto;
+  margin-top: 0.5rem;
 }
 
 .team-social-link {
   display: inline-flex;
-  color: var(--sl-color-white);
+  background: var(--sl-color-gray-7);
+  border-radius: 100%;
+  padding: 0.6rem 0.6rem;
+  color: var(--sl-color-gray-2);
   text-decoration: none;
+  transition: background 120ms ease-out, border-color 120ms ease-out, color 120ms ease-out;
 }
 
 .team-social-link:hover,
 .team-social-link:focus {
+  background: color-mix(in srgb, var(--sl-color-accent-low), transparent 40%);
+  border-color: var(--sl-color-accent);
   color: var(--sl-color-accent);
 }
 
 .team-social-link svg {
-  width: 1.35rem;
-  height: 1.35rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 .toolbar-text-link:any-link,

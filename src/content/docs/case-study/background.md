@@ -86,13 +86,13 @@ Finally, LLM APIs change. Models are deprecated as providers release newer alter
 
 ### The Gateway Pattern
 
-LLM Gateways address these challenges of integrating multiple LLMs into applications. Here’s how:
+LLM gateways address these challenges of integrating multiple LLMs into applications. Here’s how:
 
-To handle disparate request-response formats across providers, LLM Gateways expose a single API interface and translate requests and responses to and from each provider’s format internally. As far as a gateway user is concerned, they only interact with a single API format.
+To handle disparate request-response formats across providers, LLM gateways expose a single API interface and translate requests and responses to and from each provider’s format internally. As far as a gateway user is concerned, they only interact with a single API format.
 
 When providers fail or reach a rate limit, applications that depend on a single LLM also fail. Gateways solve this through configurable routing that allows for failover. This routing logic is also what directs requests to different models based on the type of user prompt.
 
-LLM Gateways can also reduce costs and improve end-user latency through a response cache. When a request similar to a prior one flows through, the gateway returns the cached response and skips the LLM call entirely.
+LLM gateways can also reduce costs and improve end-user latency through a response cache. When a request similar to a prior one flows through, the gateway returns the cached response and skips the LLM call entirely.
 
 And then finally, there is the LLM-specific issue of non-determinism. There is always the chance that a model will generate inappropriate output in response to a user request. Similarly, users may prompt a model to generate hateful, insulting, violent, or otherwise undesirable content. They may also mistakenly include PII in their prompts, leaking sensitive information to LLM providers. Gateways provide a way to address this through *guardrails* and configurable moderation policies. In practice, this means scanning user inputs and model outputs to either redact or replace the undesired content.
 
@@ -100,4 +100,4 @@ Given that every interaction passes through the gateway, it is the natural place
 
 ---
 
-LLM Gateways consolidate these solutions into a single layer that significantly simplifies how applications interact with LLMs, controlling for reliability, cost, and flexibility.
+LLM gateways consolidate these solutions into a single layer that significantly simplifies how applications interact with LLMs, controlling for reliability, cost, and flexibility.

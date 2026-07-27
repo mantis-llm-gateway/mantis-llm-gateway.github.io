@@ -1,0 +1,147 @@
+---
+title: Mantis
+description: Open-source, self-hosted LLM gateway documentation.
+template: splash
+hero:
+  title: Mantis
+  tagline: >-
+    A self-hosted LLM gateway for <strong>routing, caching, guardrails,</strong>
+    and <strong>observability</strong> across model providers.
+  actions:
+    - text: Get Started
+      link: /guides/quick-start/
+    - text: Case Study
+      link: /case-study/introduction/
+      variant: secondary
+---
+
+import Schematic from '../../components/Schematic.astro';
+
+{/* `not-content` opts these sections out of Starlight's markdown sibling-margin
+    rule, which otherwise adds 1rem to every descendant element. */}
+
+<div class="spine not-content" aria-hidden="true"><span /></div>
+
+<section class="three-up not-content">
+  <div class="three-up-grid">
+    <div class="pillar">
+      <p class="eyebrow">01 // UNIFIED_API</p>
+      <h3>One Interface</h3>
+      <p class="pillar-copy">
+        A stable chat completions endpoint that sits in front of multiple model targets.
+        Switch providers without changing a single line of client code.
+      </p>
+      <div class="chips">
+        <span class="chip">OPENAI</span>
+        <span class="chip">ANTHROPIC</span>
+        <span class="chip">+MORE</span>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <p class="eyebrow">02 // INFRASTRUCTURE</p>
+      <h3>AWS-Native</h3>
+      <p class="pillar-copy">
+        Built for the AWS ecosystem. Deploys via Terraform to ECS, using ElastiCache for
+        fast caching and Bedrock for foundational models.
+      </p>
+      <div class="chips">
+        <span class="chip">ECS</span>
+        <span class="chip">CLOUDWATCH</span>
+        <span class="chip">BEDROCK</span>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <p class="eyebrow">03 // LOGIC_ENGINE</p>
+      <h3>Policy Driven</h3>
+      <p class="pillar-copy">
+        Routing, retry, and fallback logic. Define timeouts, cooldown periods, and cache
+        behavior directly in your config.
+      </p>
+      <div class="chips">
+        <span class="chip">ROUTING</span>
+        <span class="chip">RETRY</span>
+        <span class="chip">CACHING</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="capabilities not-content">
+  <p class="eyebrow eyebrow-section">// Capabilities</p>
+
+  <div class="module">
+    <div class="module-copy">
+      <p class="eyebrow eyebrow-module">Module / 01</p>
+      <h3><a href="/guides/routing-config/">Configurable Routing</a></h3>
+      <p class="module-body">
+        Route requests by metadata, model aliases, weighted targets, and fallback chains.
+      </p>
+      <div class="chips">
+        <span class="chip chip-lg">multi-provider</span>
+        <span class="chip chip-lg">weighted routing</span>
+        <span class="chip chip-lg">fallback chains</span>
+      </div>
+    </div>
+    <Schematic name="routing" />
+  </div>
+
+  <div class="module module-flip">
+    <div class="module-copy">
+      <p class="eyebrow eyebrow-module">Module / 02</p>
+      <h3><a href="/case-study/architecture/">Gateway Orchestration</a></h3>
+      <p class="module-body">
+        Coordinate validation, cache checks, cooldowns, provider calls, retries, and terminal
+        responses.
+      </p>
+      <div class="chips">
+        <span class="chip chip-lg">lifecycle control</span>
+        <span class="chip chip-lg">short circuit</span>
+        <span class="chip chip-lg">retry logic</span>
+      </div>
+    </div>
+    <Schematic name="orchestration" />
+  </div>
+
+  <div class="module">
+    <div class="module-copy">
+      <p class="eyebrow eyebrow-module">Module / 03</p>
+      <h3><a href="/api/chat-completions/">OpenAI-style API Surface</a></h3>
+      <p class="module-body">
+        Send chat completion requests through a single gateway endpoint with optional routing
+        metadata.
+      </p>
+      <div class="chips">
+        <span class="chip chip-lg">streaming support</span>
+        <span class="chip chip-lg">unified schema</span>
+        <span class="chip chip-lg">single endpoint</span>
+      </div>
+    </div>
+    <Schematic name="api-surface" />
+  </div>
+
+  <div class="module module-flip">
+    <div class="module-copy">
+      <p class="eyebrow eyebrow-module">Module / 04</p>
+      <h3><a href="/api/sdk/">Python SDK</a></h3>
+      <p class="module-body">
+        Call Mantis from application code without manually constructing each HTTP request.
+      </p>
+      <div class="chips">
+        <span class="chip chip-lg">pip installable</span>
+        <span class="chip chip-lg">async client</span>
+        <span class="chip chip-lg">routing metadata</span>
+      </div>
+    </div>
+    <Schematic name="sdk" />
+  </div>
+</section>
+
+<section class="closing not-content">
+  <h2 class="statement">Route. Cache. Guard. Observe.</h2>
+  <div class="actions">
+    <a class="cta is-primary" href="/guides/quick-start/">Get Started<span aria-hidden="true">&rarr;</span></a>
+    <a class="cta is-secondary" href="https://github.com/mantis-llm-gateway">View on GitHub</a>
+  </div>
+</section>

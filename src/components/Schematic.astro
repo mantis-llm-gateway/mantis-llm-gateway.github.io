@@ -1,0 +1,18 @@
+---
+// Capability glyphs from the design handoff, inlined with ?raw so their class
+// hooks reach capability-glyphs.css (motion + light theme). Each file carries its
+// own <title> and role="img", so this wrapper adds no ARIA of its own.
+import routing from './schematics/routing.svg?raw';
+import orchestration from './schematics/orchestration.svg?raw';
+import apiSurface from './schematics/api-surface.svg?raw';
+import sdk from './schematics/sdk.svg?raw';
+
+const svgs = { routing, orchestration, 'api-surface': apiSurface, sdk };
+
+interface Props {
+  name: keyof typeof svgs;
+}
+const { name } = Astro.props;
+---
+
+<div class="schematic" set:html={svgs[name]} />

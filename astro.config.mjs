@@ -28,7 +28,9 @@ export default defineConfig({
         SocialIcons: './src/components/SocialIcons.astro',
         Hero: './src/components/Hero.astro',
       },
-      customCss: ['./src/styles/custom.css'],
+      // capability-glyphs.css is vendored from the design handoff — keep it
+      // separate so a re-export drops straight in.
+      customCss: ['./src/styles/custom.css', './src/styles/capability-glyphs.css'],
       expressiveCode: {
         styleOverrides: {
           codeFontFamily: 'var(--sl-font-mono)',

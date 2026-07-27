@@ -94,6 +94,11 @@
   /* The hero wordmark is a wash, not full-strength text. */
   --hero-word: rgba(232, 240, 240, 0.3);
   --shadow-teal: 0 6px 20px rgba(0, 168, 152, 0.4);
+
+  /* Section furniture. Glyph stroke colours live in capability-glyphs.css. */
+  --spine-line: #24393f;
+  --eyebrow: #5e7272;
+  --display-recede: #4a5c5c;
 }
 
 :root[data-theme='light'] {
@@ -115,6 +120,10 @@
 
   --hero-word: rgba(16, 32, 40, 0.17);
   --shadow-teal: 0 6px 18px rgba(0, 168, 152, 0.3);
+
+  --spine-line: var(--border-strong);
+  --eyebrow: #5a6e6e;
+  --display-recede: #93a5a5;
 }
 
 /* ==========================================================================
@@ -195,59 +204,291 @@ h1#_top {
   font-size: 0.92rem;
 }
 
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  gap: 1rem;
-  margin-block: 2rem;
+/* ==========================================================================
+   Landing sections. The design draws with hairlines and chips — no cards,
+   no fills, no elevation.
+   ========================================================================== */
+
+/* Splash content spans the full width; Starlight's prose measure doesn't apply,
+   and its content panel caps at 1080px against the design's 1240px column. */
+:root[data-has-hero] .sl-markdown-content {
+  max-width: none;
 }
 
-.feature-grid > a,
-.feature-grid > div {
-  display: block;
-  border: 1px solid var(--sl-color-gray-5);
-  border-radius: 8px;
-  padding: 1rem;
-  text-decoration: none;
-  background: color-mix(in srgb, var(--sl-color-gray-6), transparent 45%);
+:root[data-has-hero] .sl-container {
+  max-width: 1240px;
 }
 
-.feature-grid h2,
-.feature-grid h3 {
-  margin-block: 0 0.4rem;
-  font-size: 1rem;
-  line-height: 1.3;
-}
-
-.feature-grid p {
+.eyebrow {
   margin: 0;
-  color: var(--sl-color-gray-2);
+  font-family: var(--sl-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ui-accent-text);
 }
 
-.metric-strip {
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.chip {
+  padding: 7px 11px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-chip);
+  font-family: var(--sl-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.chip-lg {
+  padding: 11px 16px;
+  border-radius: 0;
+  color: var(--text-strong);
+}
+
+/* Vertical connector between hero and the first section. */
+.spine {
+  position: relative;
+  width: 1px;
+  height: 4rem;
+  margin: clamp(40px, 6vw, 72px) auto 0;
+  background: var(--spine-line);
+}
+
+.spine span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  border: 1px solid var(--text-muted);
+  background: var(--bg-page);
+}
+
+.three-up {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(50px, 7vw, 100px) clamp(18px, 4vw, 40px);
+}
+
+/* 1px grid gap over a border-coloured background draws the interior hairlines.
+   Survives wrapping — per-cell borders leave strays when cells reflow. */
+.three-up-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  gap: 0.75rem;
-  align-items: start;
-  margin-block: 1.5rem 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 1px;
+  border: 1px solid var(--border);
+  background: var(--border);
 }
 
-.metric-strip > div {
-  margin-top: 0 !important;
-  border-top: 2px solid var(--sl-color-accent);
-  padding-block-start: 0.75rem;
+.pillar {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(56px, 5vw, 88px) clamp(48px, 4.5vw, 76px) clamp(64px, 6vw, 104px);
+  background: var(--bg-page);
 }
 
-.metric-strip strong {
-  display: block;
-  color: var(--sl-color-white);
-  font-size: 1.05rem;
+.pillar .eyebrow {
+  margin-bottom: clamp(56px, 6vw, 88px);
 }
 
-.metric-strip span {
-  display: block;
-  color: var(--sl-color-gray-3);
-  font-size: 0.9rem;
+.pillar h3 {
+  margin: 0 0 clamp(34px, 3.6vw, 52px);
+  font-size: clamp(34px, 3.4vw, 48px);
+  line-height: 1;
+  color: var(--text-strong);
+}
+
+.pillar-copy {
+  margin: 0 0 clamp(40px, 5vw, 64px);
+  max-width: 30ch;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+.capabilities {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(20px, 2.5vw, 32px) clamp(18px, 4vw, 40px) clamp(70px, 9vw, 130px);
+}
+
+.eyebrow-section {
+  margin-bottom: clamp(48px, 7vw, 100px);
+  letter-spacing: 0.32em;
+}
+
+.eyebrow-module {
+  margin-bottom: clamp(20px, 2.4vw, 32px);
+  letter-spacing: 0.34em;
+  color: var(--eyebrow);
+}
+
+.module {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  gap: clamp(40px, 6vw, 100px);
+  align-items: center;
+  margin-bottom: clamp(80px, 11vw, 170px);
+}
+
+/* Alternating modules put the schematic on the left. Flipping with `direction`
+   reverses grid order without reordering the DOM, so reading order is preserved. */
+.module-flip {
+  direction: rtl;
+}
+
+.module-flip > * {
+  direction: ltr;
+}
+
+.module h3 {
+  margin: 0 0 clamp(28px, 3.4vw, 48px);
+  font-size: clamp(42px, 5.4vw, 76px);
+  line-height: 1;
+  color: var(--text-strong);
+}
+
+.module h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.module h3 a:hover {
+  color: var(--ui-accent-text);
+}
+
+.module-body {
+  margin: 0 0 clamp(34px, 4vw, 56px);
+  max-width: 42ch;
+  font-size: clamp(14px, 1.2vw, 16px);
+  line-height: 1.75;
+  color: var(--text-muted);
+}
+
+.module .chips {
+  gap: 12px;
+}
+
+/* Shared by the hero and the closing section. */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.cta {
+  flex: 1 1 200px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 17px 40px;
+  font-family: var(--sl-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    gap var(--dur-base) var(--ease-out),
+    background var(--dur-base) ease,
+    border-color var(--dur-base) ease,
+    transform var(--dur-fast) ease;
+}
+
+.cta:active {
+  transform: translateY(0.5px);
+}
+
+.is-primary {
+  background: var(--ui-accent);
+  color: var(--mantis-ink);
+  box-shadow: var(--shadow-teal);
+}
+
+.is-primary:hover {
+  background: var(--mantis-teal-deep);
+  gap: 16px;
+}
+
+.is-secondary {
+  background: transparent;
+  color: var(--text-strong);
+  border: 1px solid var(--border-strong);
+}
+
+.is-secondary:hover {
+  border-color: var(--text-strong);
+}
+
+.closing {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(80px, 12vw, 180px) clamp(18px, 4vw, 40px);
+  text-align: center;
+}
+
+/* Zen Dots rather than the design's Orbitron, matching the hero wordmark.
+   It ships one weight, and is wider than Orbitron — hence no negative tracking.
+   Selector carries .closing to outrank the global heading rule. */
+.closing .statement {
+  margin: 0 0 clamp(44px, 6vw, 72px);
+  font-family: 'Zen Dots', sans-serif;
+  font-weight: 400;
+  font-size: clamp(30px, 7vw, 104px);
+  line-height: 1.02;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--display-recede);
+}
+
+.closing .actions {
+  max-width: 580px;
+}
+
+/* The landing page ends on its own CTA — docs pagination is chrome it doesn't want. */
+:root[data-has-hero] .pagination-links {
+  display: none;
+}
+/* Capability glyphs. Motion and the light palette live in capability-glyphs.css
+   (vendored from the design handoff); only layout and sizing belong here. The
+   SVGs are inlined with set:html, so these rules must be global. */
+
+.schematic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Strokes are non-scaling, so honour each glyph's designed size — scaling far
+   from it shifts the dash rhythm. */
+.schematic svg {
+  width: 100%;
+  height: auto;
+}
+
+.mantis-glyph-01 {
+  max-width: 280px;
+}
+.mantis-glyph-02 {
+  max-width: 350px;
+}
+.mantis-glyph-03 {
+  max-width: 330px;
+}
+.mantis-glyph-04 {
+  max-width: 230px;
 }
 
 .team-grid {

@@ -90,6 +90,10 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --radius-chip: 3px;
   --radius-pill: 999px;
+
+  /* The hero wordmark is a wash, not full-strength text. */
+  --hero-word: rgba(232, 240, 240, 0.3);
+  --shadow-teal: 0 6px 20px rgba(0, 168, 152, 0.4);
 }
 
 :root[data-theme='light'] {
@@ -108,6 +112,9 @@
 
   /* Brand teal is 3.7:1 on the mist page — below AA. Darkened 40% toward ink. */
   --ui-accent-text: #06726b;
+
+  --hero-word: rgba(16, 32, 40, 0.17);
+  --shadow-teal: 0 6px 18px rgba(0, 168, 152, 0.3);
 }
 
 /* ==========================================================================
@@ -152,6 +159,15 @@
    Starlight sets data-has-hero on <html> for any page with `hero` frontmatter. */
 :root[data-has-hero] {
   --sl-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* The hero wordmark is deliberately wider than the viewport. Set on the root as
+   well as body — overflow on body alone propagates to the viewport rather than
+   clipping, so the page still scrolls sideways. `clip` rather than `hidden`
+   avoids creating a scroll container. */
+:root[data-has-hero],
+:root[data-has-hero] body {
+  overflow-x: clip;
 }
 
 /* Starlight has no heading-font token. */

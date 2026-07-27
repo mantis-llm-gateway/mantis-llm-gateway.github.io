@@ -26,6 +26,7 @@ export default defineConfig({
       ],
       components: {
         SocialIcons: './src/components/SocialIcons.astro',
+        Hero: './src/components/Hero.astro',
       },
       customCss: ['./src/styles/custom.css'],
       expressiveCode: {

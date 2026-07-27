@@ -4,16 +4,14 @@ description: Open-source, self-hosted LLM gateway documentation.
 template: splash
 hero:
   title: Mantis
-  tagline: A self-hosted LLM gateway for routing, caching, guardrails, and observability across model providers.
-  image:
-    html: '<img src="/images/mantis_logo_32.svg" alt="Mantis logo" width="96" height="96" />'
+  tagline: >-
+    A self-hosted LLM gateway for <strong>routing, caching, guardrails,</strong>
+    and <strong>observability</strong> across model providers.
   actions:
     - text: Get Started
       link: /guides/quick-start/
-      icon: right-arrow
     - text: Case Study
       link: /case-study/introduction/
-      icon: document
       variant: secondary
 ---
 

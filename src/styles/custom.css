@@ -70,6 +70,33 @@
   src: url('/fonts/Poppins-BoldItalic.woff2') format('woff2');
 }
 
+/* Heading face. 500 for headings, 600 for team member names. */
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/EBGaramond-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/EBGaramond-SemiBold.woff2') format('woff2');
+}
+
+/* Subset to the 18 glyphs of "MANTIS" + "ROUTE. CACHE. GUARD. OBSERVE."
+   Other copy in this face falls back silently — re-subset via the Google
+   CSS API &text= parameter if the display strings change. */
+@font-face {
+  font-family: 'Zen Dots';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ZenDots-Regular.woff2') format('woff2');
+}
+
 :root,
 :root[data-theme='dark'] {
   --sl-color-accent-low: #0a3a34;

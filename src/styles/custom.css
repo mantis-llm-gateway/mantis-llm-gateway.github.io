@@ -27,49 +27,6 @@
   src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
 }
 
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/Poppins-Regular.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/Poppins-Italic.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('/fonts/Poppins-Medium.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url('/fonts/Poppins-SemiBold.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('/fonts/Poppins-Bold.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: italic;
-  font-weight: 700;
-  font-display: swap;
-  src: url('/fonts/Poppins-BoldItalic.woff2') format('woff2');
-}
-
 /* Heading face. 500 for headings, 600 for team member names. */
 @font-face {
   font-family: 'EB Garamond';
@@ -97,39 +54,111 @@
   src: url('/fonts/ZenDots-Regular.woff2') format('woff2');
 }
 
+/* ==========================================================================
+   Design tokens. Dark is the default; light overrides the neutrals.
+   Teal and coral are constant across both themes.
+   ========================================================================== */
+
 :root,
 :root[data-theme='dark'] {
-  --sl-color-accent-low: #0a3a34;
-  --sl-color-accent: #00a898;
-  --sl-color-accent-high: #7fe3d5;
-  --sl-color-white: #e8f0f0;
-  --sl-color-gray-1: #d2e0e0;
-  --sl-color-gray-2: #8fa3a3;
-  --sl-color-gray-3: #5e7272;
-  --sl-color-gray-4: #33484e;
-  --sl-color-gray-5: #25393f;
-  --sl-color-gray-6: #1d3036;
-  --sl-color-gray-7: #16282e;
-  --sl-color-black: #0c1a1f;
-  --sl-font: Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  --mantis-teal: #00a898;
+  --mantis-teal-deep: #00897c;
+  --mantis-coral: #fd5e3e;
+  --mantis-coral-deep: #e94b2c;
+  --mantis-ink: #102028;
+  --mantis-mist: #e8f0f0;
+
+  --bg-page: #0c1a1f;
+  --surface: #16282e;
+  --surface-2: #1d3036;
+  --text-strong: #e8f0f0;
+  --text-body: #d2e0e0;
+  --text-muted: #8fa3a3;
+  --text-faint: #5e7272;
+  --border: #25393f;
+  --border-strong: #33484e;
+  --border-faint: #1e3137;
+  --teal-tint: rgba(0, 168, 152, 0.16);
+  --focus-ring: rgba(0, 168, 152, 0.4);
+
+  /* Teal fills are constant; accent *text* darkens in light for contrast. */
+  --ui-accent: var(--mantis-teal);
+  --ui-accent-text: var(--mantis-teal);
+
+  --dur-fast: 120ms;
+  --dur-base: 180ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-chip: 3px;
+  --radius-pill: 999px;
+}
+
+:root[data-theme='light'] {
+  --bg-page: #e8f0f0;
+  --surface: #ffffff;
+  --surface-2: #f4f8f8;
+  --text-strong: #102028;
+  --text-body: #1e3138;
+  --text-muted: #5a6e6e;
+  --text-faint: #8a9c9c;
+  --border: #d2e0e0;
+  --border-strong: #bacbcb;
+  --border-faint: #e2ecec;
+  --teal-tint: #d9f0ed;
+  --focus-ring: rgba(0, 168, 152, 0.32);
+
+  /* Brand teal is 3.7:1 on the mist page — below AA. Darkened 40% toward ink. */
+  --ui-accent-text: #06726b;
+}
+
+/* ==========================================================================
+   Starlight adapter. Starlight derives --sl-color-text/-bg/-hairline etc.
+   from the ramp below, so only the ramp and the accent triad are set here.
+   ========================================================================== */
+
+:root,
+:root[data-theme='dark'] {
+  --sl-color-white: var(--text-strong);
+  --sl-color-gray-1: var(--text-body);
+  --sl-color-gray-2: var(--text-muted);
+  --sl-color-gray-3: var(--text-faint);
+  --sl-color-gray-4: var(--border-strong);
+  --sl-color-gray-5: var(--border);
+  --sl-color-gray-6: var(--surface-2);
+  --sl-color-gray-7: var(--surface);
+  --sl-color-black: var(--bg-page);
+
+  /* accent-low doubles as --sl-color-text-invert: text drawn on teal fills. */
+  --sl-color-accent-low: var(--mantis-ink);
+  --sl-color-accent: var(--mantis-teal);
+  --sl-color-accent-high: var(--ui-accent-text);
+
+  /* Body prose is --text-body, not the ramp's gray-2 default. */
+  --sl-color-text: var(--text-body);
+
+  --sl-font: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
   --sl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --sl-content-width: 48rem;
 }
 
 :root[data-theme='light'] {
-  --sl-color-accent-low: #d9f0ed;
-  --sl-color-accent: #00897c;
-  --sl-color-accent-high: #063d38;
-  --sl-color-white: #102028;
-  --sl-color-gray-1: #1e3138;
-  --sl-color-gray-2: #5a6e6e;
-  --sl-color-gray-3: #8a9c9c;
-  --sl-color-gray-4: #bacbcb;
-  --sl-color-gray-5: #d2e0e0;
-  --sl-color-gray-6: #e2ecec;
-  --sl-color-gray-7: #f4f8f8;
-  --sl-color-black: #ffffff;
+  --sl-color-gray-6: var(--border-faint);
+  --sl-color-gray-7: var(--surface-2);
+  --sl-color-accent-low: var(--teal-tint);
+  --sl-color-accent: var(--ui-accent-text);
+  --sl-color-accent-high: #0a5655;
+}
+
+/* Splash pages speak in mono; long-form docs prose reads in serif.
+   Starlight sets data-has-hero on <html> for any page with `hero` frontmatter. */
+:root[data-has-hero] {
+  --sl-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* Starlight has no heading-font token. */
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6),
+h1#_top {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 500;
 }
 
 .site-title {
@@ -308,13 +337,16 @@
   height: 1rem;
 }
 
+/* Nav is mono on every page — --sl-font would make it serif outside the splash. */
 .toolbar-text-link:any-link,
 .toolbar-text-link:visited {
-  color: var(--sl-color-text-accent);
-  font-family: var(--sl-font);
-  font-size: 1rem;
-  font-weight: 600;
+  color: var(--text-muted);
+  font-family: var(--sl-font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   line-height: 1;
+  text-transform: uppercase;
   text-decoration: none;
 }
 
@@ -324,14 +356,16 @@
 
 .toolbar-text-link:hover,
 .toolbar-text-link:focus {
-  color: var(--sl-color-white);
+  color: var(--text-strong);
 }
 
 starlight-theme-select label {
-  color: var(--sl-color-text-accent);
-  font-family: var(--sl-font);
-  font-size: 1rem;
-  font-weight: 600;
+  color: var(--text-muted);
+  font-family: var(--sl-font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 starlight-theme-select select {
@@ -343,20 +377,15 @@ starlight-theme-select select {
 
 starlight-theme-select label:hover,
 starlight-theme-select label:focus-within {
-  color: var(--sl-color-white);
-}
-
-:root[data-theme='light'] starlight-theme-select label:hover,
-:root[data-theme='light'] starlight-theme-select label:focus-within {
-  color: var(--sl-color-accent-high);
+  color: var(--text-strong);
 }
 
 .walkthrough-animation {
   overflow: hidden;
   margin-block: 1.25rem;
-  border: 1px solid var(--sl-color-gray-5);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: #e8f0f0;
+  background: var(--mantis-mist);
 }
 
 .walkthrough-animation iframe {

@@ -137,4 +137,13 @@ const members = [
     display: flex;
     gap: 10px;
   }
+
+  /* One column at phone width lets the portrait grow to the full 343px, which
+     turns four members into a very long scroll. The ring keeps its proportions;
+     only its ceiling changes. */
+  @media (max-width: 49.999rem) {
+    .portrait {
+      width: 170px;
+    }
+  }
 </style>

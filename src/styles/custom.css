@@ -880,4 +880,11 @@ site-search button[data-open-modal] > kbd {
     opacity: 0.75;
     pointer-events: none;
   }
+
+  /* The 30px floor left the closing line smaller than the capability headings
+     it is meant to top. Only the minimum moves — 7vw still governs from ~630px
+     up, so the desktop size is untouched. */
+  .closing .statement {
+    font-size: clamp(52px, 7vw, 104px);
+  }
 }

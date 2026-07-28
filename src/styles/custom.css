@@ -849,4 +849,35 @@ site-search button[data-open-modal] > kbd {
   .pillar-copy {
     margin-bottom: 32px;
   }
+
+  /* One column leaves the schematic sitting in a dead band under the copy.
+     Pulling it up under the chips turns it into a backdrop instead.
+
+     The negative margin is measured from the copy's bottom, not the module's,
+     so the diagram clears the body paragraph by the same ~29px whatever the
+     glyph's height — the four range from 230px to 343px, and anchoring to the
+     module box instead would need a 218px band sized for the tallest, leaving
+     the shortest barely overlapping anything. */
+  .module {
+    display: block;
+    margin-bottom: 56px;
+  }
+
+  /* Nothing to reverse without a second column. */
+  .module-flip {
+    direction: ltr;
+  }
+
+  .module-copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* The glyph strokes are already low-alpha, so this multiplier compounds:
+     below ~0.75 the sparser glyphs stop registering at all. */
+  .schematic {
+    margin-top: -96px;
+    opacity: 0.75;
+    pointer-events: none;
+  }
 }

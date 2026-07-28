@@ -343,6 +343,7 @@ h1#_top {
   color: var(--text-muted);
 }
 
+
 .capabilities {
   max-width: 1240px;
   margin: 0 auto;
@@ -806,5 +807,46 @@ site-search button[data-open-modal] > kbd {
 @media (max-width: 740px) {
   .walkthrough-animation iframe {
     min-height: 620px;
+  }
+}
+
+/* ==========================================================================
+   Landing page at phone width.
+
+   Kept together at the end of the file on purpose: media queries carry no
+   extra specificity, so a mobile rule placed next to the desktop rule it
+   overrides only wins if it also comes after it. Several of these sections are
+   declared far apart above, so anything scoped to this breakpoint lives here.
+   ========================================================================== */
+
+@media (max-width: 49.999rem) {
+  /* Starlight's content panel already supplies a 16px gutter at this width, so
+     each section's own inline padding is a second one stacked on top. Dropping
+     it recovers 36px of card width and puts the section edge within 2px of the
+     header logo. */
+  .three-up,
+  .capabilities,
+  .team-section,
+  .closing {
+    padding-inline: 0;
+  }
+
+  /* The clamp minimums on .pillar were set for the three-column composition,
+     where they read as generous. On one column they eat 96px of a 344px card,
+     squeezing the copy and wrapping the chips onto a second line. */
+  .pillar {
+    padding: 36px 24px 40px;
+  }
+
+  .pillar .eyebrow {
+    margin-bottom: 32px;
+  }
+
+  .pillar h3 {
+    margin-bottom: 24px;
+  }
+
+  .pillar-copy {
+    margin-bottom: 32px;
   }
 }

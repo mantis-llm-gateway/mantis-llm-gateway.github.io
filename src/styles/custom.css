@@ -653,6 +653,44 @@ header.header::after {
   height: 24px;
 }
 
+/* The mark stays 24px; its link grows around it to clear the 44px touch
+   target, which the 64px bar has room for. */
+.site-title {
+  padding-block: 10px;
+}
+
+/* Below 50rem Starlight hides the header's right group and expects the mobile
+   menu to carry Team, GitHub and the theme toggle. Splash pages have no
+   sidebar, so no menu button is rendered and those three become unreachable —
+   keep them in the bar there instead. */
+@media (max-width: 49.999rem) {
+  :root {
+    /* The menu button is fixed and derives its offset from this token, so
+       sizing it here keeps it centred in the bar. */
+    --sl-menu-button-size: 2.75rem;
+  }
+
+  :root:not([data-has-sidebar]) .right-group {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  /* Divider and gaps are width this bar cannot spare at 375px. */
+  :root:not([data-has-sidebar]) .social-icons {
+    gap: 0.5rem;
+  }
+
+  :root:not([data-has-sidebar]) .social-icons::after {
+    display: none;
+  }
+
+  site-search button[data-open-modal] {
+    min-width: 44px;
+    height: 44px;
+    justify-content: center;
+  }
+}
+
 /* Starlight sizes the first column to the sidebar so the search box lines up
    with the content column. Equal outer columns centre it on the bar instead;
    the logo is start-aligned either way, so it does not move. */
@@ -703,9 +741,12 @@ site-search button[data-open-modal] > kbd {
   }
 }
 
-/* Nav is mono on every page — --sl-font would make it serif outside the splash. */
+/* Nav is mono on every page — --sl-font would make it serif outside the splash.
+   The padding is what carries these to a 44px touch target; the text itself is
+   only 12px tall. */
 .toolbar-text-link:any-link,
 .toolbar-text-link:visited {
+  padding: 16px 5px;
   color: var(--text-muted);
   font-family: var(--sl-font-mono);
   font-size: 0.75rem;

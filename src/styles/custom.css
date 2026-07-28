@@ -99,6 +99,10 @@
   --spine-line: #24393f;
   --eyebrow: #5e7272;
   --display-recede: #4a5c5c;
+
+  /* Read by ambient-field.js off the canvas element. */
+  --field-rgb: 210, 228, 228;
+  --field-a: 1;
 }
 
 :root[data-theme='light'] {
@@ -124,6 +128,9 @@
   --spine-line: var(--border-strong);
   --eyebrow: #5a6e6e;
   --display-recede: #93a5a5;
+
+  --field-rgb: 16, 32, 40;
+  --field-a: 0.62;
 }
 
 /* ==========================================================================
@@ -277,21 +284,21 @@ h1#_top {
   padding: clamp(50px, 7vw, 100px) clamp(18px, 4vw, 40px);
 }
 
-/* 1px grid gap over a border-coloured background draws the interior hairlines.
-   Survives wrapping — per-cell borders leave strays when cells reflow. */
+/* Cells stay transparent so the ambient field and grain show through, so the
+   interior hairlines are per-cell borders rather than a gap over a filled
+   background. Overlapping them by 1px keeps shared edges a single line and
+   survives wrapping. */
 .three-up-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
-  gap: 1px;
-  border: 1px solid var(--border);
-  background: var(--border);
 }
 
 .pillar {
   display: flex;
   flex-direction: column;
+  margin: 0 -1px -1px 0;
   padding: clamp(56px, 5vw, 88px) clamp(48px, 4.5vw, 76px) clamp(64px, 6vw, 104px);
-  background: var(--bg-page);
+  border: 1px solid var(--border);
 }
 
 .pillar .eyebrow {

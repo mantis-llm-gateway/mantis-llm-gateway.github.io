@@ -135,6 +135,20 @@
   --field-a: 0.62;
 }
 
+/* The wordmark is a wash rather than solid text. At phone scale it occupies
+   far less of the screen than the desktop composition gives it, so it carries
+   more weight there to stay the anchor of the view. */
+@media (max-width: 49.999rem) {
+  :root,
+  :root[data-theme='dark'] {
+    --hero-word: rgba(232, 240, 240, 0.42);
+  }
+
+  :root[data-theme='light'] {
+    --hero-word: rgba(16, 32, 40, 0.26);
+  }
+}
+
 /* ==========================================================================
    Starlight adapter. Starlight derives --sl-color-text/-bg/-hairline etc.
    from the ramp below, so only the ramp and the accent triad are set here.

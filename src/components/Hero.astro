@@ -164,4 +164,35 @@ const stats = ['SELF_HOSTED: TRUE', 'CLOUD_PROVIDER: AWS', 'API: OPENAI-STYLE'];
       clip-path: none;
     }
   }
+
+  /* The desktop composition puts a lot of air around the hero. On a phone that
+     air is most of the first screen, so the stat row tightens, the wordmark
+     grows into the space it frees, and the tagline gets its gutters back. */
+  @media (max-width: 49.999rem) {
+    /* 0.42em tracking made each stat ~180px, so only one fitted per line and
+       the row ran to three. Tighter tracking fits two. */
+    .stats {
+      gap: 6px 14px;
+      margin-bottom: 1.75rem;
+      letter-spacing: 0.18em;
+    }
+
+    /* Deliberately wider than the viewport, as on desktop — at 22vw the phone
+       showed more of the word than the desktop crop does. */
+    h1#_top {
+      font-size: 26vw;
+    }
+
+    /* 40px of padding plus margin per side pushed this to five lines. The
+       content panel already supplies a 16px gutter, so this adds none of its
+       own; 15px then fits the sentence in three. */
+    .copy {
+      padding: 0;
+    }
+
+    .tagline {
+      margin-inline: 0;
+      font-size: 0.9375rem;
+    }
+  }
 </style>

@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightImageZoom from 'starlight-image-zoom';
+import { mantisDark, mantisLight } from './src/styles/code-theme.mjs';
 
 export default defineConfig({
   site: 'https://mantis-llm-gateway.github.io',
@@ -33,6 +34,14 @@ export default defineConfig({
       // separate so a re-export drops straight in.
       customCss: ['./src/styles/custom.css', './src/styles/capability-glyphs.css'],
       expressiveCode: {
+        themes: [mantisDark, mantisLight],
+        // Keeps the frame, borders and title bar deriving from --sl-color-*,
+        // so only the syntax palette is ours to own.
+        useStarlightUiThemeColors: true,
+        // EC's default floor is 5.5, stricter than WCAG AA and enough to lift
+        // comments out of the background. The palette is measured against 4.5
+        // instead, so this pass leaves it alone.
+        minSyntaxHighlightingColorContrast: 4.5,
         styleOverrides: {
           codeFontFamily: 'var(--sl-font-mono)',
         },

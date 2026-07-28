@@ -122,7 +122,7 @@ Routing happens as a result of the ordered list of targets built by the routing 
 **4. Settings for cache**, including Time To Live (TTL), and dials for LLM output temperature and semantic similarity search.
 
 ```json
-prompt_cache": {
+"prompt_cache": {
     "ttl_seconds": 3600,
     "temperature_threshold": 0.3,
     "semantic": {

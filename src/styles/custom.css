@@ -461,9 +461,98 @@ h1#_top {
   max-width: 580px;
 }
 
+/* ==========================================================================
+   Docs pagination. Starlight ships these as elevated, bordered cards; this
+   design has neither cards nor shadows, so they become a hairline-ruled pair
+   of links using the landing page's eyebrow-over-title pairing.
+   ========================================================================== */
+
 /* The landing page ends on its own CTA — docs pagination is chrome it doesn't want. */
 :root[data-has-hero] .pagination-links {
   display: none;
+}
+
+.pagination-links {
+  gap: clamp(24px, 4vw, 56px);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Starlight centres the arrow against the whole two-line block. Top-aligning
+   it instead, with the eyebrow's line box set to the icon's own height, puts
+   the two on one line without an offset to maintain. */
+.pagination-links a {
+  /* svg font-size plus the column gap below — the width the arrow occupies. */
+  --arrow-gutter: 1.75rem;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* The title sits in the second flex item, so it starts inside the arrow's
+   column. Pulling it back by the gutter squares it with the arrow's outer edge
+   rather than with the eyebrow — leading edge for prev, trailing for next. */
+.pagination-links a[rel='prev'] .link-title {
+  margin-inline-start: calc(-1 * var(--arrow-gutter));
+}
+
+.pagination-links a[rel='next'] .link-title {
+  margin-inline-end: calc(-1 * var(--arrow-gutter));
+}
+
+/* "Previous"/"Next" is a bare text node with no element of its own, so the
+   eyebrow treatment goes on the wrapping span and .link-title opts back out. */
+.pagination-links a > span {
+  font-family: var(--sl-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  line-height: 1rem;
+  text-transform: uppercase;
+  color: var(--eyebrow);
+}
+
+.pagination-links .link-title {
+  display: inline-block;
+  margin-top: 0.7rem;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 500;
+  font-size: 1.375rem;
+  letter-spacing: normal;
+  line-height: 1.15;
+  text-transform: none;
+  color: var(--text-strong);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* Overrides the 1.5rem the Icon component sets inline via --sl-icon-size. */
+.pagination-links svg {
+  font-size: 1rem;
+  color: var(--text-faint);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.pagination-links a:hover .link-title,
+.pagination-links a:hover svg {
+  color: var(--ui-accent-text);
+}
+
+.pagination-links a[rel='prev']:hover svg {
+  transform: translateX(-3px);
+}
+
+.pagination-links a[rel='next']:hover svg {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pagination-links a:hover svg {
+    transform: none;
+  }
 }
 /* Capability glyphs. Motion and the light palette live in capability-glyphs.css
    (vendored from the design handoff); only layout and sizing belong here. The

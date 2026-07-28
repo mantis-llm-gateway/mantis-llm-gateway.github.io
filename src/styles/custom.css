@@ -531,28 +531,13 @@ h1#_top {
 .pagination-links svg {
   font-size: 1rem;
   color: var(--text-faint);
-  transition:
-    transform var(--dur-base) var(--ease-out),
-    color var(--dur-fast) var(--ease-out);
+  transition: color var(--dur-fast) var(--ease-out);
 }
 
+/* Colour alone carries the hover — no travel on the arrow. */
 .pagination-links a:hover .link-title,
 .pagination-links a:hover svg {
   color: var(--ui-accent-text);
-}
-
-.pagination-links a[rel='prev']:hover svg {
-  transform: translateX(-3px);
-}
-
-.pagination-links a[rel='next']:hover svg {
-  transform: translateX(3px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pagination-links a:hover svg {
-    transform: none;
-  }
 }
 /* Capability glyphs. Motion and the light palette live in capability-glyphs.css
    (vendored from the design handoff); only layout and sizing belong here. The

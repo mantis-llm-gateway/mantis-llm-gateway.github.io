@@ -1,0 +1,140 @@
+---
+import { Image } from 'astro:assets';
+import TeamSocialLink from './TeamSocialLink.astro';
+import hubertHeadshot from '../assets/hubert-headshot.jpeg';
+import reyHeadshot from '../assets/rey-headshot.webp';
+import rizHeadshot from '../assets/riz-headshot.webp';
+import samHeadshot from '../assets/sam-headshot.webp';
+
+// Single source for both the landing section and /team/ — matching styling then
+// holds by construction rather than by keeping two copies in step.
+const members = [
+  {
+    name: 'Hubert de Parseval',
+    location: 'Europe',
+    photo: hubertHeadshot,
+    linkedin: 'https://www.linkedin.com/in/hubertdeparseval/',
+    github: 'http://github.com/hubertdepsv',
+    email: 'mailto:hubert.deparseval@protonmail.com',
+  },
+  {
+    name: 'Rey van den Berg',
+    location: 'Dublin, Ireland',
+    photo: reyHeadshot,
+    linkedin: 'https://www.linkedin.com/in/rey810/',
+    github: 'https://github.com/Rey810',
+    email: 'mailto:reyvdb@gmail.com',
+  },
+  {
+    name: 'Riz Syed',
+    location: 'London, UK',
+    photo: rizHeadshot,
+    linkedin: 'https://www.linkedin.com/in/riz-syed-010b60366/',
+    github: 'https://github.com/rizsyed1',
+    email: 'mailto:rizwansyed876@gmail.com',
+  },
+  {
+    name: 'Samuel Meka',
+    location: 'Taipei, Taiwan',
+    photo: samHeadshot,
+    linkedin: 'https://www.linkedin.com/in/samuel-meka/',
+    github: 'https://github.com/Sam816317',
+    email: 'mailto:samuel.meka211@gmail.com',
+  },
+];
+---
+
+<div class="team-grid">
+  {
+    members.map((m) => (
+      <figure class="team-member">
+        <div class="portrait">
+          <Image src={m.photo} alt={`${m.name} headshot`} data-zoom-off />
+          <span class="wash" aria-hidden="true" />
+        </div>
+        <figcaption>
+          <strong class="name">{m.name}</strong>
+          <span class="location">{m.location}</span>
+          <div class="socials">
+            <TeamSocialLink icon="linkedin" href={m.linkedin} label={`${m.name} on LinkedIn`} />
+            <TeamSocialLink icon="github" href={m.github} label={`${m.name} on GitHub`} />
+            <TeamSocialLink icon="email" href={m.email} label={`Email ${m.name}`} />
+          </div>
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>
+
+<style>
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+    gap: clamp(36px, 4vw, 64px);
+  }
+
+  .team-member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    text-align: center;
+  }
+
+  /* Dashed ring, with the portrait inset by the ring's own padding. */
+  .portrait {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    aspect-ratio: 1;
+    margin-bottom: clamp(20px, 2vw, 28px);
+    padding: clamp(8px, 1vw, 14px);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-pill);
+  }
+
+  .portrait :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-pill);
+    object-fit: cover;
+  }
+
+  .wash {
+    position: absolute;
+    inset: clamp(8px, 1vw, 14px);
+    border-radius: var(--radius-pill);
+    background: var(--ui-accent);
+    opacity: 0.15;
+    pointer-events: none;
+  }
+
+  figcaption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .name {
+    margin-bottom: 6px;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(22px, 2vw, 28px);
+    line-height: 1.1;
+    color: var(--text-strong);
+  }
+
+  .location {
+    margin-bottom: clamp(18px, 2vw, 24px);
+    font-family: var(--sl-font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--ui-accent-text);
+  }
+
+  .socials {
+    display: flex;
+    gap: 10px;
+  }
+</style>

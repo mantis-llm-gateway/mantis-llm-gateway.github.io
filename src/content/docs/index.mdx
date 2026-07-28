@@ -16,6 +16,7 @@ hero:
 ---
 
 import Schematic from '../../components/Schematic.astro';
+import TeamGrid from '../../components/TeamGrid.astro';
 
 {/* `not-content` opts these sections out of Starlight's markdown sibling-margin
     rule, which otherwise adds 1rem to every descendant element. */}
@@ -136,6 +137,11 @@ import Schematic from '../../components/Schematic.astro';
     </div>
     <Schematic name="sdk" />
   </div>
+</section>
+
+<section class="team-section not-content">
+  <p class="eyebrow eyebrow-section">// Team</p>
+  <TeamGrid />
 </section>
 
 <section class="closing not-content">

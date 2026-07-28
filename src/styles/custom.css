@@ -491,109 +491,47 @@ h1#_top {
   max-width: 230px;
 }
 
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-  column-gap: clamp(2rem, 6vw, 2rem);
-  row-gap: 2.5rem;
+/* Team appears twice: a landing section and the /team/ page. Card styling lives
+   in TeamGrid.astro; only the surrounding layout differs between the two. */
+
+.team-section {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(50px, 7vw, 100px) clamp(18px, 4vw, 40px) clamp(60px, 8vw, 110px);
+}
+
+.team-page-grid {
   margin-block: 2.5rem 3rem;
 }
 
-.team-member {
-  margin: 0;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.team-member img {
-  display: block;
-  width: min(9.5rem, 100%);
-  aspect-ratio: 1;
-  margin-inline: auto;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.team-member::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(9.5rem, 100%);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--sl-color-accent);
-  opacity: 0.1;
-  pointer-events: none;
-}
-
-.team-member figcaption {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
-  margin-block-start: 1rem;
-  color: var(--sl-color-white);
-  text-align: center;
-  flex: 1;
-  justify-content: space-between;
-}
-
-.team-member figcaption::first-child {
-  display: block;
-}
-
-.team-member-name {
-  display: block;
-  color: var(--sl-color-white);
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.25;
-  min-height: 1lh;
-}
-
-.team-location {
-  display: block;
-  font-family: var(--sl-font-mono);
-  font-size: 0.85rem;
-  color: var(--sl-color-accent);
-  line-height: 1.3;
-}
-
-.team-socials {
-  display: flex;
-  gap: 0.8rem;
-  justify-content: center;
-  align-items: center;
-  margin-block-start: auto;
-  margin-top: 0.5rem;
-}
-
+/* TeamSocialLink is its own component, so its class sits outside TeamGrid's
+   scoped styles. 44px clears the minimum touch target. */
 .team-social-link {
   display: inline-flex;
-  background: var(--sl-color-gray-7);
-  border-radius: 100%;
-  padding: 0.6rem 0.6rem;
-  color: var(--sl-color-gray-2);
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--text-muted);
   text-decoration: none;
-  transition: background 120ms ease-out, border-color 120ms ease-out, color 120ms ease-out;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
 }
 
 .team-social-link:hover,
 .team-social-link:focus {
-  background: color-mix(in srgb, var(--sl-color-accent-low), transparent 40%);
-  border-color: var(--sl-color-accent);
-  color: var(--sl-color-accent);
+  border-color: var(--border-strong);
+  color: var(--text-strong);
 }
 
 .team-social-link svg {
   width: 1rem;
   height: 1rem;
 }
-
 /* Nav is mono on every page — --sl-font would make it serif outside the splash. */
 .toolbar-text-link:any-link,
 .toolbar-text-link:visited {

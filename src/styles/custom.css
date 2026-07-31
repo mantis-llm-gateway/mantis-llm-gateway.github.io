@@ -496,6 +496,15 @@ h1#_top {
   max-width: 580px;
 }
 
+/* The display line carries the close on desktop; the eyebrow is its phone-width
+   stand-in, so only one is ever shown. Left-aligned like // Capabilities and
+   // Team even though the section itself centres, which is how the team section
+   already pairs a flush eyebrow with a centred grid. */
+.closing-eyebrow {
+  display: none;
+  text-align: left;
+}
+
 /* ==========================================================================
    Docs pagination. Starlight ships these as elevated, bordered cards; this
    design has neither cards nor shadows, so they become a hairline-ruled pair
@@ -878,11 +887,21 @@ site-search button[data-open-modal] > kbd {
     margin-bottom: 32px;
   }
 
-  /* The 30px floor left the closing line smaller than the capability headings
-     it is meant to top. Only the minimum moves — 7vw still governs from ~630px
-     up, so the desktop size is untouched. */
+  /* The statement is a desktop-scale device: at phone width it needed four
+     lines and most of a screen to say what the two buttons under it already
+     say. The eyebrow gives the section the same header its siblings have and
+     hands the close to the CTAs. */
   .closing .statement {
-    font-size: clamp(52px, 7vw, 104px);
+    display: none;
+  }
+
+  .closing-eyebrow {
+    display: block;
+  }
+
+  /* Sized for the statement it no longer has to clear. */
+  .closing {
+    padding-block: clamp(40px, 9vw, 72px);
   }
 }
 

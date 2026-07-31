@@ -138,12 +138,25 @@ const members = [
     gap: 10px;
   }
 
-  /* One column at phone width lets the portrait grow to the full 343px, which
-     turns four members into a very long scroll. The ring keeps its proportions;
-     only its ceiling changes. */
+  /* auto-fit needs 220px per track, which two of will not fit a phone, so all
+     four members stacked into a very long scroll. Pinning two explicit columns
+     halves that. The portrait keeps its 170px ceiling but can now fall below it:
+     at 360px wide a column is only 156px, and a fixed 170px would overflow it. */
   @media (max-width: 49.999rem) {
+    .team-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(28px, 6vw, 40px) 16px;
+    }
+
     .portrait {
-      width: 170px;
+      width: min(170px, 100%);
+    }
+
+    /* Three 44px targets plus their gaps come to 152px against a 156px column
+       at the narrowest phone. Trimming the gap keeps the row off its own edge
+       without taking the targets below 44px. */
+    .socials {
+      gap: 6px;
     }
   }
 </style>

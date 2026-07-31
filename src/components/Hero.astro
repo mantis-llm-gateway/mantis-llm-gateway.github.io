@@ -187,12 +187,32 @@ const stats = ['SELF_HOSTED: TRUE', 'CLOUD_PROVIDER: AWS', 'API: OPENAI-STYLE'];
        content panel already supplies a 16px gutter, so this adds none of its
        own; 15px then fits the sentence in three. */
     .copy {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
       padding: 0;
     }
 
     .tagline {
       margin-inline: 0;
       font-size: 0.9375rem;
+    }
+
+    /* The hero ran 453px of a 768px column, stranding the CTAs mid-screen with
+       345px of nothing under them. Growing it to the fold and bottom-anchoring
+       the actions puts the buttons in thumb reach.
+
+       svh, not vh: vh is the viewport with browser chrome retracted, so on a
+       phone the buttons would sit under the toolbar until the user scrolled.
+       The reveal band is deliberate — filling the column exactly would hide the
+       spine and leave nothing signalling that the page continues. */
+    .mantis-hero {
+      --hero-reveal: clamp(72px, 11vh, 112px);
+      min-height: calc(100svh - var(--sl-nav-height) - var(--hero-reveal));
+    }
+
+    .actions {
+      margin-top: auto;
     }
   }
 </style>

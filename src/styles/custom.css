@@ -838,18 +838,26 @@ site-search button[data-open-modal] > kbd {
      each section's own inline padding is a second one stacked on top. Dropping
      it recovers 36px of card width and puts the section edge within 2px of the
      header logo. */
-  .three-up,
   .capabilities,
   .team-section,
   .closing {
     padding-inline: 0;
   }
 
+  /* The cards are the exception: at full bleed they read as edge-to-edge slabs
+     with the copy pressed against the rule. This gutter sits outside the border
+     — on top of the panel's own 16px — so the card narrows rather than the text
+     column. Paired with the roomier inside padding below, which is what the
+     border actually needs to stop crowding the words. */
+  .three-up {
+    padding-inline: 16px;
+  }
+
   /* The clamp minimums on .pillar were set for the three-column composition,
      where they read as generous. On one column they eat 96px of a 344px card,
      squeezing the copy and wrapping the chips onto a second line. */
   .pillar {
-    padding: 36px 24px 40px;
+    padding: 40px 28px 44px;
   }
 
   .pillar .eyebrow {

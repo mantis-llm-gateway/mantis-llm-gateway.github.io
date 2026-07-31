@@ -27,20 +27,15 @@
   src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
 }
 
-/* Heading face. 500 for headings, 600 for team member names. */
+/* Heading face. 500 for headings, 600 for team member names, 800 for the
+   closing statement. One variable file covers all three and is 6KB smaller
+   than the two static instances it replaces. */
 @font-face {
   font-family: 'EB Garamond';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400 800;
   font-display: swap;
-  src: url('/fonts/EBGaramond-Medium.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'EB Garamond';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url('/fonts/EBGaramond-SemiBold.woff2') format('woff2');
+  src: url('/fonts/EBGaramond-Variable.woff2') format('woff2');
 }
 
 /* The hero wordmark's face, and the only thing using it. Subset to the 18
@@ -86,6 +81,10 @@
   /* Teal fills are constant; accent *text* darkens in light for contrast. */
   --ui-accent: var(--mantis-teal);
   --ui-accent-text: var(--mantis-teal);
+  /* Primary CTA hover. Teal mixed 18% toward white, so the button reads as
+     lifting into the light rather than pressing away from it. Also repairs a
+     contrast failure: ink on --mantis-teal-deep was 3.87:1, this is 6.80:1. */
+  --ui-accent-lift: #2eb8ab;
 
   --dur-fast: 120ms;
   --dur-base: 180ms;
@@ -258,20 +257,24 @@ h1#_top {
   color: var(--ui-accent-text);
 }
 
+/* No margin-top: auto — .pillar's subgrid puts the chips on their own row and
+   bottom-aligns them across all three cards. */
 .chips {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: auto;
 }
 
+/* 9px needs the extra weight to hold its colour, and the wider tracking keeps
+   the letterforms from closing up at that size. */
 .chip {
   padding: 7px 11px;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-chip);
   font-family: var(--sl-font-mono);
+  font-weight: 600;
   font-size: 9px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   color: var(--text-muted);
 }
 
@@ -310,17 +313,26 @@ h1#_top {
 /* Cells stay transparent so the ambient field and grain show through, so the
    interior hairlines are per-cell borders rather than a gap over a filled
    background. Overlapping them by 1px keeps shared edges a single line and
-   survives wrapping. */
+   survives wrapping.
+
+   The four rows are the pillar's own children — eyebrow, heading, copy, chips —
+   hoisted to the parent so each row sizes to the tallest card. Without it the
+   heading row is per-card, and any width where one title fits on a line the
+   others don't drops that card's copy by a full line: at 1600px the titles need
+   260/235/257px in a 244px column, so only AWS-Native stays single-line and its
+   body sits 48px above the other two. */
 .three-up-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  grid-template-rows: auto auto 1fr auto;
 }
 
 .pillar {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
   margin: 0 -1px -1px 0;
-  padding: clamp(56px, 5vw, 88px) clamp(48px, 4.5vw, 76px) clamp(64px, 6vw, 104px);
+  padding: clamp(56px, 5vw, 88px) clamp(40px, 3.2vw, 52px) clamp(64px, 6vw, 104px);
   border: 1px solid var(--border);
 }
 
@@ -440,7 +452,7 @@ h1#_top {
 }
 
 .is-primary:hover {
-  background: var(--mantis-teal-deep);
+  background: var(--ui-accent-lift);
   gap: 16px;
 }
 
@@ -463,9 +475,11 @@ h1#_top {
 
 /* Takes its face from the global heading rule, so it matches the capability
    headings — hence no font-family here. Larger than those and set back in
-   --display-recede, since it closes the page rather than titling a section. */
+   --display-recede, since it closes the page rather than titling a section.
+   800 is the top of EB Garamond's weight axis. */
 .closing .statement {
   margin: 0 0 clamp(44px, 6vw, 72px);
+  font-weight: 800;
   font-size: clamp(30px, 7vw, 104px);
   line-height: 1.02;
   text-transform: uppercase;

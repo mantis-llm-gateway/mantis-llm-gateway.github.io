@@ -373,9 +373,15 @@ h1#_top {
   color: var(--eyebrow);
 }
 
+/* 300px, not 340: between 800px and ~850px the sidebar-less content panel is
+   only ~713px wide, and two 340px tracks plus the gap need 729 — so auto-fit
+   dropped to a single column exactly where the phone layout stops applying,
+   stacking the glyph under the copy again. 300 keeps two columns across that
+   band. auto-fit collapses the empty third track it can now form on wide
+   screens, so the desktop composition is unchanged. */
 .module {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: clamp(40px, 6vw, 100px);
   align-items: center;
   margin-bottom: clamp(80px, 11vw, 170px);
@@ -872,41 +878,88 @@ site-search button[data-open-modal] > kbd {
     margin-bottom: 32px;
   }
 
-  /* One column leaves the schematic sitting in a dead band under the copy.
-     Pulling it up under the chips turns it into a backdrop instead.
-
-     The negative margin is measured from the copy's bottom, not the module's,
-     so the diagram clears the body paragraph by the same ~29px whatever the
-     glyph's height — the four range from 230px to 343px, and anchoring to the
-     module box instead would need a 218px band sized for the tallest, leaving
-     the shortest barely overlapping anything. */
-  .module {
-    display: block;
-    margin-bottom: 56px;
-  }
-
-  /* Nothing to reverse without a second column. */
-  .module-flip {
-    direction: ltr;
-  }
-
-  .module-copy {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* The glyph strokes are already low-alpha, so this multiplier compounds:
-     below ~0.75 the sparser glyphs stop registering at all. */
-  .schematic {
-    margin-top: -96px;
-    opacity: 0.75;
-    pointer-events: none;
-  }
-
   /* The 30px floor left the closing line smaller than the capability headings
      it is meant to top. Only the minimum moves — 7vw still governs from ~630px
      up, so the desktop size is untouched. */
   .closing .statement {
     font-size: clamp(52px, 7vw, 104px);
+  }
+}
+
+/* ==========================================================================
+   Capability modules at phone width.
+
+   Its own breakpoint, 48rem rather than the 50rem the rest of the phone rules
+   use: from 768px up the two-column composition above fits, and that is the
+   better layout as soon as there is room for it. Between 768 and 800 this means
+   the modules are already running the desktop arrangement while the sections
+   around them are still on their phone padding, which is the correct pairing —
+   the constraint here is the module's own width, not the viewport's.
+   ========================================================================== */
+
+@media (max-width: 47.999rem) {
+  /* Stacked in one column, the glyph landed in a dead band under the copy —
+     230–350px of it per capability. The chips stack rather than wrap at this
+     width, which leaves the column beside them empty and almost exactly as tall
+     as a glyph needs to be, so the glyph moves in there and the band goes away.
+
+     display: contents is what makes that possible: .chips sits inside
+     .module-copy while .schematic is a sibling of it, so the two are a level
+     apart in the DOM and cannot share a grid row until the wrapper stops
+     generating a box of its own.
+
+     The chip column takes only what its widest label needs and the glyph column
+     absorbs the rest, so the glyph stays centred in whatever is left over. The
+     reverse — chips on 1fr, glyph on a fixed track — pinned the glyph to the
+     right edge and pushed it further out the wider the screen got.
+
+     gap, not column-gap: the desktop rule sets the shorthand, so overriding one
+     axis leaves a 40px row-gap in force between every row — on top of the
+     margins the eyebrow, heading and body already carry, which is 120px of
+     doubled-up spacing per module. */
+  .module {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0 16px;
+    margin-bottom: 56px;
+  }
+
+  .module-copy {
+    display: contents;
+  }
+
+  /* Everything above the chips still runs the full width. */
+  .eyebrow-module,
+  .module h3,
+  .module-body {
+    grid-column: 1 / -1;
+  }
+
+  /* Three chips at 40px with 12px gaps come to 144px, which is what the glyph
+     is capped at below — so the two read as the same height side by side. */
+  .module .chips {
+    grid-column: 1;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* No opacity knock-back here, unlike the old backdrop treatment: nothing is
+     printed over the glyph any more, and 01 and 02 are faint enough already. */
+  .schematic {
+    grid-column: 2;
+    align-self: center;
+    pointer-events: none;
+  }
+
+  /* .schematic already centres its child, so the cap is all that is needed to
+     hold the glyph at the chip stack's height and let it sit mid-column. Below
+     ~340px the column is narrower than the cap and the glyph simply shrinks. */
+  .schematic svg {
+    max-width: 144px;
+  }
+
+  /* Nothing to reverse — both modules put the glyph in the same column. */
+  .module-flip {
+    direction: ltr;
   }
 }

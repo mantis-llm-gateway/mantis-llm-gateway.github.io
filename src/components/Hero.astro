@@ -4,6 +4,13 @@ const { title = data.title, tagline, actions = [] } = data.hero || {};
 
 // Brand copy, not page content — no Starlight frontmatter field carries it.
 const stats = ['SELF_HOSTED: TRUE', 'CLOUD_PROVIDER: AWS', 'API: OPENAI-STYLE'];
+
+// The wordmark splits at the man/tis syllable on phones. No CSS property breaks
+// a word at a chosen point, so the halves have to be separate elements — inline
+// on desktop, so the word still reads as one. aria-label pins the accessible
+// name: stacking two blocks would otherwise have the heading announce "Man tis".
+const mid = Math.ceil(title.length / 2);
+const [wordHead, wordTail] = [title.slice(0, mid), title.slice(mid)];
 ---
 
 <div class="mantis-hero">
@@ -14,7 +21,7 @@ const stats = ['SELF_HOSTED: TRUE', 'CLOUD_PROVIDER: AWS', 'API: OPENAI-STYLE'];
     <div class="wordmark-row">
       {/* id="_top" is Starlight's PAGE_TITLE_ID — the skip-link target. Hardcoded
           because the constant is not an exported module path. */}
-      <h1 id="_top" data-page-title set:html={title} />
+      <h1 id="_top" data-page-title aria-label={title}><span>{wordHead}</span><span>{wordTail}</span></h1>
     </div>
   </div>
 
@@ -177,10 +184,37 @@ const stats = ['SELF_HOSTED: TRUE', 'CLOUD_PROVIDER: AWS', 'API: OPENAI-STYLE'];
       letter-spacing: 0.18em;
     }
 
-    /* Deliberately wider than the viewport, as on desktop — at 22vw the phone
-       showed more of the word than the desktop crop does. */
+    /* One line of MANTIS filled ~13% of a phone screen against the desktop
+       composition's ~35%, so it read as a band rather than the anchor. Each
+       half takes its own line here, which roughly triples the wordmark's
+       presence and lets both grow past what the whole word could reach.
+
+       Stacking them as blocks — rather than letting the text wrap at a break
+       opportunity — keeps the break independent of how wide the box is. A wrap
+       only fires when the line outgrows its container, so widening the box far
+       enough to centre the overflow also stopped the break happening at all.
+
+       left: 50% + translateX(-50%) is what centres them. text-align cannot: a
+       line wider than its block is laid out from the start edge, so the
+       wordmark hung off the right only. width: max-content also means neither
+       half can re-wrap, which takes Starlight's inherited overflow-wrap:
+       break-word out of play — it had been shattering the word into five
+       one-letter lines. The root's overflow-x: clip absorbs the bleed. */
+    h1#_top span {
+      display: block;
+      position: relative;
+      left: 50%;
+      width: max-content;
+      transform: translateX(-50%);
+    }
+
+    /* Height has to be in the expression, not just width: two lines sized purely
+       off vw pushed the CTAs past the fold on a short phone. vw governs on tall
+       screens and the vh cap takes over on short ones, so the wordmark holds
+       ~34% of the viewport either way — the share it occupies on desktop. */
     h1#_top {
-      font-size: 26vw;
+      font-size: min(48vw, 22.5vh);
+      line-height: 0.78;
     }
 
     /* 40px of padding plus margin per side pushed this to five lines. The

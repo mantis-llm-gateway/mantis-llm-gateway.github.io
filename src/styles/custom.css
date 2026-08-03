@@ -88,6 +88,9 @@
 
   --dur-fast: 120ms;
   --dur-base: 180ms;
+  /* Travel long enough to read as arriving from somewhere — the search pill
+     sliding out from behind the header is the only thing at this duration. */
+  --dur-slow: 240ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --radius-chip: 3px;
   --radius-pill: 999px;
@@ -735,6 +738,177 @@ header.header::after {
   }
 }
 
+/* ==========================================================================
+   Search on splash at phone width.
+
+   Docs pages pair the search icon with the menu button, which reads fine. Splash
+   has no sidebar and so no menu button, leaving the icon stranded mid-bar with
+   no border, fill or label — a glyph rather than a control.
+
+   It leaves the bar entirely and docks under the header as a chip sized to its
+   own label, then widens into the search dialog when opened.
+
+   The fill is --bg-page, not a raised surface. This page is drawn rather than
+   layered — hairlines and open space do the structural work — so a --surface-2
+   chip would be the only lifted object on it. Page colour reads as nothing at
+   all against the composition, and as a punched-out island over the team
+   portraits, which are the one thing here dense enough to swallow 13px type.
+   ========================================================================== */
+
+@media (max-width: 49.999rem) {
+  :root:not([data-has-sidebar]) site-search {
+    /* Starlight ships this element as display: contents, so it generates no box
+       at all — position, top, padding and transform were all resolving against
+       nothing. It needs to become a box before it can be moved. */
+    display: block;
+    position: fixed;
+    inset-inline: 0;
+    top: var(--sl-nav-height);
+    /* Below the mobile TOC (4), the menu (5) and the navbar (10): it slides out
+       from behind the header and can never cover an open panel. */
+    z-index: 3;
+    /* 16px flat, not a clamp: it puts the chip on the section gutter rather than
+       letting it drift as the viewport grows. Measured, the hero tagline, the
+       three-up, the capability modules, the team grid and the closing eyebrow
+       all start at 16 — the pillar borders sit at 32, inside their own wrapper's
+       padding, so the chip lines up with the sections and not with those. */
+    padding: 10px 16px;
+    /* This strip spans the viewport and now paints nothing, so leaving it live
+       would put an invisible 58px band over the page eating taps meant for
+       whatever scrolled under it. The chip re-enables itself below. Focus is
+       unaffected: this does not leave the tab order. */
+    pointer-events: none;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition:
+      transform var(--dur-slow) var(--ease-out),
+      opacity 160ms linear;
+  }
+
+  /* :has() covers the keyboard shortcut, which can open the dialog while the
+     chip is still parked — the opacity here would otherwise take the dialog
+     down with it, since it is a child of this element. */
+  :root:not([data-has-sidebar])[data-search-docked] site-search,
+  :root:not([data-has-sidebar]) site-search:focus-within,
+  :root:not([data-has-sidebar]) site-search:has(dialog[open]) {
+    transform: none;
+    opacity: 1;
+  }
+
+  /* Gated on the same three states rather than left on permanently, so the
+     parked chip cannot take a tap in the sliver where it overhangs the header. */
+  :root:not([data-has-sidebar])[data-search-docked] site-search button[data-open-modal],
+  :root:not([data-has-sidebar]) site-search:focus-within button[data-open-modal],
+  :root:not([data-has-sidebar]) site-search:has(dialog[open]) button[data-open-modal] {
+    pointer-events: auto;
+  }
+
+  :root:not([data-has-sidebar]) site-search button[data-open-modal] {
+    position: relative;
+    /* A length, not max-content: the width has to interpolate for the expansion
+       below, and an intrinsic keyword animates discretely — it would jump at the
+       halfway point instead of sliding. The label is fixed English in a
+       monospace face, so the measurement does not move: 13px icon, 8px gap,
+       6 glyphs at 0.6em, 13px of padding each side comes to 95.8, and the 2px
+       over that is rounding insurance rather than air. */
+    width: 98px;
+    height: 36px;
+    justify-content: flex-start;
+    gap: 8px;
+    padding-inline: 13px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background: var(--bg-page);
+    /* --text-faint on the page is 2.4:1. This is the control's only label, so it
+       is body text and needs AA: --text-muted measures 6.71:1 dark,
+       4.67:1 light. */
+    color: var(--text-muted);
+    font-size: 13px;
+    transition:
+      width var(--dur-base) var(--ease-out),
+      transform 90ms var(--ease-out);
+  }
+
+  /* The chip is 36px so it stays small; the tap target is the 44px the rest of
+     the header uses. A pseudo-element grows the target without moving the
+     border. */
+  :root:not([data-has-sidebar]) site-search button[data-open-modal]::after {
+    content: '';
+    position: absolute;
+    inset-block: -4px;
+    inset-inline: 0;
+  }
+
+  /* Anticipation. :active fires on the press, which is the only moment touch
+     offers — there is no hover here to carry a lead-in. */
+  :root:not([data-has-sidebar]) site-search button[data-open-modal]:active {
+    transform: scale(0.96);
+  }
+
+  /* The release: the chip widens to the full gutter as the dialog arrives over
+     it. */
+  :root:not([data-has-sidebar]) site-search:has(dialog[open]) button[data-open-modal] {
+    width: 100%;
+  }
+
+  /* Starlight gives the dialog no entrance, so it would replace the chip in a
+     single frame and the widening would never be seen. Fading it in is what
+     makes the search surface read as having come from the chip rather than from
+     nowhere.
+
+     The 70ms delay is doing the real work. Without it the fade reached 77% by
+     63ms, while the chip was still travelling, and the expansion was washed out
+     just as it got going. Holding the dialog off for 70ms gives the chip a clear
+     window for the front-loaded part of its curve — most of the distance, since
+     the easing is a quint — and the surface then arrives over a chip that has
+     already visibly launched. `backwards` is what keeps the dialog transparent
+     during the delay rather than flashing opaque for four frames first. */
+  :root:not([data-has-sidebar]) site-search dialog[open],
+  :root:not([data-has-sidebar]) site-search dialog[open]::backdrop {
+    animation: search-dialog-in var(--dur-base) var(--ease-out) 70ms backwards;
+  }
+
+  /* Starlight hides the label below its md breakpoint, which is what left the
+     bare glyph. The chip is sized around the label saying what it is. */
+  :root:not([data-has-sidebar]) site-search button[data-open-modal] > span {
+    display: block;
+  }
+
+  /* The dialog is a child of the fixed chip, so it inherits the containing
+     block and would otherwise open 56px down the page. */
+  :root:not([data-has-sidebar]) site-search dialog {
+    top: 0;
+  }
+}
+
+@keyframes search-dialog-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 49.999rem) and (prefers-reduced-motion: reduce) {
+  :root:not([data-has-sidebar]) site-search {
+    transition: opacity 160ms linear;
+    transform: none;
+  }
+
+  /* The chip still reaches full width when the dialog opens — it just gets
+     there in one frame, and skips the press-in entirely. */
+  :root:not([data-has-sidebar]) site-search button[data-open-modal] {
+    transition: none;
+  }
+
+  :root:not([data-has-sidebar]) site-search button[data-open-modal]:active {
+    transform: none;
+  }
+
+  :root:not([data-has-sidebar]) site-search dialog[open],
+  :root:not([data-has-sidebar]) site-search dialog[open]::backdrop {
+    animation: none;
+  }
+}
+
 /* Starlight sizes the first column to the sidebar so the search box lines up
    with the content column. Equal outer columns centre it on the bar instead;
    the logo is start-aligned either way, so it does not move. */
@@ -761,7 +935,7 @@ site-search button[data-open-modal] > kbd {
   border-radius: 4px;
   background: transparent;
   font-size: 11px;
-  color: var(--text-faint);
+  color: var(--text-muted);
 }
 
 @media (min-width: 50rem) {
@@ -775,7 +949,9 @@ site-search button[data-open-modal] > kbd {
     border-color: var(--border-strong);
     border-radius: 8px;
     background: var(--surface-2);
-    color: var(--text-faint);
+    /* Same 2.7:1 failure the mobile pill had — the desktop field has carried it
+       since this rule was written. */
+    color: var(--text-muted);
     font-size: 13px;
   }
 

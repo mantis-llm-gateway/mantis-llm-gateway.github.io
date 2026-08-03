@@ -29,6 +29,7 @@ export default defineConfig({
         SocialIcons: './src/components/SocialIcons.astro',
         Hero: './src/components/Hero.astro',
         ThemeSelect: './src/components/ThemeSelect.astro',
+        Search: './src/components/Search.astro',
       },
       // capability-glyphs.css is vendored from the design handoff — keep it
       // separate so a re-export drops straight in.

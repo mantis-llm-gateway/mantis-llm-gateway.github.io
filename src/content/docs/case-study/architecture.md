@@ -122,7 +122,7 @@ Routing happens as a result of the ordered list of targets built by the routing 
 **4. Settings for cache**, including Time To Live (TTL), and dials for LLM output temperature and semantic similarity search.
 
 ```json
-prompt_cache": {
+"prompt_cache": {
     "ttl_seconds": 3600,
     "temperature_threshold": 0.3,
     "semantic": {
@@ -230,15 +230,10 @@ When Mantis sends an LLM request to AWS Bedrock, Bedrock’s Guardrails kick in.
 In addition, if LLM requests or responses can be categorised as the following, Mantis will return Bedrock’s guardrail blocked message, i.e. `this request was blocked by content policy` to the client:
 
 - hate
-
 - insults
-
 - sexual
-
 - violence
-
 - misconduct
-
 - financial advice
 
 ### 6. Response Is Sent to the User

@@ -1,0 +1,44 @@
+---
+// Halftone screen plus a riso grain wash, both fixed behind the page.
+// Two static CSS layers — nothing here scripts, animates or paints per frame.
+---
+
+<div id="ambient-field" aria-hidden="true"></div>
+<div id="ambient-grain" aria-hidden="true"></div>
+
+<style>
+  /* z-index: -1 keeps both layers behind content without needing a stacking
+     context on every section. The page colour is carried by :root so it paints
+     below them — see the [data-has-hero] body rule in custom.css. */
+  #ambient-field,
+  #ambient-grain {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* A dot tile, masked by two shallow ramps at crossing angles and periods.
+     Intersecting rather than stacking them means a point is dense only where
+     both are high, so the beat reads as irregular clumping instead of plaid.
+     Periods under ~500px fit more than one cycle on screen and the field goes
+     evenly busy; neither ramp reaches zero, so some tooth survives everywhere.
+
+     Replaces a canvas that repainted this ~5x a second. Not carried over: the
+     dot pitch coarsened down the *document* and the swell crept a few px/sec,
+     neither of which a viewport-space layer can hold. */
+  #ambient-field {
+    --field-swell:
+      repeating-linear-gradient(112deg, rgb(0 0 0 / 1) 0px, rgb(0 0 0 / 0.06) 260px, rgb(0 0 0 / 1) 520px),
+      repeating-linear-gradient(26deg, rgb(0 0 0 / 1) 0px, rgb(0 0 0 / 0.16) 380px, rgb(0 0 0 / 1) 760px);
+    opacity: var(--field-a);
+    background-image: radial-gradient(circle, rgba(var(--field-rgb), 0.13) 1.15px, transparent 1.25px);
+    background-size: 10px 10px;
+    -webkit-mask-image: var(--field-swell);
+    mask-image: var(--field-swell);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  /* #ambient-grain's wash is in custom.css, shared with the header's. */
+</style>

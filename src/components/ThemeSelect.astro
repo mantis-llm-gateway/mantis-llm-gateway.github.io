@@ -1,0 +1,130 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+
+// A two-state switch in place of Starlight's three-option select. No `auto`
+// option: ThemeProvider has already resolved and written the theme onto <html>.
+// Both icons stay in the DOM and the knob slides over the active one, so
+// position carries the state and several toggles stay in sync for free.
+---
+
+<starlight-theme-toggle>
+  <button type="button" role="switch" aria-checked="false">
+    <span class="sr-only">{Astro.locals.t('themeSelect.dark')}</span>
+    <span class="track" aria-hidden="true">
+      <Icon name="sun" class="sun" size="0.75rem" />
+      <Icon name="moon" class="moon" size="0.75rem" />
+      <span class="knob"></span>
+    </span>
+  </button>
+</starlight-theme-toggle>
+
+{/* Inlined because the theme is only known client-side, so the server-rendered
+    aria-checked is a guess. This corrects it before the page is interactive. */}
+<script is:inline>
+  document.querySelectorAll('starlight-theme-toggle button').forEach((button) => {
+    button.setAttribute('aria-checked', String(document.documentElement.dataset.theme === 'dark'));
+  });
+</script>
+
+<script>
+  const storageKey = 'starlight-theme';
+
+  function applyTheme(theme: 'light' | 'dark') {
+    document.documentElement.dataset.theme = theme;
+    document.querySelectorAll('starlight-theme-toggle button').forEach((button) => {
+      button.setAttribute('aria-checked', String(theme === 'dark'));
+    });
+  }
+
+  class StarlightThemeToggle extends HTMLElement {
+    constructor() {
+      super();
+      this.querySelector('button')?.addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem(storageKey, next);
+      });
+    }
+  }
+  customElements.define('starlight-theme-toggle', StarlightThemeToggle);
+
+  // Until the visitor picks a side, keep following the system as Starlight's
+  // `auto` option used to.
+  matchMedia('(prefers-color-scheme: light)').addEventListener('change', (event) => {
+    if (localStorage.getItem(storageKey)) return;
+    applyTheme(event.matches ? 'light' : 'dark');
+  });
+</script>
+
+<style>
+  /* The button carries the 44px touch target; the switch itself is smaller. */
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .track {
+    position: relative;
+    display: block;
+    width: 44px;
+    height: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--surface-2);
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+
+  button:hover .track,
+  button:focus-visible .track {
+    border-color: var(--border-strong);
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  .track :global(svg) {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    color: var(--text-muted);
+  }
+
+  .track :global(.sun) {
+    left: 4px;
+  }
+
+  .track :global(.moon) {
+    right: 4px;
+  }
+
+  /* Sits above the icons so it hides the one for the active theme. */
+  .knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--radius-pill);
+    background: var(--text-strong);
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  :global(:root[data-theme='dark']) .knob {
+    transform: translateX(20px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .knob {
+      transition: none;
+    }
+  }
+</style>

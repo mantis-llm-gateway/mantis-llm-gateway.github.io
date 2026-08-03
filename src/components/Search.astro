@@ -1,0 +1,24 @@
+---
+import Default from '@astrojs/starlight/components/Search.astro';
+---
+
+{/* Starlight's search, unchanged. The override only carries the script below;
+    styling lives in custom.css with the rest of the header. */}
+<Default {...Astro.props}><slot /></Default>
+
+<script>
+  // Flags when the reader has cleared the hero, so the phone-width search chip
+  // can stay docked behind the header until then — see custom.css. Observing
+  // the hero rather than a scroll offset tracks its real viewport-relative
+  // height, and self-gates: no hero, no observer, so docs pages are untouched.
+  const hero = document.querySelector('.mantis-hero');
+
+  if (hero) {
+    new IntersectionObserver(
+      ([entry]) => {
+        document.documentElement.toggleAttribute('data-search-docked', !entry.isIntersecting);
+      },
+      { threshold: 0 }
+    ).observe(hero);
+  }
+</script>

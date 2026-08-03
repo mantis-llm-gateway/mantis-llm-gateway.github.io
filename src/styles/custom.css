@@ -28,89 +28,161 @@
 }
 
 @font-face {
-  font-family: 'Poppins';
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/EBGaramond-Variable.woff2') format('woff2');
+}
+
+/* Hero wordmark only. Subset via the Google CSS API &text= if it changes. */
+@font-face {
+  font-family: 'Zen Dots';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/Poppins-Regular.woff2') format('woff2');
+  src: url('/fonts/ZenDots-Regular.woff2') format('woff2');
 }
-@font-face {
-  font-family: 'Poppins';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/Poppins-Italic.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('/fonts/Poppins-Medium.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url('/fonts/Poppins-SemiBold.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('/fonts/Poppins-Bold.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Poppins';
-  font-style: italic;
-  font-weight: 700;
-  font-display: swap;
-  src: url('/fonts/Poppins-BoldItalic.woff2') format('woff2');
-}
+
+/* ==========================================================================
+   Design tokens. Dark is the default; light overrides the neutrals.
+   ========================================================================== */
 
 :root,
 :root[data-theme='dark'] {
-  --sl-color-accent-low: #0a3a34;
-  --sl-color-accent: #00a898;
-  --sl-color-accent-high: #7fe3d5;
-  --sl-color-white: #e8f0f0;
-  --sl-color-gray-1: #d2e0e0;
-  --sl-color-gray-2: #8fa3a3;
-  --sl-color-gray-3: #5e7272;
-  --sl-color-gray-4: #33484e;
-  --sl-color-gray-5: #25393f;
-  --sl-color-gray-6: #1d3036;
-  --sl-color-gray-7: #16282e;
-  --sl-color-black: #0c1a1f;
-  --sl-font: Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  --mantis-teal: #00a898;
+  --mantis-teal-deep: #00897c;
+  --mantis-ink: #102028;
+  --mantis-mist: #e8f0f0;
+
+  --bg-page: #0c1a1f;
+  --surface: #16282e;
+  --surface-2: #1d3036;
+  --text-strong: #e8f0f0;
+  --text-body: #d2e0e0;
+  --text-muted: #8fa3a3;
+  --text-faint: #5e7272;
+  --border: #25393f;
+  --border-strong: #33484e;
+  --border-faint: #1e3137;
+  --teal-tint: rgba(0, 168, 152, 0.16);
+  --focus-ring: rgba(0, 168, 152, 0.4);
+
+  --ui-accent: var(--mantis-teal);
+  --ui-accent-text: var(--mantis-teal);
+  --ui-accent-lift: #2eb8ab;
+
+  --dur-fast: 120ms;
+  --dur-base: 180ms;
+  --dur-slow: 240ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-chip: 3px;
+  --radius-pill: 999px;
+
+  --hero-word: rgba(232, 240, 240, 0.3);
+  --shadow-teal: 0 6px 20px rgba(0, 168, 152, 0.4);
+
+  --spine-line: #24393f;
+  --eyebrow: #5e7272;
+  --display-recede: #4a5c5c;
+
+  --field-rgb: 210, 228, 228;
+  --field-a: 1;
+}
+
+:root[data-theme='light'] {
+  --bg-page: #e8f0f0;
+  --surface: #ffffff;
+  --surface-2: #f4f8f8;
+  --text-strong: #102028;
+  --text-body: #1e3138;
+  --text-muted: #5a6e6e;
+  --text-faint: #8a9c9c;
+  --border: #d2e0e0;
+  --border-strong: #bacbcb;
+  --border-faint: #e2ecec;
+  --teal-tint: #d9f0ed;
+  --focus-ring: rgba(0, 168, 152, 0.32);
+
+  --ui-accent-text: #06726b;
+
+  --hero-word: rgba(16, 32, 40, 0.17);
+  --shadow-teal: 0 6px 18px rgba(0, 168, 152, 0.3);
+
+  --spine-line: var(--border-strong);
+  --eyebrow: #5a6e6e;
+  --display-recede: #93a5a5;
+
+  --field-rgb: 16, 32, 40;
+  --field-a: 0.62;
+}
+
+@media (max-width: 49.999rem) {
+  :root,
+  :root[data-theme='dark'] {
+    --hero-word: rgba(232, 240, 240, 0.42);
+  }
+
+  :root[data-theme='light'] {
+    --hero-word: rgba(16, 32, 40, 0.26);
+  }
+}
+
+/* ==========================================================================
+   Starlight adapter. Starlight derives its own colours from this ramp.
+   ========================================================================== */
+
+:root,
+:root[data-theme='dark'] {
+  --sl-color-white: var(--text-strong);
+  --sl-color-gray-1: var(--text-body);
+  --sl-color-gray-2: var(--text-muted);
+  --sl-color-gray-3: var(--text-faint);
+  --sl-color-gray-4: var(--border-strong);
+  --sl-color-gray-5: var(--border);
+  --sl-color-gray-6: var(--surface-2);
+  --sl-color-gray-7: var(--surface);
+  --sl-color-black: var(--bg-page);
+
+  /* accent-low doubles as --sl-color-text-invert: text drawn on teal fills. */
+  --sl-color-accent-low: var(--mantis-ink);
+  --sl-color-accent: var(--mantis-teal);
+  --sl-color-accent-high: var(--ui-accent-text);
+
+  --sl-color-text: var(--text-body);
+  --sl-color-bg-nav: var(--bg-page);
+  --sl-color-hairline-shade: var(--border);
+
+  --sl-font: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
   --sl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --sl-content-width: 48rem;
 }
 
 :root[data-theme='light'] {
-  --sl-color-accent-low: #d9f0ed;
-  --sl-color-accent: #00897c;
-  --sl-color-accent-high: #063d38;
-  --sl-color-white: #102028;
-  --sl-color-gray-1: #1e3138;
-  --sl-color-gray-2: #5a6e6e;
-  --sl-color-gray-3: #8a9c9c;
-  --sl-color-gray-4: #bacbcb;
-  --sl-color-gray-5: #d2e0e0;
-  --sl-color-gray-6: #e2ecec;
-  --sl-color-gray-7: #f4f8f8;
-  --sl-color-black: #ffffff;
+  --sl-color-gray-6: var(--border-faint);
+  --sl-color-gray-7: var(--surface-2);
+  --sl-color-accent-low: var(--teal-tint);
+  --sl-color-accent: var(--ui-accent-text);
+  --sl-color-accent-high: #0a5655;
+}
+
+:root[data-has-hero] {
+  --sl-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+:root[data-has-hero],
+:root[data-has-hero] body {
+  overflow-x: clip;
+}
+
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6),
+h1#_top {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 500;
 }
 
 .site-title {
   font-weight: 700;
-}
-
-.hero img {
-  image-rendering: auto;
 }
 
 .sl-markdown-content img {
@@ -123,157 +195,427 @@
   font-size: 0.92rem;
 }
 
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-  gap: 1rem;
-  margin-block: 2rem;
+.sl-markdown-content > :is(ol, ul):has(> li > p):not(:last-child) {
+  margin-bottom: 2rem;
 }
 
-.feature-grid > a,
-.feature-grid > div {
-  display: block;
-  border: 1px solid var(--sl-color-gray-5);
-  border-radius: 8px;
-  padding: 1rem;
-  text-decoration: none;
-  background: color-mix(in srgb, var(--sl-color-gray-6), transparent 45%);
+.sl-markdown-content .sl-anchor-link {
+  display: none;
 }
 
-.feature-grid h2,
-.feature-grid h3 {
-  margin-block: 0 0.4rem;
-  font-size: 1rem;
-  line-height: 1.3;
+.sl-markdown-content .sl-heading-wrapper {
+  --sl-anchor-icon-space: 0px;
 }
 
-.feature-grid p {
+/* starlight-image-zoom emits an invisible element ahead of the prose, which trips
+   Starlight's `.sl-container > * + *` and adds 24px above the first block. Hero
+   pages keep it — there the preceding sibling is the Hero, and the gap is real. */
+:root:not([data-has-hero]) .sl-container > .sl-markdown-content {
+  margin-top: 0;
+}
+
+.expressive-code .copy button div,
+.expressive-code .copy button::before {
+  display: none;
+}
+
+.expressive-code .copy button::after {
   margin: 0;
-  color: var(--sl-color-gray-2);
+  mask-size: 13px;
+  mask-position: center;
+  -webkit-mask-size: 13px;
+  -webkit-mask-position: center;
 }
 
-.metric-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  gap: 0.75rem;
-  align-items: start;
-  margin-block: 1.5rem 2rem;
+.expressive-code .copy button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
 }
 
-.metric-strip > div {
-  margin-top: 0 !important;
-  border-top: 2px solid var(--sl-color-accent);
-  padding-block-start: 0.75rem;
-}
-
-.metric-strip strong {
-  display: block;
-  color: var(--sl-color-white);
-  font-size: 1.05rem;
-}
-
-.metric-strip span {
-  display: block;
-  color: var(--sl-color-gray-3);
-  font-size: 0.9rem;
-}
-
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-  column-gap: clamp(2rem, 6vw, 2rem);
-  row-gap: 2.5rem;
-  margin-block: 2.5rem 3rem;
-}
-
-.team-member {
-  margin: 0;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.team-member img {
-  display: block;
-  width: min(9.5rem, 100%);
-  aspect-ratio: 1;
-  margin-inline: auto;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.team-member::before {
-  content: "";
+.expressive-code .copy > [aria-live] {
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(9.5rem, 100%);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--sl-color-accent);
-  opacity: 0.1;
-  pointer-events: none;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-.team-member figcaption {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
-  margin-block-start: 1rem;
-  color: var(--sl-color-white);
-  text-align: center;
-  flex: 1;
-  justify-content: space-between;
+/* ==========================================================================
+   Landing sections. The design draws with hairlines and chips — no cards,
+   no fills, no elevation.
+   ========================================================================== */
+
+/* Splash spans the full width; Starlight's prose measure doesn't apply. */
+:root[data-has-hero] .sl-markdown-content {
+  max-width: none;
 }
 
-.team-member figcaption::first-child {
-  display: block;
+:root[data-has-hero] .sl-container {
+  max-width: 1240px;
 }
 
-.team-member-name {
-  display: block;
-  color: var(--sl-color-white);
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.25;
-  min-height: 1lh;
-}
-
-.team-location {
-  display: block;
+.eyebrow {
+  margin: 0;
   font-family: var(--sl-font-mono);
-  font-size: 0.85rem;
-  color: var(--sl-color-accent);
-  line-height: 1.3;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ui-accent-text);
 }
 
-.team-socials {
+.chips {
   display: flex;
-  gap: 0.8rem;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  padding: 7px 11px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-chip);
+  font-family: var(--sl-font-mono);
+  font-weight: 600;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+.chip-lg {
+  padding: 11px 16px;
+  border-radius: 0;
+  color: var(--text-strong);
+}
+
+/* Vertical connector between hero and the first section. */
+.spine {
+  position: relative;
+  width: 1px;
+  height: 4rem;
+  margin: clamp(40px, 6vw, 72px) auto 0;
+  background: var(--spine-line);
+}
+
+.spine span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  border: 1px solid var(--text-muted);
+  background: var(--bg-page);
+}
+
+.three-up {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(50px, 7vw, 100px) clamp(18px, 4vw, 40px);
+}
+
+.three-up-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  grid-template-rows: auto auto 1fr auto;
+}
+
+.pillar {
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  margin: 0 -1px -1px 0;
+  padding: clamp(56px, 5vw, 88px) clamp(40px, 3.2vw, 52px) clamp(64px, 6vw, 104px);
+  border: 1px solid var(--border);
+}
+
+.pillar .eyebrow {
+  margin-bottom: clamp(56px, 6vw, 88px);
+}
+
+.pillar h3 {
+  margin: 0 0 clamp(34px, 3.6vw, 52px);
+  font-size: clamp(34px, 3.4vw, 48px);
+  line-height: 1;
+  color: var(--text-strong);
+}
+
+.pillar-copy {
+  margin: 0 0 clamp(40px, 5vw, 64px);
+  max-width: 30ch;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+.capabilities {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(20px, 2.5vw, 32px) clamp(18px, 4vw, 40px) clamp(70px, 9vw, 130px);
+}
+
+.eyebrow-section {
+  margin-bottom: clamp(48px, 7vw, 100px);
+  letter-spacing: 0.32em;
+}
+
+.eyebrow-module {
+  margin-bottom: clamp(20px, 2.4vw, 32px);
+  letter-spacing: 0.34em;
+  color: var(--eyebrow);
+}
+
+/* 300px, not 340: between 800 and ~850px two 340 tracks plus the gap overflow
+   the panel, dropping to one column right where the phone rules stop applying. */
+.module {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: clamp(40px, 6vw, 100px);
+  align-items: center;
+  margin-bottom: clamp(80px, 11vw, 170px);
+}
+
+.module:last-child {
+  margin-bottom: 0;
+}
+
+.module-flip {
+  direction: rtl;
+}
+
+.module-flip > * {
+  direction: ltr;
+}
+
+.module h3 {
+  margin: 0 0 clamp(28px, 3.4vw, 48px);
+  font-size: clamp(42px, 5.4vw, 76px);
+  line-height: 1;
+  color: var(--text-strong);
+}
+
+.module-body {
+  margin: 0 0 clamp(34px, 4vw, 56px);
+  max-width: 42ch;
+  font-size: clamp(14px, 1.2vw, 16px);
+  line-height: 1.75;
+  color: var(--text-muted);
+}
+
+.module .chips {
+  gap: 12px;
+}
+
+/* Shared by the hero and the closing section. */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.cta {
+  flex: 1 1 200px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 17px 40px;
+  font-family: var(--sl-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    gap var(--dur-base) var(--ease-out),
+    background var(--dur-base) ease,
+    border-color var(--dur-base) ease,
+    transform var(--dur-fast) ease;
+}
+
+.cta:active {
+  transform: translateY(0.5px);
+}
+
+.is-primary {
+  background: var(--ui-accent);
+  color: var(--mantis-ink);
+  box-shadow: var(--shadow-teal);
+}
+
+.is-primary:hover {
+  background: var(--ui-accent-lift);
+  gap: 16px;
+}
+
+.is-secondary {
+  background: transparent;
+  color: var(--text-strong);
+  border: 1px solid var(--border-strong);
+}
+
+.is-secondary:hover {
+  border-color: var(--text-strong);
+}
+
+.closing {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(80px, 12vw, 180px) clamp(18px, 4vw, 40px);
+  text-align: center;
+}
+
+.closing .statement {
+  margin: 0 0 clamp(44px, 6vw, 72px);
+  font-weight: 800;
+  font-size: clamp(30px, 7vw, 104px);
+  line-height: 1.02;
+  text-transform: uppercase;
+  color: var(--display-recede);
+}
+
+.closing .actions {
+  max-width: 580px;
+}
+
+/* The statement's phone-width stand-in; only one is ever shown. */
+.closing-eyebrow {
+  display: none;
+  text-align: left;
+}
+
+/* ==========================================================================
+   Docs pagination. Starlight ships elevated bordered cards; this design has
+   neither, so they become hairline-ruled eyebrow-over-title links.
+   ========================================================================== */
+
+/* The landing page ends on its own CTA. */
+:root[data-has-hero] .pagination-links {
+  display: none;
+}
+
+.pagination-links {
+  grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
+  gap: clamp(24px, 4vw, 56px);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.pagination-links a {
+  /* svg font-size plus the column gap — the width the arrow occupies. */
+  --arrow-gutter: 1.75rem;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.pagination-links a[rel='prev'] .link-title {
+  margin-inline-start: calc(-1 * var(--arrow-gutter));
+}
+
+.pagination-links a[rel='next'] .link-title {
+  margin-inline-end: calc(-1 * var(--arrow-gutter));
+}
+
+.pagination-links a > span {
+  font-family: var(--sl-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  line-height: 1rem;
+  text-transform: uppercase;
+  color: var(--eyebrow);
+}
+
+.pagination-links .link-title {
+  display: inline-block;
+  margin-top: 0.7rem;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(1.125rem, 3.6vw, 1.375rem);
+  letter-spacing: normal;
+  line-height: 1.15;
+  text-transform: none;
+  color: var(--text-strong);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* Overrides the 1.5rem the Icon component sets inline via --sl-icon-size. */
+.pagination-links svg {
+  font-size: 1rem;
+  color: var(--text-faint);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.pagination-links a:hover .link-title,
+.pagination-links a:hover svg {
+  color: var(--ui-accent-text);
+}
+
+/* Capability glyphs. Motion and the light palette live in capability-glyphs.css
+   (vendored). The SVGs are inlined with set:html, so these must be global. */
+
+.schematic {
+  display: flex;
   justify-content: center;
   align-items: center;
-  margin-block-start: auto;
-  margin-top: 0.5rem;
+}
+
+/* Strokes are non-scaling, so honour each glyph's designed size below. */
+.schematic svg {
+  width: 100%;
+  height: auto;
+}
+
+.mantis-glyph-01 {
+  max-width: 280px;
+}
+.mantis-glyph-02 {
+  max-width: 350px;
+}
+.mantis-glyph-03 {
+  max-width: 330px;
+}
+.mantis-glyph-04 {
+  max-width: 230px;
+}
+
+.team-section {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(50px, 7vw, 100px) clamp(18px, 4vw, 40px) clamp(60px, 8vw, 110px);
+}
+
+.team-page-grid {
+  margin-block: 2.5rem 3rem;
 }
 
 .team-social-link {
   display: inline-flex;
-  background: var(--sl-color-gray-7);
-  border-radius: 100%;
-  padding: 0.6rem 0.6rem;
-  color: var(--sl-color-gray-2);
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--text-muted);
   text-decoration: none;
-  transition: background 120ms ease-out, border-color 120ms ease-out, color 120ms ease-out;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
 }
 
 .team-social-link:hover,
 .team-social-link:focus {
-  background: color-mix(in srgb, var(--sl-color-accent-low), transparent 40%);
-  border-color: var(--sl-color-accent);
-  color: var(--sl-color-accent);
+  border-color: var(--border-strong);
+  color: var(--text-strong);
 }
 
 .team-social-link svg {
@@ -281,55 +623,285 @@
   height: 1rem;
 }
 
+/* ==========================================================================
+   Header. Page-coloured, hairline-ruled, carrying the same riso grain as the
+   landing page.
+   ========================================================================== */
+
+header.header::after,
+#ambient-grain {
+  opacity: 0.12;
+  background-color: var(--mantis-teal);
+  -webkit-mask-image: url('/images/riso-noise.png');
+  mask-image: url('/images/riso-noise.png');
+  -webkit-mask-size: 200px 200px;
+  mask-size: 200px 200px;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+}
+
+/* z-index: -1 paints the grain over the header's background but under its
+   content, so nothing else needs restacking. */
+header.header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+:root:not([data-has-sidebar]) header.header {
+  padding-inline: 0;
+}
+
+:root:not([data-has-sidebar]) header.header > .header {
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: clamp(18px, 4vw, 40px);
+}
+
+/* The antennae sit above the wordmark, so centring the lockup's box drops the
+   word 7px below the baseline of Team and GitHub beside it. Shift it back onto
+   that line — translate, so the link's hit area stays where the box is. */
+.site-title img {
+  height: 24px;
+  translate: 0 -7px;
+}
+
+.site-title {
+  padding-block: 10px;
+}
+
+.mobile-preferences {
+  align-items: center;
+}
+
+/* Below 50rem Starlight moves Team, GitHub and the toggle into the mobile menu.
+   Splash has no menu button, so they stay in the bar there. */
+@media (max-width: 49.999rem) {
+  :root {
+    /* The menu button derives its offset from this token. */
+    --sl-menu-button-size: 2.75rem;
+
+    /* Nothing in this bar is taller than 24px, so the lockup's 7px lift is the
+       whole of the ink and left 8px more room below the row than above it.
+       Trimming height and bottom padding together brings the rule up by that 8
+       without moving a single item. Desktop keeps its own value — the search
+       chip is 38px there, so it sets the extent and the lift never shows. */
+    --sl-nav-height: 3rem;
+  }
+
+  header.header {
+    padding-bottom: 4px;
+  }
+
+  :root:not([data-has-sidebar]) .right-group {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  :root:not([data-has-sidebar]) .social-icons {
+    gap: 0.5rem;
+  }
+
+  :root:not([data-has-sidebar]) .social-icons::after {
+    display: none;
+  }
+
+  site-search button[data-open-modal] {
+    min-width: 44px;
+    height: 44px;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   Search on splash at phone width
+   ========================================================================== */
+
+@media (max-width: 49.999rem) {
+  :root:not([data-has-sidebar]) site-search {
+    /* Starlight ships this as display: contents, so it generates no box and
+       position, padding and transform have nothing to resolve against. */
+    display: block;
+    position: fixed;
+    inset-inline: 0;
+    top: var(--sl-nav-height);
+    z-index: 3;
+    padding: 10px 16px;
+    pointer-events: none;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition:
+      transform var(--dur-slow) var(--ease-out),
+      opacity 160ms linear;
+  }
+
+
+  :root:not([data-has-sidebar])[data-search-docked] site-search,
+  :root:not([data-has-sidebar]) site-search:focus-within,
+  :root:not([data-has-sidebar]) site-search:has(dialog[open]) {
+    transform: none;
+    opacity: 1;
+  }
+
+
+  :root:not([data-has-sidebar])[data-search-docked] site-search button[data-open-modal],
+  :root:not([data-has-sidebar]) site-search:focus-within button[data-open-modal],
+  :root:not([data-has-sidebar]) site-search:has(dialog[open]) button[data-open-modal] {
+    pointer-events: auto;
+  }
+
+  :root:not([data-has-sidebar]) site-search button[data-open-modal] {
+    position: relative;
+    width: 98px;
+    height: 36px;
+    justify-content: flex-start;
+    gap: 8px;
+    padding-inline: 13px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background: var(--bg-page);
+    color: var(--text-muted);
+    font-size: 13px;
+    transition:
+      width var(--dur-base) var(--ease-out),
+      transform 90ms var(--ease-out);
+  }
+
+  :root:not([data-has-sidebar]) site-search button[data-open-modal]::after {
+    content: '';
+    position: absolute;
+    inset-block: -4px;
+    inset-inline: 0;
+  }
+
+  :root:not([data-has-sidebar]) site-search button[data-open-modal]:active {
+    transform: scale(0.96);
+  }
+
+  :root:not([data-has-sidebar]) site-search:has(dialog[open]) button[data-open-modal] {
+    width: 100%;
+  }
+
+  :root:not([data-has-sidebar]) site-search dialog[open],
+  :root:not([data-has-sidebar]) site-search dialog[open]::backdrop {
+    animation: search-dialog-in var(--dur-base) var(--ease-out) 70ms backwards;
+  }
+
+  :root:not([data-has-sidebar]) site-search button[data-open-modal] > span {
+    display: block;
+  }
+
+  :root:not([data-has-sidebar]) site-search dialog {
+    top: 0;
+  }
+}
+
+@keyframes search-dialog-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 49.999rem) and (prefers-reduced-motion: reduce) {
+  :root:not([data-has-sidebar]) site-search {
+    transition: opacity 160ms linear;
+    transform: none;
+  }
+
+  :root:not([data-has-sidebar]) site-search button[data-open-modal] {
+    transition: none;
+  }
+
+  :root:not([data-has-sidebar]) site-search button[data-open-modal]:active {
+    transform: none;
+  }
+
+  :root:not([data-has-sidebar]) site-search dialog[open],
+  :root:not([data-has-sidebar]) site-search dialog[open]::backdrop {
+    animation: none;
+  }
+}
+
+@media (min-width: 50rem) {
+  header.header > .header {
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  header.header > .header > .right-group {
+    justify-self: end;
+  }
+}
+
+site-search button[data-open-modal] {
+  font-family: var(--sl-font-mono);
+}
+
+site-search button[data-open-modal] > kbd {
+  padding: 2px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: transparent;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+@media (min-width: 50rem) {
+  site-search button[data-open-modal] {
+    height: 38px;
+    width: clamp(180px, 32vw, 380px);
+    max-width: 380px;
+    padding-inline: 14px;
+    border-color: var(--border-strong);
+    border-radius: 8px;
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  site-search button[data-open-modal]:hover {
+    border-color: var(--text-muted);
+    color: var(--text-body);
+  }
+}
+
+#starlight__search .pagefind-ui__search-input::placeholder {
+  opacity: 1;
+  color: var(--text-muted);
+}
+
 .toolbar-text-link:any-link,
 .toolbar-text-link:visited {
-  color: var(--sl-color-text-accent);
-  font-family: var(--sl-font);
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 16px 5px;
+  color: var(--text-muted);
+  font-family: var(--sl-font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   line-height: 1;
+  text-transform: uppercase;
   text-decoration: none;
 }
 
-.team-toolbar-link {
-  margin-inline-end: 0.5rem;
+.toolbar-sep {
+  color: var(--text-faint);
+  font-family: var(--sl-font-mono);
+  font-size: 0.75rem;
+  line-height: 1;
 }
 
 .toolbar-text-link:hover,
 .toolbar-text-link:focus {
-  color: var(--sl-color-white);
-}
-
-starlight-theme-select label {
-  color: var(--sl-color-text-accent);
-  font-family: var(--sl-font);
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-starlight-theme-select select {
-  color: inherit;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-}
-
-starlight-theme-select label:hover,
-starlight-theme-select label:focus-within {
-  color: var(--sl-color-white);
-}
-
-:root[data-theme='light'] starlight-theme-select label:hover,
-:root[data-theme='light'] starlight-theme-select label:focus-within {
-  color: var(--sl-color-accent-high);
+  color: var(--text-strong);
 }
 
 .walkthrough-animation {
   overflow: hidden;
   margin-block: 1.25rem;
-  border: 1px solid var(--sl-color-gray-5);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: #e8f0f0;
+  background: var(--mantis-mist);
 }
 
 .walkthrough-animation iframe {
@@ -343,5 +915,93 @@ starlight-theme-select label:focus-within {
 @media (max-width: 740px) {
   .walkthrough-animation iframe {
     min-height: 620px;
+  }
+}
+
+/* ==========================================================================
+   Landing page at phone width. Kept together at the end on purpose: media
+   queries carry no extra specificity, so these only win by coming last.
+   ========================================================================== */
+
+@media (max-width: 49.999rem) {
+  .capabilities,
+  .team-section,
+  .closing {
+    padding-inline: 0;
+  }
+
+  .three-up {
+    padding-inline: 16px;
+  }
+
+  .pillar {
+    padding: 40px 28px 44px;
+  }
+
+  .pillar .eyebrow {
+    margin-bottom: 32px;
+  }
+
+  .pillar h3 {
+    margin-bottom: 24px;
+  }
+
+  .pillar-copy {
+    margin-bottom: 32px;
+  }
+
+  .closing .statement {
+    display: none;
+  }
+
+  .closing-eyebrow {
+    display: block;
+  }
+
+  .closing {
+    padding-block: clamp(40px, 9vw, 72px);
+  }
+}
+
+/* ==========================================================================
+   Capability modules at phone width.
+   ========================================================================== */
+
+@media (max-width: 47.999rem) {
+  .module {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0 16px;
+    margin-bottom: 56px;
+  }
+
+  .module-copy {
+    display: contents;
+  }
+
+  .eyebrow-module,
+  .module h3,
+  .module-body {
+    grid-column: 1 / -1;
+  }
+
+  .module .chips {
+    grid-column: 1;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .schematic {
+    grid-column: 2;
+    align-self: center;
+    pointer-events: none;
+  }
+
+  .schematic svg {
+    max-width: 144px;
+  }
+
+  .module-flip {
+    direction: ltr;
   }
 }

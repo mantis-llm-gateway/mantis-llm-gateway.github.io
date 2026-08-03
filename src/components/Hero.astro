@@ -1,0 +1,215 @@
+---
+const { data } = Astro.locals.starlightRoute.entry;
+const { title = data.title, tagline, actions = [] } = data.hero || {};
+
+// Brand copy, not page content — no Starlight frontmatter field carries it.
+const stats = ['SELF_HOSTED: TRUE', 'CLOUD_PROVIDER: AWS', 'API_STYLE: OPENAI'];
+
+// The wordmark splits at the man/tis syllable on phones. No CSS property breaks
+// a word at a chosen point, so the halves have to be separate elements — inline
+// on desktop, so the word still reads as one. aria-label pins the accessible
+// name: stacking two blocks would otherwise have the heading announce "Man tis".
+const mid = Math.ceil(title.length / 2);
+const [wordHead, wordTail] = [title.slice(0, mid), title.slice(mid)];
+---
+
+<div class="mantis-hero">
+  <div class="wordmark-block">
+    <div class="stats">
+      {stats.map((s) => <span>{s}</span>)}
+    </div>
+    <div class="wordmark-row">
+      {/* id="_top" is Starlight's PAGE_TITLE_ID — the skip-link target. Hardcoded
+          because the constant is not an exported module path. */}
+      <h1 id="_top" data-page-title aria-label={title}><span>{wordHead}</span><span>{wordTail}</span></h1>
+    </div>
+  </div>
+
+  <div class="copy">
+    {tagline && <p class="tagline" set:html={tagline} />}
+    {
+      actions.length > 0 && (
+        <div class="actions">
+          {actions.map(({ link, text, variant }) => (
+            <a href={link} class:list={['cta', variant === 'secondary' ? 'is-secondary' : 'is-primary']}>
+              {text}
+              {variant !== 'secondary' && <span aria-hidden="true">&rarr;</span>}
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .mantis-hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(24px, 4vw, 48px) 0 clamp(30px, 3.75vw, 54px);
+  }
+
+  .wordmark-block {
+    position: relative;
+    text-align: center;
+    margin: 0 0 clamp(24px, 3vw, 40px);
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(24px, 5vw, 90px);
+    flex-wrap: wrap;
+    margin-bottom: 4rem;
+    font-family: var(--sl-font-mono);
+    font-size: 10px;
+    letter-spacing: 0.42em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .wordmark-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  h1#_top {
+    margin: 0;
+    flex: none;
+    white-space: nowrap;
+    font-family: 'Zen Dots', sans-serif;
+    font-weight: 400;
+    font-size: 22vw;
+    line-height: 0.7;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--hero-word);
+  }
+
+  .copy {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .tagline {
+    margin: 1rem 1rem clamp(28px, 3.2vw, 40px);
+    font-family: var(--sl-font-mono);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .tagline :global(strong) {
+    color: var(--text-strong);
+    font-weight: inherit;
+  }
+
+
+  /* Staged entrance: fade up, then wipe the wordmark in from below. */
+  @keyframes heroRise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes heroWipe {
+    from {
+      clip-path: inset(100% 0 0 0);
+    }
+    to {
+      clip-path: inset(-14% 0 -14% 0);
+    }
+  }
+
+  .stats,
+  .tagline,
+  .actions {
+    opacity: 0;
+    animation: heroRise 0.42s var(--ease-out) both;
+  }
+
+  .stats {
+    animation-delay: 0.12s;
+  }
+  .tagline {
+    animation-delay: 0.72s;
+  }
+  .actions {
+    animation-delay: 0.88s;
+  }
+
+  h1#_top {
+    animation: heroWipe 0.95s var(--ease-out) 0.28s both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stats,
+    .tagline,
+    .actions,
+    h1#_top {
+      animation: none;
+      opacity: 1;
+      clip-path: none;
+    }
+  }
+
+  @media (max-width: 49.999rem) {
+    .stats {
+      gap: 6px 14px;
+      margin-bottom: 1.75rem;
+      letter-spacing: 0.18em;
+    }
+
+    /* MAN / TIS on their own lines, which roughly triples the wordmark's
+       presence at phone width. */
+    h1#_top span {
+      display: block;
+      position: relative;
+      left: 50%;
+      width: max-content;
+      transform: translateX(-50%);
+    }
+
+    h1#_top {
+      font-size: min(48vw, 22.5vh);
+      line-height: 0.78;
+    }
+
+    .copy {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .tagline {
+      margin-inline: 0;
+      font-size: 0.9375rem;
+    }
+
+    /* Growing the hero to the fold and bottom-anchoring the actions puts the
+       CTAs in thumb reach. svh, not vh: vh assumes retracted browser chrome, so
+       the buttons would sit under the toolbar. The reveal band is deliberate —
+       filling the column exactly would leave nothing signalling a scroll. */
+    .mantis-hero {
+      --hero-reveal: clamp(72px, 11vh, 112px);
+      min-height: calc(100svh - var(--sl-nav-height) - var(--hero-reveal));
+    }
+
+    .actions {
+      margin-top: auto;
+    }
+  }
+</style>

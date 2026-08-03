@@ -32,7 +32,7 @@ To use LLMs in their applications, developers make API calls to endpoints hosted
 
 Two identical prompts sent to an LLM do not produce the same response. LLM responses are unpredictable, since they are, at their core, next-token predictors. This means there is a probability score attached to the likelihood of what the next token will be as the model is generating its output. In other words, one cannot guarantee that the exact same inputs will lead to the same output as one can in deterministic systems.
 
-#### Cost
+### Cost
 
 Interacting with a standard API involves usage-based, determinable pricing. That is quite different from token-based LLM costs, which involve numerous factors.
 
@@ -42,13 +42,13 @@ This is hard to predict per request and becomes more complicated with multi-step
 
 Also, unlike standard API calls, a cost-benefit analysis is opaque before one actually makes the LLM call. In other words, only when the response comes back can one ascertain whether the output (i.e., a predicted benefit) was worth the cost.
 
-Another factor here is that there is no uniform pricing across providers or models. For example, Claude’s cutting-edge model meant for extreme reasoning and automation, *Fable 5*, costs $10/MITok and $50/MOTok, whereas the older, more lightweight model for light, everyday use, *Haiku 4.5*, costs one-tenth that at $1/MITok and $5/MOTok.
+Another factor here is that there is no uniform pricing across providers or models. For example, Claude’s cutting-edge model meant for extreme reasoning and automation, *Fable 5*, costs\* $10/MITok\** and $50/MOTok, whereas the older, more lightweight model for light, everyday use, *Haiku 4.5*, costs one-tenth that at $1/MITok and $5/MOTok.
 
 In other words, prices can vary widely, with the most sophisticated models costing many times more than simpler, everyday models.
 
-*as of June 2026*
+\**as of June 2026*
 
-*MITok: per million input tokens; MOTok: per million output tokens*
+\*\**MITok: per million input tokens; MOTok: per million output tokens*
 
 ### Latency
 

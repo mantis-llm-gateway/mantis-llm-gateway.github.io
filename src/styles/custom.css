@@ -104,7 +104,7 @@
   --eyebrow: #5e7272;
   --display-recede: #4a5c5c;
 
-  /* Read by ambient-field.js off the canvas element. */
+  /* Dot colour and overall strength of the halftone in AmbientBackground. */
   --field-rgb: 210, 228, 228;
   --field-a: 1;
 }
@@ -519,7 +519,19 @@ h1#_top {
   display: none;
 }
 
+/* Starlight's column floor is 18rem, so two links need a 601px content column
+   before they share a line — about a 633px viewport — and every phone gets them
+   stacked instead: 154px of chrome for two words and two titles. A 9rem floor
+   brings that down to 312px, so everything from a 344px viewport up pairs them,
+   and only the 320px class still stacks, where two columns genuinely wouldn't
+   hold the longer titles.
+
+   Keeping auto-fit rather than a fixed 1fr 1fr is what makes the first and last
+   page of the sidebar sequence still work: with one link the empty track
+   collapses and the survivor spans the full width. A fixed pair would leave a
+   next-only link end-aligned inside the left half, marooned mid-page. */
 .pagination-links {
+  grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
   gap: clamp(24px, 4vw, 56px);
   padding-top: 1.5rem;
   border-top: 1px solid var(--border);
@@ -566,7 +578,11 @@ h1#_top {
   margin-top: 0.7rem;
   font-family: 'EB Garamond', Georgia, serif;
   font-weight: 500;
-  font-size: 1.375rem;
+  /* Halving the column means the longest label in the sidebar, "3. Existing
+     Solutions", no longer clears 160px at 22px and wraps. The floor is the size
+     that keeps it on one line there; the ceiling is reached by 612px, so every
+     width with room for the full size still gets it. */
+  font-size: clamp(1.125rem, 3.6vw, 1.375rem);
   letter-spacing: normal;
   line-height: 1.15;
   text-transform: none;
@@ -715,6 +731,17 @@ header.header::after {
     /* The menu button is fixed and derives its offset from this token, so
        sizing it here keeps it centred in the bar. */
     --sl-menu-button-size: 2.75rem;
+  }
+
+  /* Starlight makes this button a flex box but never sets either alignment, so
+     its 1em icon parks at the origin of the padding box — 8px in from the top
+     and left of a 44px circle, 20px from the other two edges. It reads as a
+     drawing error rather than a control. */
+  starlight-menu-button button {
+    align-items: center;
+    /* Not place-items — its justify-items half has no effect on a flex
+       container, so the icon would centre vertically and stay left. */
+    justify-content: center;
   }
 
   :root:not([data-has-sidebar]) .right-group {

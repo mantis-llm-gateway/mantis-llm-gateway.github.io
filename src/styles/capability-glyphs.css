@@ -23,23 +23,15 @@
 .mantis-glyph.theme-light,
 .theme-light .mantis-glyph,
 [data-theme="light"] .mantis-glyph {
-  /* Every alpha carries a ×1.2 over the handoff values. The strokes are ink on
-     mist, so alpha is the only lever that darkens them — the colour is already
-     near-black, and dimming it further moves the composite by ~1/255. Scaling
-     alpha instead lands each stroke exactly 20% further from the page colour.
-
-     --mg-base and the two --mg-m1* carry a further ×1.15 (×1.38 overall). They
-     are the only tokens glyphs 02 and 01 draw with, so scoping by glyph class
-     is unnecessary — no other glyph reads them. Both are dot fields at
-     `stroke-dasharray: 0.1 3`, so only ~3% of each path is inked and the dots
-     land under a pixel wide; alpha has to carry what the geometry gives away. */
+  /* Ink on mist, so alpha is the only lever that darkens these — the colour is
+     already near-black and dimming it further moves the composite by ~1/255. */
   --mg-strong:  rgba(16,32,40,0.41);
   --mg-base:    rgba(16,32,40,0.41);
   --mg-soft:    rgba(16,32,40,0.26);
   --mg-faint:   rgba(16,32,40,0.20);
   --mg-hair:    rgba(16,32,40,0.14);
-  --mg-m1:      rgba(16,32,40,0.63);
-  --mg-m1-soft: rgba(16,32,40,0.47);
+  --mg-m1:      rgba(16,32,40,0.41);
+  --mg-m1-soft: rgba(16,32,40,0.31);
   --mg-m3:      rgba(16,32,40,0.18);
   --mg-m4-route: rgba(16,32,40,0.22);
 }

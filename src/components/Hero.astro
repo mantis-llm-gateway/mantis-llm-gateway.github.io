@@ -3,7 +3,7 @@ const { data } = Astro.locals.starlightRoute.entry;
 const { title = data.title, tagline, actions = [] } = data.hero || {};
 
 // Brand copy, not page content — no Starlight frontmatter field carries it.
-const stats = ['SELF_HOSTED: TRUE', 'CLOUD_PROVIDER: AWS', 'API: OPENAI-STYLE'];
+const stats = ['SELF_HOSTED: TRUE', 'CLOUD_PROVIDER: AWS', 'API_STYLE: OPENAI'];
 
 // The wordmark splits at the man/tis syllable on phones. No CSS property breaks
 // a word at a chosen point, so the halves have to be separate elements — inline
@@ -77,10 +77,6 @@ const [wordHead, wordTail] = [title.slice(0, mid), title.slice(mid)];
     width: 100%;
   }
 
-  /* Selector carries the id to outrank the global `h1#_top` heading rule in
-     custom.css, which would otherwise put the wordmark in EB Garamond.
-     Zen Dots ships a single weight — declaring 700 would synthesise a
-     faux-bold, and the face is already heavy at 400. */
   h1#_top {
     margin: 0;
     flex: none;
@@ -110,14 +106,11 @@ const [wordHead, wordTail] = [title.slice(0, mid), title.slice(mid)];
     color: var(--text-muted);
   }
 
-  /* Tagline comes through set:html, which bypasses Astro's style scoping.
-     The design lifts the capability list in colour only, not weight. */
   .tagline :global(strong) {
     color: var(--text-strong);
     font-weight: inherit;
   }
 
-  /* .actions and .cta are global — the closing section reuses them. */
 
   /* Staged entrance: fade up, then wipe the wordmark in from below. */
   @keyframes heroRise {
@@ -172,12 +165,7 @@ const [wordHead, wordTail] = [title.slice(0, mid), title.slice(mid)];
     }
   }
 
-  /* The desktop composition puts a lot of air around the hero. On a phone that
-     air is most of the first screen, so the stat row tightens, the wordmark
-     grows into the space it frees, and the tagline gets its gutters back. */
   @media (max-width: 49.999rem) {
-    /* 0.42em tracking made each stat ~180px, so only one fitted per line and
-       the row ran to three. Tighter tracking fits two. */
     .stats {
       gap: 6px 14px;
       margin-bottom: 1.75rem;
@@ -185,11 +173,7 @@ const [wordHead, wordTail] = [title.slice(0, mid), title.slice(mid)];
     }
 
     /* MAN / TIS on their own lines, which roughly triples the wordmark's
-       presence at phone width. Blocks rather than a text wrap, so the break
-       doesn't depend on box width. left: 50% + translateX centres them —
-       text-align can't, since a line wider than its block lays out from the
-       start edge. max-content also blocks the inherited overflow-wrap, which
-       was shattering the word into one-letter lines. */
+       presence at phone width. */
     h1#_top span {
       display: block;
       position: relative;
@@ -198,18 +182,11 @@ const [wordHead, wordTail] = [title.slice(0, mid), title.slice(mid)];
       transform: translateX(-50%);
     }
 
-    /* Height has to be in the expression, not just width: two lines sized purely
-       off vw pushed the CTAs past the fold on a short phone. vw governs on tall
-       screens and the vh cap takes over on short ones, so the wordmark holds
-       ~34% of the viewport either way — the share it occupies on desktop. */
     h1#_top {
       font-size: min(48vw, 22.5vh);
       line-height: 0.78;
     }
 
-    /* 40px of padding plus margin per side pushed this to five lines. The
-       content panel already supplies a 16px gutter, so this adds none of its
-       own; 15px then fits the sentence in three. */
     .copy {
       display: flex;
       flex: 1;

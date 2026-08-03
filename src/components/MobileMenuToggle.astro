@@ -1,0 +1,136 @@
+---
+// Starlight ships `bars` and `close` as two single-path icons and swaps them on
+// display. A hamburger that folds into an X needs the three rules as separate
+// elements, so the markup is ours; the toggle behaviour below is Starlight's.
+//
+// Geometry and end state are the Lucide menu icon as animated by animate-ui —
+// the outer rules rotate ±45° about their right ends and shift back onto centre
+// while the middle one fades. No runtime: `aria-expanded` is already on the host
+// element, so CSS reads the state directly.
+---
+
+<starlight-menu-button class="print:hidden">
+  <button
+    aria-expanded="false"
+    aria-label={Astro.locals.t('menuButton.accessibleLabel')}
+    aria-controls="starlight__sidebar"
+    class="sl-flex md:sl-hidden"
+  >
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+    >
+      <line class="rule-1" x1="4" y1="6" x2="20" y2="6"></line>
+      <line class="rule-2" x1="4" y1="12" x2="20" y2="12"></line>
+      <line class="rule-3" x1="4" y1="18" x2="20" y2="18"></line>
+    </svg>
+  </button>
+</starlight-menu-button>
+
+<script>
+  class StarlightMenuButton extends HTMLElement {
+    btn = this.querySelector('button')!;
+
+    constructor() {
+      super();
+      this.btn.addEventListener('click', () => this.toggleExpanded());
+
+      const parentNav = this.closest('nav');
+      if (parentNav) {
+        parentNav.addEventListener('keyup', (e) => this.closeOnEscape(e));
+      }
+    }
+
+    setExpanded(expanded: boolean) {
+      this.setAttribute('aria-expanded', String(expanded));
+      document.body.toggleAttribute('data-mobile-menu-expanded', expanded);
+    }
+
+    toggleExpanded() {
+      this.setExpanded(this.getAttribute('aria-expanded') !== 'true');
+    }
+
+    closeOnEscape(e: KeyboardEvent) {
+      if (e.code === 'Escape') {
+        this.setExpanded(false);
+        this.btn.focus();
+      }
+    }
+  }
+
+  customElements.define('starlight-menu-button', StarlightMenuButton);
+</script>
+
+<style>
+  /* Positioning is Starlight's; the fill and shadow it also declared are not. */
+  button {
+    position: fixed;
+    top: calc((var(--sl-nav-height) - var(--sl-menu-button-size)) / 2);
+    inset-inline-end: var(--sl-nav-pad-x);
+    z-index: var(--sl-z-index-navbar);
+    align-items: center;
+    justify-content: center;
+    width: var(--sl-menu-button-size);
+    height: var(--sl-menu-button-size);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--text-strong);
+    cursor: pointer;
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-pill);
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* view-box, not the default fill-box: a horizontal rule has no height, so its
+     own box gives the origin nothing vertical to sit on. These are user units. */
+  line {
+    transform-box: view-box;
+    transition:
+      translate var(--dur-slow) var(--ease-out),
+      rotate var(--dur-slow) var(--ease-out),
+      opacity var(--dur-base) ease-in-out;
+  }
+
+  .rule-1 {
+    transform-origin: 20px 6px;
+  }
+
+  .rule-3 {
+    transform-origin: 20px 18px;
+  }
+
+  /* Rotating about the right end lands the crossing at x=14; the shift carries
+     it back to the middle so both arms centre on 12,12. */
+  [aria-expanded='true'] .rule-1 {
+    translate: -2.35px 0.35px;
+    rotate: -45deg;
+  }
+
+  [aria-expanded='true'] .rule-2 {
+    opacity: 0;
+  }
+
+  [aria-expanded='true'] .rule-3 {
+    translate: -2.35px -0.35px;
+    rotate: 45deg;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    line {
+      transition: none;
+    }
+  }
+</style>

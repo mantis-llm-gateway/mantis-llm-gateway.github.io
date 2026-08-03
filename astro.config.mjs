@@ -30,6 +30,7 @@ export default defineConfig({
         Hero: './src/components/Hero.astro',
         ThemeSelect: './src/components/ThemeSelect.astro',
         Search: './src/components/Search.astro',
+        MobileMenuToggle: './src/components/MobileMenuToggle.astro',
       },
       // capability-glyphs.css is vendored from the design handoff — keep it
       // separate so a re-export drops straight in.

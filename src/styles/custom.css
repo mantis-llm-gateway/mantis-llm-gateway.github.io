@@ -680,11 +680,6 @@ header.header::after {
     --sl-menu-button-size: 2.75rem;
   }
 
-  starlight-menu-button button {
-    align-items: center;
-    justify-content: center;
-  }
-
   :root:not([data-has-sidebar]) .right-group {
     display: flex;
     gap: 0.5rem;

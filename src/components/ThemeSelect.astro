@@ -1,14 +1,10 @@
 ---
 import { Icon } from '@astrojs/starlight/components';
 
-// Replaces Starlight's three-option select with a two-state switch. There is no
-// `auto` to select because ThemeProvider's inline script has already resolved
-// the initial theme — stored preference first, system preference otherwise —
-// and written `light` or `dark` onto <html> before this renders.
-//
-// Both icons are always in the DOM; the knob slides over the active one, so
-// position carries the state and no script touches the visuals. That keeps
-// several toggles on one page in sync for free.
+// A two-state switch in place of Starlight's three-option select. No `auto`
+// option: ThemeProvider has already resolved and written the theme onto <html>.
+// Both icons stay in the DOM and the knob slides over the active one, so
+// position carries the state and several toggles stay in sync for free.
 ---
 
 <starlight-theme-toggle>

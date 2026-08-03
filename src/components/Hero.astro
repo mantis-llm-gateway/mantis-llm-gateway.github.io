@@ -184,22 +184,12 @@ const [wordHead, wordTail] = [title.slice(0, mid), title.slice(mid)];
       letter-spacing: 0.18em;
     }
 
-    /* One line of MANTIS filled ~13% of a phone screen against the desktop
-       composition's ~35%, so it read as a band rather than the anchor. Each
-       half takes its own line here, which roughly triples the wordmark's
-       presence and lets both grow past what the whole word could reach.
-
-       Stacking them as blocks — rather than letting the text wrap at a break
-       opportunity — keeps the break independent of how wide the box is. A wrap
-       only fires when the line outgrows its container, so widening the box far
-       enough to centre the overflow also stopped the break happening at all.
-
-       left: 50% + translateX(-50%) is what centres them. text-align cannot: a
-       line wider than its block is laid out from the start edge, so the
-       wordmark hung off the right only. width: max-content also means neither
-       half can re-wrap, which takes Starlight's inherited overflow-wrap:
-       break-word out of play — it had been shattering the word into five
-       one-letter lines. The root's overflow-x: clip absorbs the bleed. */
+    /* MAN / TIS on their own lines, which roughly triples the wordmark's
+       presence at phone width. Blocks rather than a text wrap, so the break
+       doesn't depend on box width. left: 50% + translateX centres them —
+       text-align can't, since a line wider than its block lays out from the
+       start edge. max-content also blocks the inherited overflow-wrap, which
+       was shattering the word into one-letter lines. */
     h1#_top span {
       display: block;
       position: relative;
@@ -232,14 +222,10 @@ const [wordHead, wordTail] = [title.slice(0, mid), title.slice(mid)];
       font-size: 0.9375rem;
     }
 
-    /* The hero ran 453px of a 768px column, stranding the CTAs mid-screen with
-       345px of nothing under them. Growing it to the fold and bottom-anchoring
-       the actions puts the buttons in thumb reach.
-
-       svh, not vh: vh is the viewport with browser chrome retracted, so on a
-       phone the buttons would sit under the toolbar until the user scrolled.
-       The reveal band is deliberate — filling the column exactly would hide the
-       spine and leave nothing signalling that the page continues. */
+    /* Growing the hero to the fold and bottom-anchoring the actions puts the
+       CTAs in thumb reach. svh, not vh: vh assumes retracted browser chrome, so
+       the buttons would sit under the toolbar. The reveal band is deliberate —
+       filling the column exactly would leave nothing signalling a scroll. */
     .mantis-hero {
       --hero-reveal: clamp(72px, 11vh, 112px);
       min-height: calc(100svh - var(--sl-nav-height) - var(--hero-reveal));

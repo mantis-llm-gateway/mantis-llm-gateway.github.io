@@ -27,9 +27,6 @@
   src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
 }
 
-/* Heading face. 500 for headings, 600 for team member names, 800 for the
-   closing statement. One variable file covers all three and is 6KB smaller
-   than the two static instances it replaces. */
 @font-face {
   font-family: 'EB Garamond';
   font-style: normal;
@@ -38,11 +35,7 @@
   src: url('/fonts/EBGaramond-Variable.woff2') format('woff2');
 }
 
-/* The hero wordmark's face, and the only thing using it. Subset to the 18
-   glyphs of "MANTIS" + "ROUTE. CACHE. GUARD. OBSERVE." — the second string no
-   longer renders in this face, so the spare glyphs are dead weight, but at
-   ~1.4KB it isn't worth a re-export. Other copy falls back silently; re-subset
-   via the Google CSS API &text= parameter if the wordmark changes. */
+/* Hero wordmark only. Subset via the Google CSS API &text= if it changes. */
 @font-face {
   font-family: 'Zen Dots';
   font-style: normal;
@@ -53,15 +46,12 @@
 
 /* ==========================================================================
    Design tokens. Dark is the default; light overrides the neutrals.
-   Teal and coral are constant across both themes.
    ========================================================================== */
 
 :root,
 :root[data-theme='dark'] {
   --mantis-teal: #00a898;
   --mantis-teal-deep: #00897c;
-  --mantis-coral: #fd5e3e;
-  --mantis-coral-deep: #e94b2c;
   --mantis-ink: #102028;
   --mantis-mist: #e8f0f0;
 
@@ -78,33 +68,24 @@
   --teal-tint: rgba(0, 168, 152, 0.16);
   --focus-ring: rgba(0, 168, 152, 0.4);
 
-  /* Teal fills are constant; accent *text* darkens in light for contrast. */
   --ui-accent: var(--mantis-teal);
   --ui-accent-text: var(--mantis-teal);
-  /* Primary CTA hover. Teal mixed 18% toward white, so the button reads as
-     lifting into the light rather than pressing away from it. Also repairs a
-     contrast failure: ink on --mantis-teal-deep was 3.87:1, this is 6.80:1. */
   --ui-accent-lift: #2eb8ab;
 
   --dur-fast: 120ms;
   --dur-base: 180ms;
-  /* Travel long enough to read as arriving from somewhere — the search pill
-     sliding out from behind the header is the only thing at this duration. */
   --dur-slow: 240ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --radius-chip: 3px;
   --radius-pill: 999px;
 
-  /* The hero wordmark is a wash, not full-strength text. */
   --hero-word: rgba(232, 240, 240, 0.3);
   --shadow-teal: 0 6px 20px rgba(0, 168, 152, 0.4);
 
-  /* Section furniture. Glyph stroke colours live in capability-glyphs.css. */
   --spine-line: #24393f;
   --eyebrow: #5e7272;
   --display-recede: #4a5c5c;
 
-  /* Dot colour and overall strength of the halftone in AmbientBackground. */
   --field-rgb: 210, 228, 228;
   --field-a: 1;
 }
@@ -123,7 +104,6 @@
   --teal-tint: #d9f0ed;
   --focus-ring: rgba(0, 168, 152, 0.32);
 
-  /* Brand teal is 3.7:1 on the mist page — below AA. Darkened 40% toward ink. */
   --ui-accent-text: #06726b;
 
   --hero-word: rgba(16, 32, 40, 0.17);
@@ -137,9 +117,6 @@
   --field-a: 0.62;
 }
 
-/* The wordmark is a wash rather than solid text. At phone scale it occupies
-   far less of the screen than the desktop composition gives it, so it carries
-   more weight there to stay the anchor of the view. */
 @media (max-width: 49.999rem) {
   :root,
   :root[data-theme='dark'] {
@@ -152,8 +129,7 @@
 }
 
 /* ==========================================================================
-   Starlight adapter. Starlight derives --sl-color-text/-bg/-hairline etc.
-   from the ramp below, so only the ramp and the accent triad are set here.
+   Starlight adapter. Starlight derives its own colours from this ramp.
    ========================================================================== */
 
 :root,
@@ -173,13 +149,7 @@
   --sl-color-accent: var(--mantis-teal);
   --sl-color-accent-high: var(--ui-accent-text);
 
-  /* Body prose is --text-body, not the ramp's gray-2 default. */
   --sl-color-text: var(--text-body);
-
-  /* The nav bar sits on the page colour, not a raised surface. hairline-shade
-     defaults to --sl-color-black, which under this ramp is the page colour —
-     so the header rule, the sidebar edge and the mobile TOC borders were all
-     being drawn in the background they were meant to separate. */
   --sl-color-bg-nav: var(--bg-page);
   --sl-color-hairline-shade: var(--border);
 
@@ -196,22 +166,15 @@
   --sl-color-accent-high: #0a5655;
 }
 
-/* Splash pages speak in mono; long-form docs prose reads in serif.
-   Starlight sets data-has-hero on <html> for any page with `hero` frontmatter. */
 :root[data-has-hero] {
   --sl-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-/* The hero wordmark is deliberately wider than the viewport. Set on the root as
-   well as body — overflow on body alone propagates to the viewport rather than
-   clipping, so the page still scrolls sideways. `clip` rather than `hidden`
-   avoids creating a scroll container. */
 :root[data-has-hero],
 :root[data-has-hero] body {
   overflow-x: clip;
 }
 
-/* Starlight has no heading-font token. */
 .sl-markdown-content :is(h1, h2, h3, h4, h5, h6),
 h1#_top {
   font-family: 'EB Garamond', Georgia, serif;
@@ -220,10 +183,6 @@ h1#_top {
 
 .site-title {
   font-weight: 700;
-}
-
-.hero img {
-  image-rendering: auto;
 }
 
 .sl-markdown-content img {
@@ -236,25 +195,44 @@ h1#_top {
   font-size: 0.92rem;
 }
 
-/* Same shape of bug as .module:last-child, in Starlight's prose rhythm. When a
-   list's items hold paragraphs, Starlight gives each item's last block a
-   1.25rem bottom margin so the items separate. The final item has nothing to
-   separate from, so that margin collapses out of the list and lands under it:
-   measured, a loose list on the architecture page sets its items 20px apart and
-   then closes with the same 20px. The list never ends — it reads as one run of
-   text with some indented lines in the middle.
-
-   Giving the list its own close puts the three gaps back in order: 16px inside
-   a paragraph run, 20px between items, 32px to whatever follows. Only lists
-   with block children are affected — a tight list already closes correctly at
-   4px inside and 16px after, and 32px there would tear it off the page.
-
-   :not(:last-child) because a close is only needed when something follows. On
-   future-work, which ends on a list, the margin otherwise landed on the gap
-   above the pagination rule and pushed it 96px -> 104px, making that page's
-   footer sit lower than every other page's. */
 .sl-markdown-content > :is(ol, ul):has(> li > p):not(:last-child) {
   margin-bottom: 2rem;
+}
+
+.sl-markdown-content .sl-anchor-link {
+  display: none;
+}
+
+.sl-markdown-content .sl-heading-wrapper {
+  --sl-anchor-icon-space: 0px;
+}
+
+.expressive-code .copy button div,
+.expressive-code .copy button::before {
+  display: none;
+}
+
+.expressive-code .copy button::after {
+  margin: 0;
+  mask-size: 13px;
+  mask-position: center;
+  -webkit-mask-size: 13px;
+  -webkit-mask-position: center;
+}
+
+.expressive-code .copy button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.expressive-code .copy > [aria-live] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* ==========================================================================
@@ -262,8 +240,7 @@ h1#_top {
    no fills, no elevation.
    ========================================================================== */
 
-/* Splash content spans the full width; Starlight's prose measure doesn't apply,
-   and its content panel caps at 1080px against the design's 1240px column. */
+/* Splash spans the full width; Starlight's prose measure doesn't apply. */
 :root[data-has-hero] .sl-markdown-content {
   max-width: none;
 }
@@ -281,16 +258,12 @@ h1#_top {
   color: var(--ui-accent-text);
 }
 
-/* No margin-top: auto — .pillar's subgrid puts the chips on their own row and
-   bottom-aligns them across all three cards. */
 .chips {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-/* 9px needs the extra weight to hold its colour, and the wider tracking keeps
-   the letterforms from closing up at that size. */
 .chip {
   padding: 7px 11px;
   border: 1px solid var(--border-strong);
@@ -334,17 +307,6 @@ h1#_top {
   padding: clamp(50px, 7vw, 100px) clamp(18px, 4vw, 40px);
 }
 
-/* Cells stay transparent so the ambient field and grain show through, so the
-   interior hairlines are per-cell borders rather than a gap over a filled
-   background. Overlapping them by 1px keeps shared edges a single line and
-   survives wrapping.
-
-   The four rows are the pillar's own children — eyebrow, heading, copy, chips —
-   hoisted to the parent so each row sizes to the tallest card. Without it the
-   heading row is per-card, and any width where one title fits on a line the
-   others don't drops that card's copy by a full line: at 1600px the titles need
-   260/235/257px in a 244px column, so only AWS-Native stays single-line and its
-   body sits 48px above the other two. */
 .three-up-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
@@ -379,7 +341,6 @@ h1#_top {
   color: var(--text-muted);
 }
 
-
 .capabilities {
   max-width: 1240px;
   margin: 0 auto;
@@ -397,12 +358,8 @@ h1#_top {
   color: var(--eyebrow);
 }
 
-/* 300px, not 340: between 800px and ~850px the sidebar-less content panel is
-   only ~713px wide, and two 340px tracks plus the gap need 729 — so auto-fit
-   dropped to a single column exactly where the phone layout stops applying,
-   stacking the glyph under the copy again. 300 keeps two columns across that
-   band. auto-fit collapses the empty third track it can now form on wide
-   screens, so the desktop composition is unchanged. */
+/* 300px, not 340: between 800 and ~850px two 340 tracks plus the gap overflow
+   the panel, dropping to one column right where the phone rules stop applying. */
 .module {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
@@ -411,19 +368,10 @@ h1#_top {
   margin-bottom: clamp(80px, 11vw, 170px);
 }
 
-/* That margin separates one module from the next, but the fourth has no next —
-   there it stops being separation and becomes trailing space, stacking on the
-   section's own padding and the team section's. Measured at 1280 it made the
-   gap into // Team 345.6px where the three-up closes into // Capabilities at
-   198.4 and the team into the CTA at 256; the page visibly loses its footing
-   between the last schematic and the team grid. Zeroed, the run reads
-   198 / 205 / 256, and at 375px 114 / 120 / 100. */
 .module:last-child {
   margin-bottom: 0;
 }
 
-/* Alternating modules put the schematic on the left. Flipping with `direction`
-   reverses grid order without reordering the DOM, so reading order is preserved. */
 .module-flip {
   direction: rtl;
 }
@@ -514,10 +462,6 @@ h1#_top {
   text-align: center;
 }
 
-/* Takes its face from the global heading rule, so it matches the capability
-   headings — hence no font-family here. Larger than those and set back in
-   --display-recede, since it closes the page rather than titling a section.
-   800 is the top of EB Garamond's weight axis. */
 .closing .statement {
   margin: 0 0 clamp(44px, 6vw, 72px);
   font-weight: 800;
@@ -531,37 +475,22 @@ h1#_top {
   max-width: 580px;
 }
 
-/* The display line carries the close on desktop; the eyebrow is its phone-width
-   stand-in, so only one is ever shown. Left-aligned like // Capabilities and
-   // Team even though the section itself centres, which is how the team section
-   already pairs a flush eyebrow with a centred grid. */
+/* The statement's phone-width stand-in; only one is ever shown. */
 .closing-eyebrow {
   display: none;
   text-align: left;
 }
 
 /* ==========================================================================
-   Docs pagination. Starlight ships these as elevated, bordered cards; this
-   design has neither cards nor shadows, so they become a hairline-ruled pair
-   of links using the landing page's eyebrow-over-title pairing.
+   Docs pagination. Starlight ships elevated bordered cards; this design has
+   neither, so they become hairline-ruled eyebrow-over-title links.
    ========================================================================== */
 
-/* The landing page ends on its own CTA — docs pagination is chrome it doesn't want. */
+/* The landing page ends on its own CTA. */
 :root[data-has-hero] .pagination-links {
   display: none;
 }
 
-/* Starlight's column floor is 18rem, so two links need a 601px content column
-   before they share a line — about a 633px viewport — and every phone gets them
-   stacked instead: 154px of chrome for two words and two titles. A 9rem floor
-   brings that down to 312px, so everything from a 344px viewport up pairs them,
-   and only the 320px class still stacks, where two columns genuinely wouldn't
-   hold the longer titles.
-
-   Keeping auto-fit rather than a fixed 1fr 1fr is what makes the first and last
-   page of the sidebar sequence still work: with one link the empty track
-   collapses and the survivor spans the full width. A fixed pair would leave a
-   next-only link end-aligned inside the left half, marooned mid-page. */
 .pagination-links {
   grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
   gap: clamp(24px, 4vw, 56px);
@@ -569,11 +498,8 @@ h1#_top {
   border-top: 1px solid var(--border);
 }
 
-/* Starlight centres the arrow against the whole two-line block. Top-aligning
-   it instead, with the eyebrow's line box set to the icon's own height, puts
-   the two on one line without an offset to maintain. */
 .pagination-links a {
-  /* svg font-size plus the column gap below — the width the arrow occupies. */
+  /* svg font-size plus the column gap — the width the arrow occupies. */
   --arrow-gutter: 1.75rem;
   align-items: start;
   gap: 0.75rem;
@@ -583,9 +509,6 @@ h1#_top {
   box-shadow: none;
 }
 
-/* The title sits in the second flex item, so it starts inside the arrow's
-   column. Pulling it back by the gutter squares it with the arrow's outer edge
-   rather than with the eyebrow — leading edge for prev, trailing for next. */
 .pagination-links a[rel='prev'] .link-title {
   margin-inline-start: calc(-1 * var(--arrow-gutter));
 }
@@ -594,8 +517,6 @@ h1#_top {
   margin-inline-end: calc(-1 * var(--arrow-gutter));
 }
 
-/* "Previous"/"Next" is a bare text node with no element of its own, so the
-   eyebrow treatment goes on the wrapping span and .link-title opts back out. */
 .pagination-links a > span {
   font-family: var(--sl-font-mono);
   font-size: 11px;
@@ -610,10 +531,6 @@ h1#_top {
   margin-top: 0.7rem;
   font-family: 'EB Garamond', Georgia, serif;
   font-weight: 500;
-  /* Halving the column means the longest label in the sidebar, "3. Existing
-     Solutions", no longer clears 160px at 22px and wraps. The floor is the size
-     that keeps it on one line there; the ceiling is reached by 612px, so every
-     width with room for the full size still gets it. */
   font-size: clamp(1.125rem, 3.6vw, 1.375rem);
   letter-spacing: normal;
   line-height: 1.15;
@@ -629,14 +546,13 @@ h1#_top {
   transition: color var(--dur-fast) var(--ease-out);
 }
 
-/* Colour alone carries the hover — no travel on the arrow. */
 .pagination-links a:hover .link-title,
 .pagination-links a:hover svg {
   color: var(--ui-accent-text);
 }
+
 /* Capability glyphs. Motion and the light palette live in capability-glyphs.css
-   (vendored from the design handoff); only layout and sizing belong here. The
-   SVGs are inlined with set:html, so these rules must be global. */
+   (vendored). The SVGs are inlined with set:html, so these must be global. */
 
 .schematic {
   display: flex;
@@ -644,8 +560,7 @@ h1#_top {
   align-items: center;
 }
 
-/* Strokes are non-scaling, so honour each glyph's designed size — scaling far
-   from it shifts the dash rhythm. */
+/* Strokes are non-scaling, so honour each glyph's designed size below. */
 .schematic svg {
   width: 100%;
   height: auto;
@@ -664,9 +579,6 @@ h1#_top {
   max-width: 230px;
 }
 
-/* Team appears twice: a landing section and the /team/ page. Card styling lives
-   in TeamGrid.astro; only the surrounding layout differs between the two. */
-
 .team-section {
   max-width: 1240px;
   margin: 0 auto;
@@ -677,8 +589,6 @@ h1#_top {
   margin-block: 2.5rem 3rem;
 }
 
-/* TeamSocialLink is its own component, so its class sits outside TeamGrid's
-   scoped styles. 44px clears the minimum touch target. */
 .team-social-link {
   display: inline-flex;
   align-items: center;
@@ -705,20 +615,14 @@ h1#_top {
   width: 1rem;
   height: 1rem;
 }
+
 /* ==========================================================================
-   Header. Starlight's fixed bar redressed: page-coloured, hairline-ruled, and
-   carrying the same riso grain as the landing page, which the opaque bar would
-   otherwise cover.
+   Header. Page-coloured, hairline-ruled, carrying the same riso grain as the
+   landing page.
    ========================================================================== */
 
-/* z-index: -1 paints the grain over the header's own background but under all
-   of its content, so nothing else needs restacking. */
-header.header::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
+header.header::after,
+#ambient-grain {
   opacity: 0.12;
   background-color: var(--mantis-teal);
   -webkit-mask-image: url('/images/riso-noise.png');
@@ -729,11 +633,16 @@ header.header::after {
   mask-repeat: repeat;
 }
 
-/* Docs pages keep the full-width bar so the title column stays over the sidebar.
-   Splash has no sidebar and takes the landing column instead — the inline
-   padding moves onto the inner row so the logo lines up with the section
-   content below it. Header.astro's inner div shares the .header class with
-   PageFrame's bar, hence the child combinator. */
+/* z-index: -1 paints the grain over the header's background but under its
+   content, so nothing else needs restacking. */
+header.header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
 :root:not([data-has-sidebar]) header.header {
   padding-inline: 0;
 }
@@ -748,31 +657,24 @@ header.header::after {
   height: 24px;
 }
 
-/* The mark stays 24px; its link grows around it to clear the 44px touch
-   target, which the 64px bar has room for. */
 .site-title {
   padding-block: 10px;
 }
 
-/* Below 50rem Starlight hides the header's right group and expects the mobile
-   menu to carry Team, GitHub and the theme toggle. Splash pages have no
-   sidebar, so no menu button is rendered and those three become unreachable —
-   keep them in the bar there instead. */
+.mobile-preferences {
+  align-items: center;
+}
+
+/* Below 50rem Starlight moves Team, GitHub and the toggle into the mobile menu.
+   Splash has no menu button, so they stay in the bar there. */
 @media (max-width: 49.999rem) {
   :root {
-    /* The menu button is fixed and derives its offset from this token, so
-       sizing it here keeps it centred in the bar. */
+    /* The menu button derives its offset from this token. */
     --sl-menu-button-size: 2.75rem;
   }
 
-  /* Starlight makes this button a flex box but never sets either alignment, so
-     its 1em icon parks at the origin of the padding box — 8px in from the top
-     and left of a 44px circle, 20px from the other two edges. It reads as a
-     drawing error rather than a control. */
   starlight-menu-button button {
     align-items: center;
-    /* Not place-items — its justify-items half has no effect on a flex
-       container, so the icon would centre vertically and stay left. */
     justify-content: center;
   }
 
@@ -781,7 +683,6 @@ header.header::after {
     gap: 0.5rem;
   }
 
-  /* Divider and gaps are width this bar cannot spare at 375px. */
   :root:not([data-has-sidebar]) .social-icons {
     gap: 0.5rem;
   }
@@ -798,44 +699,19 @@ header.header::after {
 }
 
 /* ==========================================================================
-   Search on splash at phone width.
-
-   Docs pages pair the search icon with the menu button, which reads fine. Splash
-   has no sidebar and so no menu button, leaving the icon stranded mid-bar with
-   no border, fill or label — a glyph rather than a control.
-
-   It leaves the bar entirely and docks under the header as a chip sized to its
-   own label, then widens into the search dialog when opened.
-
-   The fill is --bg-page, not a raised surface. This page is drawn rather than
-   layered — hairlines and open space do the structural work — so a --surface-2
-   chip would be the only lifted object on it. Page colour reads as nothing at
-   all against the composition, and as a punched-out island over the team
-   portraits, which are the one thing here dense enough to swallow 13px type.
+   Search on splash at phone width
    ========================================================================== */
 
 @media (max-width: 49.999rem) {
   :root:not([data-has-sidebar]) site-search {
-    /* Starlight ships this element as display: contents, so it generates no box
-       at all — position, top, padding and transform were all resolving against
-       nothing. It needs to become a box before it can be moved. */
+    /* Starlight ships this as display: contents, so it generates no box and
+       position, padding and transform have nothing to resolve against. */
     display: block;
     position: fixed;
     inset-inline: 0;
     top: var(--sl-nav-height);
-    /* Below the mobile TOC (4), the menu (5) and the navbar (10): it slides out
-       from behind the header and can never cover an open panel. */
     z-index: 3;
-    /* 16px flat, not a clamp: it puts the chip on the section gutter rather than
-       letting it drift as the viewport grows. Measured, the hero tagline, the
-       three-up, the capability modules, the team grid and the closing eyebrow
-       all start at 16 — the pillar borders sit at 32, inside their own wrapper's
-       padding, so the chip lines up with the sections and not with those. */
     padding: 10px 16px;
-    /* This strip spans the viewport and now paints nothing, so leaving it live
-       would put an invisible 58px band over the page eating taps meant for
-       whatever scrolled under it. The chip re-enables itself below. Focus is
-       unaffected: this does not leave the tab order. */
     pointer-events: none;
     transform: translateY(-100%);
     opacity: 0;
@@ -844,9 +720,7 @@ header.header::after {
       opacity 160ms linear;
   }
 
-  /* :has() covers the keyboard shortcut, which can open the dialog while the
-     chip is still parked — the opacity here would otherwise take the dialog
-     down with it, since it is a child of this element. */
+
   :root:not([data-has-sidebar])[data-search-docked] site-search,
   :root:not([data-has-sidebar]) site-search:focus-within,
   :root:not([data-has-sidebar]) site-search:has(dialog[open]) {
@@ -854,8 +728,7 @@ header.header::after {
     opacity: 1;
   }
 
-  /* Gated on the same three states rather than left on permanently, so the
-     parked chip cannot take a tap in the sliver where it overhangs the header. */
+
   :root:not([data-has-sidebar])[data-search-docked] site-search button[data-open-modal],
   :root:not([data-has-sidebar]) site-search:focus-within button[data-open-modal],
   :root:not([data-has-sidebar]) site-search:has(dialog[open]) button[data-open-modal] {
@@ -864,12 +737,6 @@ header.header::after {
 
   :root:not([data-has-sidebar]) site-search button[data-open-modal] {
     position: relative;
-    /* A length, not max-content: the width has to interpolate for the expansion
-       below, and an intrinsic keyword animates discretely — it would jump at the
-       halfway point instead of sliding. The label is fixed English in a
-       monospace face, so the measurement does not move: 13px icon, 8px gap,
-       6 glyphs at 0.6em, 13px of padding each side comes to 95.8, and the 2px
-       over that is rounding insurance rather than air. */
     width: 98px;
     height: 36px;
     justify-content: flex-start;
@@ -878,9 +745,6 @@ header.header::after {
     border: 1px solid var(--border-strong);
     border-radius: var(--radius-pill);
     background: var(--bg-page);
-    /* --text-faint on the page is 2.4:1. This is the control's only label, so it
-       is body text and needs AA: --text-muted measures 6.71:1 dark,
-       4.67:1 light. */
     color: var(--text-muted);
     font-size: 13px;
     transition:
@@ -888,9 +752,6 @@ header.header::after {
       transform 90ms var(--ease-out);
   }
 
-  /* The chip is 36px so it stays small; the tap target is the 44px the rest of
-     the header uses. A pseudo-element grows the target without moving the
-     border. */
   :root:not([data-has-sidebar]) site-search button[data-open-modal]::after {
     content: '';
     position: absolute;
@@ -898,43 +759,23 @@ header.header::after {
     inset-inline: 0;
   }
 
-  /* Anticipation. :active fires on the press, which is the only moment touch
-     offers — there is no hover here to carry a lead-in. */
   :root:not([data-has-sidebar]) site-search button[data-open-modal]:active {
     transform: scale(0.96);
   }
 
-  /* The release: the chip widens to the full gutter as the dialog arrives over
-     it. */
   :root:not([data-has-sidebar]) site-search:has(dialog[open]) button[data-open-modal] {
     width: 100%;
   }
 
-  /* Starlight gives the dialog no entrance, so it would replace the chip in a
-     single frame and the widening would never be seen. Fading it in is what
-     makes the search surface read as having come from the chip rather than from
-     nowhere.
-
-     The 70ms delay is doing the real work. Without it the fade reached 77% by
-     63ms, while the chip was still travelling, and the expansion was washed out
-     just as it got going. Holding the dialog off for 70ms gives the chip a clear
-     window for the front-loaded part of its curve — most of the distance, since
-     the easing is a quint — and the surface then arrives over a chip that has
-     already visibly launched. `backwards` is what keeps the dialog transparent
-     during the delay rather than flashing opaque for four frames first. */
   :root:not([data-has-sidebar]) site-search dialog[open],
   :root:not([data-has-sidebar]) site-search dialog[open]::backdrop {
     animation: search-dialog-in var(--dur-base) var(--ease-out) 70ms backwards;
   }
 
-  /* Starlight hides the label below its md breakpoint, which is what left the
-     bare glyph. The chip is sized around the label saying what it is. */
   :root:not([data-has-sidebar]) site-search button[data-open-modal] > span {
     display: block;
   }
 
-  /* The dialog is a child of the fixed chip, so it inherits the containing
-     block and would otherwise open 56px down the page. */
   :root:not([data-has-sidebar]) site-search dialog {
     top: 0;
   }
@@ -952,8 +793,6 @@ header.header::after {
     transform: none;
   }
 
-  /* The chip still reaches full width when the dialog opens — it just gets
-     there in one frame, and skips the press-in entirely. */
   :root:not([data-has-sidebar]) site-search button[data-open-modal] {
     transition: none;
   }
@@ -968,9 +807,6 @@ header.header::after {
   }
 }
 
-/* Starlight sizes the first column to the sidebar so the search box lines up
-   with the content column. Equal outer columns centre it on the bar instead;
-   the logo is start-aligned either way, so it does not move. */
 @media (min-width: 50rem) {
   header.header > .header {
     grid-template-columns: 1fr auto 1fr;
@@ -981,9 +817,6 @@ header.header::after {
   }
 }
 
-/* The design's expanded search field. The button still opens Starlight's
-   pagefind modal rather than revealing an inline input — a field that is always
-   visible beats one hidden behind an icon. */
 site-search button[data-open-modal] {
   font-family: var(--sl-font-mono);
 }
@@ -998,8 +831,6 @@ site-search button[data-open-modal] > kbd {
 }
 
 @media (min-width: 50rem) {
-  /* A definite width, so the auto-sized grid column it now sits in has
-     something to measure. */
   site-search button[data-open-modal] {
     height: 38px;
     width: clamp(180px, 32vw, 380px);
@@ -1008,8 +839,6 @@ site-search button[data-open-modal] > kbd {
     border-color: var(--border-strong);
     border-radius: 8px;
     background: var(--surface-2);
-    /* Same 2.7:1 failure the mobile pill had — the desktop field has carried it
-       since this rule was written. */
     color: var(--text-muted);
     font-size: 13px;
   }
@@ -1020,24 +849,11 @@ site-search button[data-open-modal] > kbd {
   }
 }
 
-/* Pagefind ships its placeholder at opacity 0.2 over the input's own text
-   colour, which composites to 1.50:1 light and 1.79:1 dark — it fails on both
-   canvases, not just the pale one. This is the only thing telling a reader what
-   the empty field does, and the site is committed to AA.
-
-   Both declarations are load-bearing. Clearing the opacity alone would leave the
-   placeholder identical to typed text at 14.4:1, with no way to tell a prompt
-   from a value; --text-muted restores that distinction at 4.67:1 light,
-   6.71:1 dark. It is also the colour the trigger chip uses, so the word "Search"
-   does not change colour between the control and the field it opens. */
 #starlight__search .pagefind-ui__search-input::placeholder {
   opacity: 1;
   color: var(--text-muted);
 }
 
-/* Nav is mono on every page — --sl-font would make it serif outside the splash.
-   The padding is what carries these to a 44px touch target; the text itself is
-   only 12px tall. */
 .toolbar-text-link:any-link,
 .toolbar-text-link:visited {
   padding: 16px 5px;
@@ -1051,8 +867,6 @@ site-search button[data-open-modal] > kbd {
   text-decoration: none;
 }
 
-/* Its own element rather than a ::after on the Team link, which would fold the
-   slash into that link's hit area. */
 .toolbar-sep {
   color: var(--text-faint);
   font-family: var(--sl-font-mono);
@@ -1064,8 +878,6 @@ site-search button[data-open-modal] > kbd {
 .toolbar-text-link:focus {
   color: var(--text-strong);
 }
-
-/* The theme toggle carries its own styles — see ThemeSelect.astro. */
 
 .walkthrough-animation {
   overflow: hidden;
@@ -1090,37 +902,21 @@ site-search button[data-open-modal] > kbd {
 }
 
 /* ==========================================================================
-   Landing page at phone width.
-
-   Kept together at the end of the file on purpose: media queries carry no
-   extra specificity, so a mobile rule placed next to the desktop rule it
-   overrides only wins if it also comes after it. Several of these sections are
-   declared far apart above, so anything scoped to this breakpoint lives here.
+   Landing page at phone width. Kept together at the end on purpose: media
+   queries carry no extra specificity, so these only win by coming last.
    ========================================================================== */
 
 @media (max-width: 49.999rem) {
-  /* Starlight's content panel already supplies a 16px gutter at this width, so
-     each section's own inline padding is a second one stacked on top. Dropping
-     it recovers 36px of card width and puts the section edge within 2px of the
-     header logo. */
   .capabilities,
   .team-section,
   .closing {
     padding-inline: 0;
   }
 
-  /* The cards are the exception: at full bleed they read as edge-to-edge slabs
-     with the copy pressed against the rule. This gutter sits outside the border
-     — on top of the panel's own 16px — so the card narrows rather than the text
-     column. Paired with the roomier inside padding below, which is what the
-     border actually needs to stop crowding the words. */
   .three-up {
     padding-inline: 16px;
   }
 
-  /* The clamp minimums on .pillar were set for the three-column composition,
-     where they read as generous. On one column they eat 96px of a 344px card,
-     squeezing the copy and wrapping the chips onto a second line. */
   .pillar {
     padding: 40px 28px 44px;
   }
@@ -1137,10 +933,6 @@ site-search button[data-open-modal] > kbd {
     margin-bottom: 32px;
   }
 
-  /* The statement is a desktop-scale device: at phone width it needed four
-     lines and most of a screen to say what the two buttons under it already
-     say. The eyebrow gives the section the same header its siblings have and
-     hands the close to the CTAs. */
   .closing .statement {
     display: none;
   }
@@ -1149,7 +941,6 @@ site-search button[data-open-modal] > kbd {
     display: block;
   }
 
-  /* Sized for the statement it no longer has to clear. */
   .closing {
     padding-block: clamp(40px, 9vw, 72px);
   }
@@ -1157,35 +948,9 @@ site-search button[data-open-modal] > kbd {
 
 /* ==========================================================================
    Capability modules at phone width.
-
-   Its own breakpoint, 48rem rather than the 50rem the rest of the phone rules
-   use: from 768px up the two-column composition above fits, and that is the
-   better layout as soon as there is room for it. Between 768 and 800 this means
-   the modules are already running the desktop arrangement while the sections
-   around them are still on their phone padding, which is the correct pairing —
-   the constraint here is the module's own width, not the viewport's.
    ========================================================================== */
 
 @media (max-width: 47.999rem) {
-  /* Stacked in one column, the glyph landed in a dead band under the copy —
-     230–350px of it per capability. The chips stack rather than wrap at this
-     width, which leaves the column beside them empty and almost exactly as tall
-     as a glyph needs to be, so the glyph moves in there and the band goes away.
-
-     display: contents is what makes that possible: .chips sits inside
-     .module-copy while .schematic is a sibling of it, so the two are a level
-     apart in the DOM and cannot share a grid row until the wrapper stops
-     generating a box of its own.
-
-     The chip column takes only what its widest label needs and the glyph column
-     absorbs the rest, so the glyph stays centred in whatever is left over. The
-     reverse — chips on 1fr, glyph on a fixed track — pinned the glyph to the
-     right edge and pushed it further out the wider the screen got.
-
-     gap, not column-gap: the desktop rule sets the shorthand, so overriding one
-     axis leaves a 40px row-gap in force between every row — on top of the
-     margins the eyebrow, heading and body already carry, which is 120px of
-     doubled-up spacing per module. */
   .module {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
@@ -1197,37 +962,28 @@ site-search button[data-open-modal] > kbd {
     display: contents;
   }
 
-  /* Everything above the chips still runs the full width. */
   .eyebrow-module,
   .module h3,
   .module-body {
     grid-column: 1 / -1;
   }
 
-  /* Three chips at 40px with 12px gaps come to 144px, which is what the glyph
-     is capped at below — so the two read as the same height side by side. */
   .module .chips {
     grid-column: 1;
     flex-direction: column;
     align-items: flex-start;
   }
 
-  /* No opacity knock-back here, unlike the old backdrop treatment: nothing is
-     printed over the glyph any more, and 01 and 02 are faint enough already. */
   .schematic {
     grid-column: 2;
     align-self: center;
     pointer-events: none;
   }
 
-  /* .schematic already centres its child, so the cap is all that is needed to
-     hold the glyph at the chip stack's height and let it sit mid-column. Below
-     ~340px the column is narrower than the cap and the glyph simply shrinks. */
   .schematic svg {
     max-width: 144px;
   }
 
-  /* Nothing to reverse — both modules put the glyph in the same column. */
   .module-flip {
     direction: ltr;
   }

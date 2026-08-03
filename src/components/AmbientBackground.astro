@@ -18,29 +18,15 @@
     pointer-events: none;
   }
 
-  /* This was a canvas redrawing a document-space dot screen ~5x a second. What
-     it actually put on screen is two things: a fine halftone, and a slow swell
-     in how present that halftone is from region to region — dense patches,
-     thinned bands, near-bare voids. Both are static properties of a picture, so
-     the paint loop was buying nothing the page keeps.
+  /* A dot tile, masked by two shallow ramps at crossing angles and periods.
+     Intersecting rather than stacking them means a point is dense only where
+     both are high, so the beat reads as irregular clumping instead of plaid.
+     Periods under ~500px fit more than one cycle on screen and the field goes
+     evenly busy; neither ramp reaches zero, so some tooth survives everywhere.
 
-     The dots are one gradient tile. The swell is two shallow ramps crossing at
-     different angles and periods (520px / 760px); intersecting rather than
-     stacking them means a point is dense only where both are high, so the beat
-     between their periods reads as irregular clumping instead of plaid. Periods
-     under ~500px put more than one cycle on screen at once and the field goes
-     evenly busy — the canvas's character is that whole regions go bare, which
-     needs a trough wide enough to hold one. Neither ramp reaches zero, so a
-     whisper of tooth survives everywhere, as it did under the 0.3 presence
-     floor the canvas clamped to.
-
-     --field-rgb and --field-a are unchanged; the script read them off the
-     canvas, the mask and opacity below read the same two values.
-
-     Not carried over: dot pitch coarsened 9px to 14px down the *document*, and
-     the swell crept a few px/sec. A fixed layer is viewport-space and can hold
-     neither. Over one screenful the pitch drift is ~2px and the creep was below
-     the threshold the dots themselves read at. */
+     Replaces a canvas that repainted this ~5x a second. Not carried over: the
+     dot pitch coarsened down the *document* and the swell crept a few px/sec,
+     neither of which a viewport-space layer can hold. */
   #ambient-field {
     --field-swell:
       repeating-linear-gradient(112deg, rgb(0 0 0 / 1) 0px, rgb(0 0 0 / 0.06) 260px, rgb(0 0 0 / 1) 520px),
@@ -54,17 +40,5 @@
     mask-composite: intersect;
   }
 
-  /* The design ships --riso-amt 0.5-0.7 and --riso-tint-amt 0.12; the export
-     wires both grain layers to the former, which composites to a saturated teal
-     rather than a texture. 0.12 is the tint-strength value and reads as paper. */
-  #ambient-grain {
-    opacity: 0.12;
-    background-color: var(--mantis-teal);
-    -webkit-mask-image: url('/images/riso-noise.png');
-    mask-image: url('/images/riso-noise.png');
-    -webkit-mask-size: 200px 200px;
-    mask-size: 200px 200px;
-    -webkit-mask-repeat: repeat;
-    mask-repeat: repeat;
-  }
+  /* #ambient-grain's wash is in custom.css, shared with the header's. */
 </style>

@@ -2,24 +2,15 @@
 import Default from '@astrojs/starlight/components/Search.astro';
 ---
 
-{/* Starlight's search, unchanged. The override exists only to carry the script
-    below; the styling lives in custom.css alongside the rest of the header. */}
+{/* Starlight's search, unchanged. The override only carries the script below;
+    styling lives in custom.css with the rest of the header. */}
 <Default {...Astro.props}><slot /></Default>
 
 <script>
-  // Splash pages have no sidebar, so the header renders no menu button and the
-  // search sits loose in the bar with nothing to anchor it. At phone width it
-  // moves under the header as a pill instead — see custom.css. This flags when
-  // the reader has cleared the hero so the pill can dock behind the header
-  // until then.
-  //
-  // Observing the hero rather than a scroll offset means the trigger tracks the
-  // hero's real height, which is viewport-relative (100svh minus the nav), so
-  // there is no magic number to keep in step. It also self-gates: no hero, no
-  // observer, so docs pages are untouched.
-  //
-  // The attribute is set at every width and the media query decides whether it
-  // means anything, so a rotation or resize needs no re-evaluation here.
+  // Flags when the reader has cleared the hero, so the phone-width search chip
+  // can stay docked behind the header until then — see custom.css. Observing
+  // the hero rather than a scroll offset tracks its real viewport-relative
+  // height, and self-gates: no hero, no observer, so docs pages are untouched.
   const hero = document.querySelector('.mantis-hero');
 
   if (hero) {

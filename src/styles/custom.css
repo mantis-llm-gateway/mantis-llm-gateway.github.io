@@ -236,6 +236,27 @@ h1#_top {
   font-size: 0.92rem;
 }
 
+/* Same shape of bug as .module:last-child, in Starlight's prose rhythm. When a
+   list's items hold paragraphs, Starlight gives each item's last block a
+   1.25rem bottom margin so the items separate. The final item has nothing to
+   separate from, so that margin collapses out of the list and lands under it:
+   measured, a loose list on the architecture page sets its items 20px apart and
+   then closes with the same 20px. The list never ends — it reads as one run of
+   text with some indented lines in the middle.
+
+   Giving the list its own close puts the three gaps back in order: 16px inside
+   a paragraph run, 20px between items, 32px to whatever follows. Only lists
+   with block children are affected — a tight list already closes correctly at
+   4px inside and 16px after, and 32px there would tear it off the page.
+
+   :not(:last-child) because a close is only needed when something follows. On
+   future-work, which ends on a list, the margin otherwise landed on the gap
+   above the pagination rule and pushed it 96px -> 104px, making that page's
+   footer sit lower than every other page's. */
+.sl-markdown-content > :is(ol, ul):has(> li > p):not(:last-child) {
+  margin-bottom: 2rem;
+}
+
 /* ==========================================================================
    Landing sections. The design draws with hairlines and chips — no cards,
    no fills, no elevation.
@@ -388,6 +409,17 @@ h1#_top {
   gap: clamp(40px, 6vw, 100px);
   align-items: center;
   margin-bottom: clamp(80px, 11vw, 170px);
+}
+
+/* That margin separates one module from the next, but the fourth has no next —
+   there it stops being separation and becomes trailing space, stacking on the
+   section's own padding and the team section's. Measured at 1280 it made the
+   gap into // Team 345.6px where the three-up closes into // Capabilities at
+   198.4 and the team into the CTA at 256; the page visibly loses its footing
+   between the last schematic and the team grid. Zeroed, the run reads
+   198 / 205 / 256, and at 375px 114 / 120 / 100. */
+.module:last-child {
+  margin-bottom: 0;
 }
 
 /* Alternating modules put the schematic on the left. Flipping with `direction`

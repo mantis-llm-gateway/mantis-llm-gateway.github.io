@@ -660,8 +660,12 @@ header.header::after {
   padding-inline: clamp(18px, 4vw, 40px);
 }
 
+/* The antennae sit above the wordmark, so centring the lockup's box drops the
+   word 7px below the baseline of Team and GitHub beside it. Shift it back onto
+   that line — translate, so the link's hit area stays where the box is. */
 .site-title img {
   height: 24px;
+  translate: 0 -7px;
 }
 
 .site-title {
@@ -678,6 +682,17 @@ header.header::after {
   :root {
     /* The menu button derives its offset from this token. */
     --sl-menu-button-size: 2.75rem;
+
+    /* Nothing in this bar is taller than 24px, so the lockup's 7px lift is the
+       whole of the ink and left 8px more room below the row than above it.
+       Trimming height and bottom padding together brings the rule up by that 8
+       without moving a single item. Desktop keeps its own value — the search
+       chip is 38px there, so it sets the extent and the lift never shows. */
+    --sl-nav-height: 3rem;
+  }
+
+  header.header {
+    padding-bottom: 4px;
   }
 
   :root:not([data-has-sidebar]) .right-group {

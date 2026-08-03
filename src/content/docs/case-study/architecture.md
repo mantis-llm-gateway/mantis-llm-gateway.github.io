@@ -230,15 +230,10 @@ When Mantis sends an LLM request to AWS Bedrock, Bedrock’s Guardrails kick in.
 In addition, if LLM requests or responses can be categorised as the following, Mantis will return Bedrock’s guardrail blocked message, i.e. `this request was blocked by content policy` to the client:
 
 - hate
-
 - insults
-
 - sexual
-
 - violence
-
 - misconduct
-
 - financial advice
 
 ### 6. Response Is Sent to the User

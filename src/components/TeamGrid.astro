@@ -87,24 +87,25 @@ const members = [
     isolation: isolate;
     width: 100%;
     aspect-ratio: 1;
+    min-height: 0;
     margin-bottom: clamp(20px, 2vw, 28px);
     padding: clamp(8px, 1vw, 14px);
     border: 1px dashed var(--border-strong);
-    border-radius: var(--radius-pill);
+    border-radius: 100%;
   }
 
   .portrait :global(img) {
     display: block;
     width: 100%;
     height: 100%;
-    border-radius: var(--radius-pill);
+    border-radius: 100%;
     object-fit: cover;
   }
 
   .wash {
     position: absolute;
     inset: clamp(8px, 1vw, 14px);
-    border-radius: var(--radius-pill);
+    border-radius: 100%;
     background: var(--ui-accent);
     opacity: 0.15;
     pointer-events: none;
@@ -114,6 +115,7 @@ const members = [
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-grow: 1;
   }
 
   .name {
@@ -136,6 +138,7 @@ const members = [
   .socials {
     display: flex;
     gap: 10px;
+    margin-top: auto;
   }
 
   /* auto-fit needs 220px per track, which two of will not fit a phone, so all

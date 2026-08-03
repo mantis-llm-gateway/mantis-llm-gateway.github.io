@@ -207,6 +207,13 @@ h1#_top {
   --sl-anchor-icon-space: 0px;
 }
 
+/* starlight-image-zoom emits an invisible element ahead of the prose, which trips
+   Starlight's `.sl-container > * + *` and adds 24px above the first block. Hero
+   pages keep it — there the preceding sibling is the Hero, and the gap is real. */
+:root:not([data-has-hero]) .sl-container > .sl-markdown-content {
+  margin-top: 0;
+}
+
 .expressive-code .copy button div,
 .expressive-code .copy button::before {
   display: none;

@@ -961,6 +961,21 @@ site-search button[data-open-modal] > kbd {
   }
 }
 
+/* Pagefind ships its placeholder at opacity 0.2 over the input's own text
+   colour, which composites to 1.50:1 light and 1.79:1 dark — it fails on both
+   canvases, not just the pale one. This is the only thing telling a reader what
+   the empty field does, and the site is committed to AA.
+
+   Both declarations are load-bearing. Clearing the opacity alone would leave the
+   placeholder identical to typed text at 14.4:1, with no way to tell a prompt
+   from a value; --text-muted restores that distinction at 4.67:1 light,
+   6.71:1 dark. It is also the colour the trigger chip uses, so the word "Search"
+   does not change colour between the control and the field it opens. */
+#starlight__search .pagefind-ui__search-input::placeholder {
+  opacity: 1;
+  color: var(--text-muted);
+}
+
 /* Nav is mono on every page — --sl-font would make it serif outside the splash.
    The padding is what carries these to a 44px touch target; the text itself is
    only 12px tall. */

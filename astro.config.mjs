@@ -10,6 +10,15 @@ export default defineConfig({
       title: 'Mantis',
       favicon: '/images/mantis_logo_32.svg',
       plugins: [starlightImageZoom()],
+      head: [
+        { tag: 'meta', attrs: { property: 'og:image', content: 'https://mantis-llm-gateway.github.io/images/og.png' } },
+        { tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
+        { tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
+        { tag: 'meta', attrs: { property: 'og:image:alt', content: 'Mantis — route, cache, guard, observe.' } },
+        { tag: 'meta', attrs: { property: 'og:type', content: 'website' } },
+        { tag: 'meta', attrs: { property: 'og:url', content: 'https://mantis-llm-gateway.github.io' } },
+        { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
+      ],
       description:
         'Documentation for Mantis, an open-source self-hosted LLM gateway for routing, caching, guardrails, and observability.',
       logo: {

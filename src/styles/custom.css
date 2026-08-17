@@ -664,7 +664,7 @@ header.header::after {
    that line — translate, so the link's hit area stays where the box is. */
 .site-title img {
   height: 24px;
-  translate: 0 -7px;
+  translate: 0 -.275rem;
 }
 
 .site-title {

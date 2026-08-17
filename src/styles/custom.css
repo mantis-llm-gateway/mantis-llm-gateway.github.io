@@ -567,7 +567,6 @@ h1#_top {
   align-items: center;
 }
 
-/* Strokes are non-scaling, so honour each glyph's designed size below. */
 .schematic svg {
   width: 100%;
   height: auto;
